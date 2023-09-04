@@ -2,8 +2,8 @@
 
 import 'package:arv/models/response_models/home_banner.dart';
 import 'package:arv/utils/arv_api.dart';
-import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/material.dart';
 
 class CarouselSectionOne extends StatelessWidget {
   const CarouselSectionOne({
@@ -13,7 +13,7 @@ class CarouselSectionOne extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<HomeBanners>(
-      future: arvApi.getAllHomeBanners(),
+      future: arvApi.getAllHomeBanners("SECTION_1"),
       builder: (context, snapshot) {
         List<HomeBanner> homeBanners = snapshot.data?.list ?? [];
         if (homeBanners.isEmpty) return Container();
@@ -56,8 +56,11 @@ class CarouselWidget extends StatelessWidget {
         borderRadius: const BorderRadius.all(Radius.circular(12.0)),
         child: Stack(
           children: <Widget>[
-            Image.network(imageUri,
-                fit: BoxFit.fill, width: MediaQuery.of(context).size.width),
+            Image.network(
+              imageUri,
+              fit: BoxFit.cover,
+              width: MediaQuery.of(context).size.width,
+            ),
             Positioned(
               bottom: 0.0,
               left: 0.0,

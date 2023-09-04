@@ -1,8 +1,13 @@
 import 'package:arv/utils/app_colors.dart';
+import 'package:arv/views/widgets/banner_carousel_section.dart';
 import 'package:arv/views/widgets/carousel_one/carousel_section_one.dart';
+import 'package:arv/views/widgets/category/fixed_category_section.dart';
+import 'package:arv/views/widgets/category_collections.dart';
+import 'package:arv/views/widgets/dual_card_section.dart';
 import 'package:arv/views/widgets/favourite_picks.dart';
-import 'package:arv/views/widgets/products_in_offer_section.dart';
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:arv/views/widgets/fixed_dashboard_banner.dart';
+import 'package:arv/views/widgets/mini_banner.dart';
+import 'package:arv/views/widgets/offer_products.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -65,122 +70,112 @@ class _HomeBottomNavigationScreenState extends State<HomeBottomNavigationScreen>
         Theme.of(context).textTheme.subtitle2!.copyWith(fontSize: 8.0);
     return Scaffold(
       appBar: PreferredSize(
-          preferredSize: Size.fromHeight(160),
-          child: Container(
-              height: 160,
-              width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.only(top: 25, right: 16, left: 16),
-              color: appColor,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
+        preferredSize: const Size.fromHeight(160),
+        child: Container(
+          height: 160,
+          width: MediaQuery.of(context).size.width,
+          padding: const EdgeInsets.only(top: 25, right: 16, left: 16),
+          color: appColor,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              const SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  SizedBox(
-                    height: 10,
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      const Icon(
+                        Icons.location_on_outlined,
+                        size: 30,
+                        color: Colors.white,
+                      ),
+                      const SizedBox(width: 2),
+                      Text(
+                        "Address",
+                        style: GoogleFonts.poppins(
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                        ),
+                      )
+                    ],
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Icon(
-                            Icons.location_on_outlined,
-                            size: 30,
-                            color: Colors.white,
-                          ),
-                          SizedBox(
-                            width: 2,
-                          ),
-                          Text("Address",
-                              style: GoogleFonts.poppins(
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white,
-                              ))
-                        ],
+                      Icon(
+                        Icons.notifications_none_outlined,
+                        size: 30,
+                        color: pink,
                       ),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.notifications_none_outlined,
-                            size: 30,
-                            color: pink,
-                          ),
-                          SizedBox(
-                            width: 6,
-                          ),
-                          Icon(
-                            Icons.person_2_outlined,
-                            size: 30,
-                            color: Colors.white,
-                          ),
-                        ],
+                      const SizedBox(width: 6),
+                      Icon(
+                        Icons.person_2_outlined,
+                        size: 30,
+                        color: Colors.white,
                       ),
                     ],
                   ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    height: 50,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.white),
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12.0),
-                    ),
-                    child: Row(
-                      children: <Widget>[
-                        IconButton(
-                          icon: Icon(
-                            Icons.search_outlined,
-                            color: gray,
-                          ),
-                          onPressed: () {},
-                        ),
-
-                        Expanded(
-                          child: TextField(
-                            decoration: InputDecoration(
-                              hintText: 'Search for Products and food',
-                              hintStyle: Theme.of(context)
-                                  .textTheme
-                                  .subtitle2!
-                                  .copyWith(
-                                color: gray,
-                                fontSize: 17.0,
-                                fontWeight: FontWeight.w400,
-                              ),
-                              border: InputBorder.none,
-                            ),
-                          ),
-                        ),
-                        IconButton(
-                          icon: Icon(
-                            Icons.filter_list,
-                            color: gray,
-                          ),
-                          onPressed: () {},
-                        ),
-                        // UIHelper.horizontalSpaceMedium(),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
                 ],
-              ))),
+              ),
+              const SizedBox(height: 10),
+              Container(
+                height: 50,
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.white),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+                child: Row(
+                  children: <Widget>[
+                    IconButton(
+                      icon: Icon(
+                        Icons.search_outlined,
+                        color: gray,
+                      ),
+                      onPressed: () {},
+                    ),
+
+                    Expanded(
+                      child: TextField(
+                        decoration: InputDecoration(
+                          hintText: 'Search for Products and food',
+                          hintStyle:
+                              Theme.of(context).textTheme.subtitle2!.copyWith(
+                                    color: gray,
+                                    fontSize: 17.0,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                      icon: Icon(
+                        Icons.filter_list,
+                        color: gray,
+                      ),
+                      onPressed: () {},
+                    ),
+                    // UIHelper.horizontalSpaceMedium(),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 20),
+            ],
+          ),
+        ),
+      ),
       body: SingleChildScrollView(
           child: Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(bottom: 100),
-                child: Column(
-                  children: [
-                currentTab == 1
-                    ? Container()
-                    : const Image(image: AssetImage("assets/images/rect1.jpg")),
-                SizedBox(height: 12),
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(bottom: 100),
+            child: Column(
+              children: [
+                currentTab == 1 ? Container() : const MiniBanner(),
+                const SizedBox(height: 12),
                 Column(
                   children: [
                     currentTab == 1 ? Container() : const CarouselSectionOne(),
@@ -207,9 +202,9 @@ class _HomeBottomNavigationScreenState extends State<HomeBottomNavigationScreen>
                               ],
                             ),
                           ),
-                    currentTab == 1
+                        currentTab == 1
                         ? Container()
-                        : SizedBox(
+                        : const SizedBox(
                             height: 12,
                           ),
                     currentTab == 1
@@ -217,166 +212,66 @@ class _HomeBottomNavigationScreenState extends State<HomeBottomNavigationScreen>
                         : const FavouritePicks(pageNumber: 0),
                     currentTab == 1
                         ? Container()
-                        : SizedBox(
+                        : const SizedBox(
                             height: 12,
                           ),
                     currentTab == 1
                         ? Container()
-                        : Padding(
-                            padding: EdgeInsets.only(right: 16, left: 16),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(8.0),
-                              child: Container(
-                                height: 180,
-                                width: MediaQuery.of(context).size.width,
-                                child: Image(
-                                  image: AssetImage("assets/images/rect2.png"),
-                                  fit: BoxFit.fill,
-                                ),
-                              ),
-                            ),
-                          ),
+                        : const FixedDashboardBanner(),
                     currentTab == 1
                         ? Container()
-                        : SizedBox(
+                        : const SizedBox(
                             height: 12,
                           ),
-                    currentTab == 1
-                        ? Container()
-                        : Padding(
-                            padding: EdgeInsets.only(right: 16, left: 16),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                    child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                  child: Container(
-                                    height: 110,
-                                    width: MediaQuery.of(context).size.width,
-                                    child: Image(
-                                      image:
-                                          AssetImage("assets/images/rect3.png"),
-                                      fit: BoxFit.fill,
-                                    ),
-                                  ),
-                                )),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Expanded(
-                                    child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                  child: Container(
-                                    height: 110,
-                                    width: MediaQuery.of(context).size.width,
-                                    child: Image(
-                                      image:
-                                          AssetImage("assets/images/rect3.png"),
-                                      fit: BoxFit.fill,
-                                    ),
-                                  ),
-                                )),
-                              ],
-                            ),
-                          ),
+                    currentTab == 1 ? Container() : const DualCardSection(),
                     Padding(
-                      padding: EdgeInsets.only(top: 16, right: 16, left: 16),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("Explore By Category",
-                              style: GoogleFonts.poppins(
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black,
-                              )),
-                              Text("See All",
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 18.0,
-                                    fontWeight: FontWeight.w400,
-                                    color: pink,
-                                  ))
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(right: 16, left: 16, top: 16),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(8.0),
-                                    child: Container(
-                                      height: 130,
-                                      width: MediaQuery.of(context).size.width,
-                                      child: Image(
-                                        image: AssetImage("assets/images/qq.webp"),
-                                        fit: BoxFit.fill,
-                                      ),
-                                    ),
-                                  )),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(8.0),
-                                    child: Container(
-                                      height: 130,
-                                      width: MediaQuery.of(context).size.width,
-                                      child: Image(
-                                        image: AssetImage("assets/images/qq1.webp"),
-                                        fit: BoxFit.fill,
-                                      ),
-                                    ),
-                                  )),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                      padding:
-                          const EdgeInsets.only(right: 16, left: 16, top: 16),
-                      child: GridView.count(
-                          crossAxisCount: 4,
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          crossAxisSpacing: 8.0,
-                          childAspectRatio: (itemWidth / itemHeight),
-                          mainAxisSpacing: 10.0,
-                          children: List.generate(imgLists.length, (index) {
-                            return ClipRRect(
-                                borderRadius: const BorderRadius.all(
-                                    Radius.circular(12.0)),
-                                child: Stack(
-                                  children: <Widget>[
-                                    Image(
-                                      image: AssetImage(
-                                        imgLists[index],
-                                      ),
-                                      fit: BoxFit.fill,
-                                      width: 110,
-                                      height: 150,
-                                    ),
-                                  ],
-                                ));
-                          })),
-                        ),
-                        Padding(
                       padding:
                           const EdgeInsets.only(top: 16, right: 16, left: 16),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("Explore New Categories",
-                              style: GoogleFonts.poppins(
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black,
-                              )),
+                          Text(
+                            "Explore By Category",
+                            style: GoogleFonts.poppins(
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black,
+                            ),
+                          ),
+                          Text(
+                            "See All",
+                            style: GoogleFonts.poppins(
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.w400,
+                              color: pink,
+                            ),
+                          ),
                         ],
                       ),
                     ),
-                    SizedBox(height: 12),
+                    const FixedCategorySection(),
+                    CategoryCollections(
+                      itemWidth: itemWidth,
+                      itemHeight: itemHeight,
+                    ),
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(top: 16, right: 16, left: 16),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Explore New Categories",
+                            style: GoogleFonts.poppins(
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 12),
                     SizedBox(
                       height: 150,
                       width: MediaQuery.of(context).size.width,
@@ -387,89 +282,42 @@ class _HomeBottomNavigationScreenState extends State<HomeBottomNavigationScreen>
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
                           return Padding(
-                              padding: EdgeInsets.only(
-                                      left: index == 0 ? 16 : 0, right: 12),
-                                  child: ClipRRect(
-                                      borderRadius:
-                                      BorderRadius.all(Radius.circular(12.0)),
-                                      child: Stack(
-                                        children: <Widget>[
-                                          Image(
-                                            image: AssetImage(
-                                              bnrList[index],
-                                        ),
-                                        fit: BoxFit.fill,
-                                        width: 110,
-                                        height: 150,
-                                      ),
-                                    ],
-                                  )));
+                            padding: EdgeInsets.only(
+                                left: index == 0 ? 16 : 0, right: 12),
+                            child: ClipRRect(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(12.0)),
+                              child: Stack(
+                                children: <Widget>[
+                                  Image(
+                                    image: AssetImage(
+                                      bnrList[index],
+                                    ),
+                                    fit: BoxFit.fill,
+                                    width: 110,
+                                    height: 150,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
                         },
                       ),
                     ),
-                    currentTab == 1 ? Container() : SizedBox(height: 12),
+                    currentTab == 1 ? Container() : const SizedBox(height: 12),
+                    currentTab == 1 ? Container() : const OfferProducts(),
+                    currentTab == 1 ? Container() : const SizedBox(height: 12),
                     currentTab == 1
                         ? Container()
-                        : Container(
-                            height: 220,
-                            decoration: const BoxDecoration(
-                              image: DecorationImage(
-                                  image: AssetImage("assets/images/rect2.png"),
-                                  fit: BoxFit.cover),
-                            ),
-                            child: Row(
-                              children: const [
-                                Center(
-                                  child: ProductsInOfferSection(),
-                                )
-                              ],
-                            )),
-                    currentTab == 1
-                        ? Container()
-                        : SizedBox(
-                            height: 12,
-                          ),
-                    currentTab == 1
-                        ? Container()
-                        : Container(
-                            child: CarouselSlider(
-                              options: CarouselOptions(
-                                  autoPlay: true,
-                                  aspectRatio: 4,
-                                  enlargeCenterPage: false,
-                                  autoPlayAnimationDuration:
-                                      Duration(seconds: 1)),
-                              items: imgListss
-                                  .map((item) => Container(
-                                        child: Container(
-                                          margin: EdgeInsets.all(5.0),
-                                          child: ClipRRect(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(12.0)),
-                                            child: Stack(
-                                              children: <Widget>[
-                                                Image(
-                                                    image: AssetImage(
-                                                      item,
-                                                    ),
-                                                    fit: BoxFit.fill,
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                            .size
-                                                            .width),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ))
-                                  .toList(),
-                            ),
-                          ),
+                        : const BannerCarouselSection(),
                     currentTab == 1
                         ? Container()
                         : Padding(
-                            padding:
-                                EdgeInsets.only(top: 16, right: 16, left: 16),
+                            padding: EdgeInsets.only(
+                              top: 16,
+                              right: 16,
+                              left: 16,
+                            ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -491,14 +339,14 @@ class _HomeBottomNavigationScreenState extends State<HomeBottomNavigationScreen>
                     currentTab == 1 ? Container() : const SizedBox(height: 12),
                     currentTab == 1
                         ? Container()
-                        : const FavouritePicks(pageNumber: 1),
+                        : const FavouritePicks(pageNumber: 0),
                   ],
-                    )
-                  ],
-                ),
-              ),
-            ],
-          )),
+                )
+              ],
+            ),
+          ),
+        ],
+      )),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         backgroundColor: pink,
@@ -514,7 +362,7 @@ class _HomeBottomNavigationScreenState extends State<HomeBottomNavigationScreen>
         notchMargin: 12,
         child: Container(
           height: 65,
-          padding: EdgeInsets.only(top: 20),
+          padding: const EdgeInsets.only(top: 20),
           child: Row(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -652,4 +500,3 @@ class _HomeBottomNavigationScreenState extends State<HomeBottomNavigationScreen>
     );
   }
 }
-

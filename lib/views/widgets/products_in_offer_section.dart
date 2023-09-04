@@ -12,7 +12,7 @@ class ProductsInOfferSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Products>(
-      future: arvApi.getAllProducts(1),
+      future: arvApi.getAllProducts(0),
       builder: (context, snapshot) {
         List<Product> products = snapshot.data?.list ?? [];
         return SizedBox(
@@ -55,12 +55,12 @@ class ProductsInOfferSection extends StatelessWidget {
                             Column(
                               children: [
                                 Text(
-                                  "   ${products[index].mrpPrice![0]}",
+                                  "   ${products[index].mrpPrice!.isEmpty ? "" : products[index].mrpPrice![0]}",
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                 ),
                                 Text(
-                                  "   ${products[index].sellingPrice![0]}",
+                                  "   ${products[index].sellingPrice!.isEmpty ? "" : products[index].sellingPrice![0]}",
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                 ),

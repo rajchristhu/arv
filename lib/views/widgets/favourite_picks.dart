@@ -73,7 +73,7 @@ class FavouritePicks extends StatelessWidget {
                           children: [
                             Column(
                               children: [
-                                Text("   ${productList[index].mrpPrice![0]}",
+                                Text("   ${productList[index].mrpPrice!.isEmpty ? "" : productList[index].mrpPrice![0]}",
                                     style: GoogleFonts.poppins(
                                       fontSize: 14.0,
                                       fontWeight: FontWeight.w300,

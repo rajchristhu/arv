@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.arv.app.arv">
+    <uses-permission android:name="android.permission.INTERNET"/>
    <application
         android:label="arv"
         android:name="${applicationName}"

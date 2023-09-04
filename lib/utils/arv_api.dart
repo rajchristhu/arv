@@ -17,7 +17,7 @@ class _ArvApi {
 
   static final _ArvApi instance = _ArvApi._();
 
-  final String hostUrl = "http://35.244.31.172:8090";
+  final String hostUrl = "http://35.244.33.213:8090";
 
   // Image Uri : /public/products/image
 
@@ -45,14 +45,16 @@ class _ArvApi {
     await secureStorage.add("access-token", accessToken.token);
   }
 
-  Future<HomeBanners> getAllHomeBanners() async {
-    var url = Uri.parse("$hostUrl/api/homeBanners?page=0");
+  Future<HomeBanners> getAllHomeBanners(String section) async {
+    var url = Uri.parse("$hostUrl/api/homeBanners?page=0&homeBannerSection=$section");
 
     var headers = {
       'Content-Type': 'application/json;charset=UTF-8',
     };
 
     var response = await http.get(url, headers: headers);
+    log("Banners : ");
+    log(response.body);
     HomeBanners homeBanners;
     if (response.statusCode == 200) {
       homeBanners = HomeBanners.fromRawJson(response.body);
@@ -84,7 +86,7 @@ class _ArvApi {
 
   Future<Products> getAllProducts(int pageNumber) async {
     var url =
-        Uri.parse("$hostUrl/public/products?priceFrom=0&priceTo=0&page=$pageNumber");
+        Uri.parse("$hostUrl/public/products?majorCategoryId=Groceries&priceFrom=0&priceTo=0&page=$pageNumber");
 
     var headers = {
       'Content-Type': 'application/json;charset=UTF-8',
@@ -100,7 +102,6 @@ class _ArvApi {
         log("Exception : $e");
       }
     }
-    log('product list = ${products.list.length}');
     return products;
   }
 }
