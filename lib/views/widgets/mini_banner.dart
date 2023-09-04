@@ -13,9 +13,7 @@ class MiniBanner extends StatelessWidget {
       future: arvApi.getAllHomeBanners("TOP_MINI_BANNER"),
       builder: (context, snapshot) {
         int length = snapshot.data?.list.length ?? 0;
-        String? imageUri = length == 0
-            ? "assets/images/rect1.jpg"
-            : snapshot.data?.list[0].imageUri;
+        String? imageUri = length == 0 ? null : snapshot.data?.list[0].imageUri;
         return imageUri != null
             ? Image.network(
                 arvApi.getMediaUri(imageUri),

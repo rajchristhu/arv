@@ -14,9 +14,7 @@ class FixedDashboardBanner extends StatelessWidget {
       future: arvApi.getAllHomeBanners("DASHBOARD_FIXED_CARD"),
       builder: (context, snapshot) {
         int length = snapshot.data?.list.length ?? 0;
-        String? imageUri = length == 0
-            ? "assets/images/rect1.jpg"
-            : snapshot.data?.list[0].imageUri;
+        String? imageUri = length == 0 ? null : snapshot.data?.list[0].imageUri;
         return Padding(
           padding: const EdgeInsets.only(right: 16, left: 16),
           child: ClipRRect(
