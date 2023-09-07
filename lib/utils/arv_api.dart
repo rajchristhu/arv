@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:arv/models/request/cart.dart';
 import 'package:arv/models/response_models/access_token.dart';
 import 'package:arv/models/response_models/categories.dart';
 import 'package:arv/models/response_models/home_banner.dart';
@@ -53,8 +54,6 @@ class _ArvApi {
     };
 
     var response = await http.get(url, headers: headers);
-    log("Banners : ");
-    log(response.body);
     HomeBanners homeBanners;
     if (response.statusCode == 200) {
       homeBanners = HomeBanners.fromRawJson(response.body);
@@ -103,5 +102,73 @@ class _ArvApi {
       }
     }
     return products;
+  }
+
+  Future<void> addToCart(Cart cart) async {
+    var url = Uri.parse("$hostUrl/cart");
+
+    var headers = await _getHeaders();
+
+    var response = await http.post(
+      url,
+      headers: headers,
+      body: cart.toRawJson(),
+    );
+
+    if (response.statusCode == 200) {
+      //
+    }
+  }
+
+  Future<void> getCartItems(int pageNumber) async {
+    var url = Uri.parse("$hostUrl/cart");
+
+    var headers = await _getHeaders();
+
+    var response = await http.get(
+      url,
+      headers: headers,
+    );
+
+    if (response.statusCode == 200) {
+      //
+    }
+  }
+
+  Future<void> deleteCartItem(String productId) async {
+    var url = Uri.parse("$hostUrl/cart?id=$productId");
+
+    var headers = await _getHeaders();
+
+    var response = await http.delete(
+      url,
+      headers: headers,
+    );
+
+    if (response.statusCode == 200) {
+      //
+    }
+  }
+
+  Future<void> deleteAllCartItems() async {
+    var url = Uri.parse("$hostUrl/cart/deleteAll");
+
+    var headers = await _getHeaders();
+
+    var response = await http.delete(
+      url,
+      headers: headers,
+    );
+
+    if (response.statusCode == 200) {
+      //
+    }
+  }
+
+  Future<Map<String, String>> _getHeaders() async {
+    return {
+      "content-type": "application/json",
+      "Authorization": "Bearer ${await secureStorage.get('token')}"
+    };
   }
 }
