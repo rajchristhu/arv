@@ -43,7 +43,8 @@ final List<String> bnrList = [
 ];
 
 class ProductPage extends StatefulWidget {
-  const ProductPage({Key? key}) : super(key: key);
+  bool check;
+   ProductPage(this.check) ;
 
   @override
   State createState() => _ProductPageState();
@@ -83,7 +84,9 @@ class _ProductPageState extends State<ProductPage> {
             ),
       body: Row(
         children: [
-          Container(
+          !widget.check?     Container(
+            padding: EdgeInsets.only(top: 10,right: 10),
+
             decoration: BoxDecoration(
               border: Border.all(color: lightpink),
               color: Colors.white,
@@ -107,7 +110,7 @@ class _ProductPageState extends State<ProductPage> {
                           });
                         },
                         child: Container(
-                          color: indexVal == index ? Colors.grey : Colors.white,
+                          color: indexVal == index ? pink : Colors.white,
                           height: 100,
                           padding: EdgeInsets.only(bottom: 20, top: 10),
                           margin: EdgeInsets.only(left: 10),
@@ -124,23 +127,25 @@ class _ProductPageState extends State<ProductPage> {
                 )
               ],
             ),
-          ),
-    SizedBox(
-    width: MediaQuery.of(context).size.width-120,
+          ):Container(),
+    Container(
+    width:widget.check?MediaQuery.of(context).size.width:  MediaQuery.of(context).size.width-120,
+    padding: EdgeInsets.only(top: 10),
     child:
     GridView.count(
-              crossAxisCount: 2,
-              crossAxisSpacing: 4.0,
+              crossAxisCount:    !widget.check?    2:3,
+              crossAxisSpacing: 2.0,
               mainAxisSpacing: 8.0,
               children: List.generate(20, (index) {
                 return Center(
                   child:  Container(
+
                     decoration: BoxDecoration(
                       border: Border.all(color: lightpink),
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(12.0),
                     ),
-                    margin: EdgeInsets.only(left:16 , right: 12),
+                    padding: EdgeInsets.only(left:16 , right: 12),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(12.0),
                       child: Container(
@@ -151,9 +156,9 @@ class _ProductPageState extends State<ProductPage> {
                           children: [
                             Image.asset(
                              "assets/images/q1.png",
-                              height: 20,
+                              height: 34,
                               width: double.infinity,
-                              fit: BoxFit.contain,
+                              fit: BoxFit.cover,
                             ),
                             const SizedBox(height: 10),
                             Padding(

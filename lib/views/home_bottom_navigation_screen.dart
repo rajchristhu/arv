@@ -197,7 +197,7 @@ class _HomeBottomNavigationScreenState extends State<HomeBottomNavigationScreen>
                                     )),
                                 InkWell(
                                   onTap: (){
-                                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => ProductPage()));
+                                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => ProductPage(false)));
 
                                   },
                                   child: Text("See All",
@@ -290,26 +290,33 @@ class _HomeBottomNavigationScreenState extends State<HomeBottomNavigationScreen>
                         scrollDirection: Axis.horizontal,
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
-                          return Padding(
-                            padding: EdgeInsets.only(
-                                left: index == 0 ? 16 : 0, right: 12),
-                            child: ClipRRect(
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(12.0)),
-                              child: Stack(
-                                children: <Widget>[
-                                  Image(
-                                    image: AssetImage(
-                                      bnrList[index],
+                          return InkWell(
+                            onTap: (){
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => ProductPage(true)));
+
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                  left: index == 0 ? 16 : 0, right: 12),
+                              child: ClipRRect(
+                                borderRadius:
+                                const BorderRadius.all(Radius.circular(12.0)),
+                                child: Stack(
+                                  children: <Widget>[
+                                    Image(
+                                      image: AssetImage(
+                                        bnrList[index],
+                                      ),
+                                      fit: BoxFit.fill,
+                                      width: 110,
+                                      height: 150,
                                     ),
-                                    fit: BoxFit.fill,
-                                    width: 110,
-                                    height: 150,
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
-                          );
+                          )
+                            ;
                         },
                       ),
                     ),
