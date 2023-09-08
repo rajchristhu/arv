@@ -12,6 +12,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'product_page/product_page.dart';
+
 final List<String> imgList = [
   'assets/images/pp1.png.webp',
   'assets/images/pp2.png.webp',
@@ -193,12 +195,19 @@ class _HomeBottomNavigationScreenState extends State<HomeBottomNavigationScreen>
                                       fontWeight: FontWeight.w600,
                                       color: Colors.black,
                                     )),
-                                Text("See All",
-                                    style: GoogleFonts.poppins(
-                                      fontSize: 18.0,
-                                      fontWeight: FontWeight.w400,
-                                      color: pink,
-                                    ))
+                                InkWell(
+                                  onTap: (){
+                                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => ProductPage()));
+
+                                  },
+                                  child: Text("See All",
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.w400,
+                                        color: pink,
+                                      )),
+                                )
+
                               ],
                             ),
                           ),
