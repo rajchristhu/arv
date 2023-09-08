@@ -1,6 +1,6 @@
-import 'dart:developer';
-
+import 'package:arv/models/request/user.dart';
 import 'package:arv/utils/app_colors.dart';
+import 'package:arv/utils/arv_api.dart';
 import 'package:arv/utils/secure_storage.dart';
 import 'package:arv/views/authentication/numeric_pad.dart';
 import 'package:arv/views/home_bottom_navigation_screen.dart';
@@ -79,7 +79,7 @@ class _VerifyPhoneState extends State<VerifyPhone> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         buildCodeNumberBox(
-                            code.length > 0 ? code.substring(0, 1) : ""),
+                            code.isNotEmpty ? code.substring(0, 1) : ""),
                         buildCodeNumberBox(
                             code.length > 1 ? code.substring(1, 2) : ""),
                         buildCodeNumberBox(
@@ -146,14 +146,25 @@ class _VerifyPhoneState extends State<VerifyPhone> {
                           verificationId: widget.verificationId,
                           smsCode: code,
                         );
-                        await FirebaseAuth.instance
-                            .signInWithCredential(credential)
-                            .then((value) => {
-                                  secureStorage.add(
-                                    "uid",
-                                    value.user?.uid ?? "",
-                                  ),
-                                });
+                        UserCredential userCredential = await FirebaseAuth
+                            .instance
+                            .signInWithCredential(credential);
+                        String phone = await secureStorage.get("username");
+                        String uid = userCredential.user?.uid ?? "";
+                        await secureStorage.add("uid", uid);
+                        String token = await arvApi.login(phone, uid);
+                        if (token == "") {
+                          ArvUser user = ArvUser(
+                            phone: phone,
+                            email: "",
+                            uid: uid,
+                            username: '',
+                            userType: "",
+                          );
+
+                          await arvApi.register(user);
+                        }
+                        
                         Get.to(() => const HomeBottomNavigationScreen());
                       },
                       child: Container(
@@ -182,16 +193,12 @@ class _VerifyPhoneState extends State<VerifyPhone> {
           ),
           NumericPad(
             onNumberSelected: (value) {
-              print(value);
               setState(() {
-                if (value != -1) {
-                  if (code.length < 6) {
-                    code = code + value.toString();
-                  }
+                if (value != -1 && code.length < 6) {
+                  code = code + value.toString();
                 } else {
                   code = code.substring(0, code.length - 1);
                 }
-                log(code);
               });
             },
           ),

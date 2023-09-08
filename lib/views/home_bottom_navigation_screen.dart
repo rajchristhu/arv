@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:arv/utils/app_colors.dart';
+import 'package:arv/utils/secure_storage.dart';
 import 'package:arv/views/widgets/banner_carousel_section.dart';
 import 'package:arv/views/widgets/carousel_one/carousel_section_one.dart';
 import 'package:arv/views/widgets/category/fixed_category_section.dart';
@@ -56,6 +59,18 @@ var currentTab = 0;
 
 class _HomeBottomNavigationScreenState extends State<HomeBottomNavigationScreen> {
   int selectedIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    init();
+  }
+
+  init() async {
+    await Future.delayed(const Duration(seconds: 5));
+    String accessToken = await secureStorage.get("access-token");
+    log("Login Success ============= >>> $accessToken");
+  }
 
   @override
   Widget build(BuildContext context) {

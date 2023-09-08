@@ -26,7 +26,7 @@ class _SecureStorage {
   final FlutterSecureStorage storage = const FlutterSecureStorage();
   List<_Item> items = [];
 
-  Future<String?> get(String key) async {
+  Future<String> get(String key) async {
     _Item? item;
     try {
       item = items
@@ -36,7 +36,7 @@ class _SecureStorage {
       log("Not Found Exception: $e");
     }
     getAll();
-    return item?.value;
+    return item?.value ?? "";
   }
 
   Future<void> delete(String key) async {

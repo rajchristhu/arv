@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:arv/utils/app_colors.dart';
+import 'package:arv/utils/secure_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -23,6 +24,7 @@ class _ContinueWithPhoneState extends State<ContinueWithPhone> {
   FirebaseAuth auth = FirebaseAuth.instance;
 
   login() async {
+    await secureStorage.add("username", phoneNumber);
     await auth.verifyPhoneNumber(
       phoneNumber: countryCode + phoneNumber,
       timeout: const Duration(seconds: 60),
@@ -61,7 +63,7 @@ class _ContinueWithPhoneState extends State<ContinueWithPhone> {
           color: accentColor,
         ),
         title: Text(
-          "Fidu Service",
+          "ARV Exclusive",
           style: GoogleFonts.pacifico(
             textStyle: TextStyle(
               fontSize: 32,
