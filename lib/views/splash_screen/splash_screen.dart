@@ -1,0 +1,130 @@
+import 'package:animate_do/animate_do.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:arv/utils/app_colors.dart';
+import 'package:arv/utils/size_helper.dart';
+import 'package:arv/views/authentication/login_page.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+class SplashPage extends StatefulWidget {
+  const SplashPage({super.key});
+
+  @override
+  State createState() => _SplashPageState();
+}
+
+class _SplashPageState extends State<SplashPage> {
+  final SizeHelper _sizeHelper = SizeHelper.getInstance();
+
+  @override
+  void initState() {
+    super.initState();
+    _navigate();
+    // FiduProgressDialog.instance.showProgressDialog(context);
+  }
+
+  ///Navigate to Login screen
+  void _navigate() {
+    Future.delayed(const Duration(seconds: 5), () {
+      if (mounted) {
+        Get.to(() => const ContinueWithPhone());
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      // color: accentColor,
+      decoration: BoxDecoration(
+          gradient: LinearGradient(
+        begin: Alignment.topRight,
+        end: Alignment.bottomLeft,
+        colors: [
+          accentColor,
+          secondaryColor,
+        ],
+      )),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _buildLogo(),
+                _buildDivider(),
+                _buildTagLine(),
+              ],
+            ),
+          ),
+          // _clientLogo(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDivider() {
+    return Container(
+      margin: EdgeInsets.only(top: _sizeHelper.dividerLineTopMargin(context)),
+      width: _sizeHelper.dividerWidth(context),
+      child: Divider(
+        height: 1,
+        color: brownBackGroundColor,
+      ),
+    );
+  }
+
+  Widget _buildTagLine() {
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        horizontal: 0,
+        vertical: 0,
+      ),
+      child: FadeIn(
+        child: SizedBox(
+          child: DefaultTextStyle(
+            style: const TextStyle(fontSize: 42.0, fontWeight: FontWeight.w600),
+            child: AnimatedTextKit(
+              animatedTexts: [
+                TypewriterAnimatedText('ARV Exclusive',
+                    speed: const Duration(milliseconds: 250)),
+                // TypewriterAnimatedText('Design first, then code'),
+              ],
+              onTap: () {
+                debugPrint("Tap Event");
+              },
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  ///build app logo at the center
+  Widget _buildLogo() {
+    return FadeInDownBig(
+      from: 1,
+      duration: Duration(milliseconds: 1000),
+      delay: Duration(milliseconds: 500),
+      child: ArvLogo(),
+    );
+  }
+}
+
+class ArvLogo extends StatelessWidget {
+  final SizeHelper _sizeHelper = SizeHelper.getInstance();
+
+  ArvLogo({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Image.asset(
+      'assets/icon/icon_logo.png',
+      width: _sizeHelper.logoSize(context).width,
+      height: _sizeHelper.logoSize(context).height,
+    );
+  }
+}
