@@ -1,11 +1,13 @@
 import 'package:arv/models/request/cart.dart';
 import 'package:arv/models/response_models/products.dart';
+import 'package:arv/shared/cart_service.dart';
 import 'package:arv/utils/app_colors.dart';
 import 'package:arv/utils/arv_api.dart';
 import 'package:flutter/material.dart';
-
 // ignore: depend_on_referenced_packages
 import 'package:google_fonts/google_fonts.dart';
+// ignore: depend_on_referenced_packages
+import 'package:get/get.dart';
 
 class ProductItemInList extends StatefulWidget {
   const ProductItemInList({
@@ -49,108 +51,115 @@ class _ProductItemInListState extends State<ProductItemInList> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        border: Border.all(color: lightpink),
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12.0),
-      ),
-      margin: EdgeInsets.only(left: widget.index == 0 ? 16 : 0, right: 12),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(12.0),
-        child: Container(
-          width: 140,
-          color: Colors.white,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Image.network(
-                arvApi.getMediaUri(widget.product.imageUri ?? ""),
-                height: 90,
-                width: double.infinity,
-                fit: BoxFit.contain,
-              ),
-              const SizedBox(height: 10),
-              Padding(
-                padding: const EdgeInsets.only(left: 8), // Add padding to text
-                child: Text(
-                  widget.product.productName ?? "",
-                  style: GoogleFonts.poppins(
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 8, top: 4), // Add padding
-                child: Text(
-                  widget.product.productVariation!.isEmpty
-                      ? ""
-                      : widget.product.productVariation![0],
-                  style: GoogleFonts.poppins(
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.w300,
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return GetBuilder<CartService>(
+      init: Get.find<CartService>(),
+      builder: (controller) {
+        count = controller.isPresentInCart(widget.product.id);
+        return Container(
+          decoration: BoxDecoration(
+            border: Border.all(color: lightpink),
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+          margin: EdgeInsets.only(left: widget.index == 0 ? 16 : 0, right: 12),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(12.0),
+            child: Container(
+              width: 140,
+              color: Colors.white,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start, // Align text
-                    children: [
-                      Text(
-                        "${widget.product.mrpPrice!.isEmpty ? '' : (widget.product.mrpPrice![0]).toInt()} rs",
-                        style: GoogleFonts.poppins(
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.w300,
-                          color: Colors.black,
-                        ),
+                  Image.network(
+                    arvApi.getMediaUri(widget.product.imageUri ?? ""),
+                    height: 90,
+                    width: double.infinity,
+                    fit: BoxFit.contain,
+                  ),
+                  const SizedBox(height: 10),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8),
+                    // Add padding to text
+                    child: Text(
+                      widget.product.productName ?? "",
+                      style: GoogleFonts.poppins(
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black,
                       ),
-                      Text(
-                        "${widget.product.sellingPrice!.isEmpty ? '' : (widget.product.sellingPrice![0]).toInt()} rs",
-                        style: GoogleFonts.poppins(
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.w300,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ],
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(right: 10),
-                    child: count == 0
-                        ? OutlinedButton(
-                            onPressed: () async =>
-                                await performCartOperation(true),
-                            style: OutlinedButton.styleFrom(
-                              side: BorderSide(width: 1.0, color: pink),
+                    padding: const EdgeInsets.only(left: 8, top: 4),
+                    // Add padding
+                    child: Text(
+                      widget.product.productVariation!.isEmpty
+                          ? ""
+                          : widget.product.productVariation![0],
+                      style: GoogleFonts.poppins(
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.w300,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        // Align text
+                        children: [
+                          Text(
+                            "${widget.product.mrpPrice!.isEmpty ? '' : (widget.product.mrpPrice![0]).toInt()} rs",
+                            style: GoogleFonts.poppins(
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.w300,
+                              color: Colors.black,
                             ),
-                            child: Text(
-                              'Add',
-                              style: GoogleFonts.poppins(
-                                fontSize: 14.0,
-                                fontWeight: FontWeight.w300,
-                                color: pink,
-                              ),
+                          ),
+                          Text(
+                            "${widget.product.sellingPrice!.isEmpty ? '' : (widget.product.sellingPrice![0]).toInt()} rs",
+                            style: GoogleFonts.poppins(
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.w300,
+                              color: Colors.black,
                             ),
-                          )
-                        : Container(
-                            width: 75,
-                            height: 35,
-                            margin: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                width: 1.0,
-                                color: pink,
-                              ),
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(5),
-                              ),
+                          ),
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 10),
+                        child: count == 0
+                            ? OutlinedButton(
+                                onPressed: () async =>
+                                    await performCartOperation(true),
+                                style: OutlinedButton.styleFrom(
+                                  side: BorderSide(width: 1.0, color: pink),
+                                ),
+                                child: Text(
+                                  'Add',
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 14.0,
+                                    fontWeight: FontWeight.w300,
+                                    color: pink,
+                                  ),
+                                ),
+                              )
+                            : Container(
+                                width: 75,
+                                height: 35,
+                                margin: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    width: 1.0,
+                                    color: pink,
+                                  ),
+                                  borderRadius: const BorderRadius.all(
+                                    Radius.circular(5),
+                                  ),
                             ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -158,13 +167,13 @@ class _ProductItemInListState extends State<ProductItemInList> {
                               children: [
                                 InkWell(
                                   child: Icon(
-                                    Icons.remove,
-                                    size: 16,
-                                    color: gray,
-                                  ),
-                                  onTap: () async =>
-                                      await performCartOperation(false),
-                                ),
+                                        Icons.remove,
+                                        size: 16,
+                                        color: gray,
+                                      ),
+                                      onTap: () async =>
+                                          await performCartOperation(false),
+                                    ),
                                 Container(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 8.0),
@@ -176,26 +185,28 @@ class _ProductItemInListState extends State<ProductItemInList> {
                                       fontWeight: FontWeight.w300,
                                     ),
                                   ),
+                                    ),
+                                    InkWell(
+                                      child: Icon(
+                                        Icons.add,
+                                        size: 16,
+                                        color: gray,
+                                      ),
+                                      onTap: () async =>
+                                          await performCartOperation(true),
+                                    ),
+                                  ],
                                 ),
-                                InkWell(
-                                  child: Icon(
-                                    Icons.add,
-                                    size: 16,
-                                    color: gray,
-                                  ),
-                                  onTap: () async =>
-                                      await performCartOperation(true),
-                                ),
-                              ],
-                            ),
-                          ),
+                              ),
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
@@ -212,11 +223,12 @@ class _ProductItemInListState extends State<ProductItemInList> {
       await arvApi.addToCart(
         Cart(
           productId: productId,
-          variant: productId,
+          variant: productVariant,
           qty: count,
         ),
       );
     }
+    await Get.find<CartService>().updateList();
 
     setState(() {});
   }

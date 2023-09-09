@@ -6,6 +6,7 @@ import 'dart:developer';
 import 'package:arv/models/request/cart.dart';
 import 'package:arv/models/request/user.dart';
 import 'package:arv/models/response_models/access_token.dart';
+import 'package:arv/models/response_models/cart_items.dart';
 import 'package:arv/models/response_models/categories.dart';
 import 'package:arv/models/response_models/home_banner.dart';
 import 'package:arv/models/response_models/products.dart';
@@ -20,12 +21,12 @@ class _ArvApi {
   static final _ArvApi instance = _ArvApi._();
   static const int cacheDurationInDays = 7;
 
-  final String hostUrl = "http://35.244.33.213:8090";
+  final String hostUrl = "http://85.31.233.21:8090";
 
   // Image Uri : /public/products/image
 
   String getMediaUri(String mediaId) {
-    return "$hostUrl/public/products/image/$mediaId";
+    return "$hostUrl/public/products/image/${Uri.encodeComponent(mediaId)}";
   }
 
   Future<bool> _isValidCacheData(String cacheKey) async {
@@ -162,7 +163,7 @@ class _ArvApi {
     );
 
     if (response.statusCode == 200) {
-      //
+      log("Add to cart : ${response.body}");
     }
   }
 
@@ -181,6 +182,25 @@ class _ArvApi {
     }
   }
 
+  Future<CartItems> getCartItemsAndCounts() async {
+    CartItems items = CartItems(products: [], length: 0);
+
+    var url = Uri.parse("$hostUrl/cart/idAndCount");
+
+    var headers = await _getHeaders();
+
+    var response = await http.get(
+      url,
+      headers: headers,
+    );
+
+    if (response.statusCode == 200) {
+      items = CartItems.fromRawJson(response.body);
+    }
+
+    return items;
+  }
+
   Future<void> deleteCartItem(String productId) async {
     var url = Uri.parse("$hostUrl/cart?id=$productId");
 
@@ -192,7 +212,7 @@ class _ArvApi {
     );
 
     if (response.statusCode == 200) {
-      //
+      log("Cart removed : ${response.body}");
     }
   }
 
@@ -212,7 +232,6 @@ class _ArvApi {
   }
 
   Future<Map<String, String>> _getHeaders() async {
-    log("Access token : ${await secureStorage.get('access-token')}");
     return {
       "content-type": "application/json",
       "Authorization": "Bearer ${await secureStorage.get('access-token')}"

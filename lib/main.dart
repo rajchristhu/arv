@@ -1,3 +1,4 @@
+import 'package:arv/controller/init_binding.dart';
 import 'package:arv/firebase_options.dart';
 import 'package:arv/responsive.dart';
 import 'package:arv/shared/app_theme.dart';
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
         title: 'ARV',
         debugShowCheckedModeBanner: false,
         theme: appPrimaryTheme(),
+        initialBinding: InitBindings(),
         home: const Responsive(
           mobile: MobileScreen(),
           tablet: MobileScreen(),
