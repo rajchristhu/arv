@@ -4,10 +4,12 @@ import 'package:arv/shared/cart_service.dart';
 import 'package:arv/utils/app_colors.dart';
 import 'package:arv/utils/arv_api.dart';
 import 'package:flutter/material.dart';
-// ignore: depend_on_referenced_packages
-import 'package:google_fonts/google_fonts.dart';
+
 // ignore: depend_on_referenced_packages
 import 'package:get/get.dart';
+
+// ignore: depend_on_referenced_packages
+import 'package:google_fonts/google_fonts.dart';
 
 class ProductItemInList extends StatefulWidget {
   const ProductItemInList({
@@ -75,6 +77,17 @@ class _ProductItemInListState extends State<ProductItemInList> {
                     height: 90,
                     width: double.infinity,
                     fit: BoxFit.contain,
+                    errorBuilder: (BuildContext context, Object exception,
+                        StackTrace? stackTrace) {
+                      return Container(
+                        color: white,
+                        height: 90,
+                        width: MediaQuery.of(context).size.width,
+                        child: const Center(
+                          child: Text("No Image"),
+                        ),
+                      );
+                    },
                   ),
                   const SizedBox(height: 10),
                   Padding(

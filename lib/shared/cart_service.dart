@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:arv/models/response_models/cart_items.dart';
 import 'package:arv/utils/arv_api.dart';
 // ignore: depend_on_referenced_packages
@@ -9,6 +7,7 @@ import 'package:get/get.dart';
 
 class CartService extends GetxController {
   CartItems items = CartItems(products: [], length: 0);
+  List<String> productIds = [];
 
   @override
   void onInit() {
@@ -24,12 +23,12 @@ class CartService extends GetxController {
 
   updateList() async {
     items = await arvApi.getCartItemsAndCounts();
+    productIds = items.products.map((e) => e.id).toList();
     update();
   }
 
   int isPresentInCart(String productId) {
-    bool isContains =
-        items.products.where((element) => element.id == productId).isNotEmpty;
+    bool isContains = productIds.contains(productId);
     int cartCount = 0;
     if (isContains) {
       cartCount = items.products

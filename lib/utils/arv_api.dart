@@ -193,7 +193,6 @@ class _ArvApi {
       url,
       headers: headers,
     );
-
     if (response.statusCode == 200) {
       items = CartItems.fromRawJson(response.body);
     }
@@ -210,6 +209,8 @@ class _ArvApi {
       url,
       headers: headers,
     );
+
+    log(response.body);
 
     if (response.statusCode == 200) {
       log("Cart removed : ${response.body}");

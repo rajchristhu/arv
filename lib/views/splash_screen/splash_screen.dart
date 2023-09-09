@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:animate_do/animate_do.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:arv/utils/app_colors.dart';
@@ -41,16 +43,7 @@ class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // color: accentColor,
-      decoration: BoxDecoration(
-          gradient: LinearGradient(
-        begin: Alignment.topRight,
-        end: Alignment.bottomLeft,
-        colors: [
-          accentColor,
-          secondaryColor,
-        ],
-      )),
+      color: appColor,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -85,7 +78,7 @@ class _SplashPageState extends State<SplashPage> {
 
   Widget _buildTagLine() {
     return Padding(
-      padding: EdgeInsets.symmetric(
+      padding: const EdgeInsets.symmetric(
         horizontal: 0,
         vertical: 0,
       ),
@@ -113,8 +106,8 @@ class _SplashPageState extends State<SplashPage> {
   Widget _buildLogo() {
     return FadeInDownBig(
       from: 1,
-      duration: Duration(milliseconds: 1000),
-      delay: Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 1000),
+      delay: const Duration(milliseconds: 500),
       child: ArvLogo(),
     );
   }

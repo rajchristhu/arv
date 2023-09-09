@@ -4,10 +4,8 @@ import 'package:arv/shared/cart_service.dart';
 import 'package:arv/utils/app_colors.dart';
 import 'package:arv/utils/arv_api.dart';
 import 'package:flutter/material.dart';
-
 // ignore: depend_on_referenced_packages
 import 'package:get/get.dart';
-
 // ignore: depend_on_referenced_packages
 import 'package:google_fonts/google_fonts.dart';
 
@@ -72,6 +70,17 @@ class _ProductInOfferListState extends State<ProductInOfferList> {
                     arvApi.getMediaUri(widget.product.imageUri ?? ""),
                     height: 90,
                     width: MediaQuery.of(context).size.width,
+                    errorBuilder: (BuildContext context, Object exception,
+                        StackTrace? stackTrace) {
+                      return Container(
+                        color: white,
+                        height: 90,
+                        width: MediaQuery.of(context).size.width,
+                        child: const Center(
+                          child: Text("No Image"),
+                        ),
+                      ); // Display an error message if the image fails to load
+                    },
                   ),
                   Text(
                     "   ${widget.product.productName}",
