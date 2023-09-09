@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:arv/utils/app_colors.dart';
 import 'package:arv/utils/secure_storage.dart';
+import 'package:arv/views/order_page/orders.dart';
 import 'package:arv/views/widgets/banner_carousel_section.dart';
 import 'package:arv/views/widgets/carousel_one/carousel_section_one.dart';
 import 'package:arv/views/widgets/category/fixed_category_section.dart';
@@ -184,8 +185,181 @@ class _HomeBottomNavigationScreenState extends State<HomeBottomNavigationScreen>
           ),
         ),
       ),
-      body: SingleChildScrollView(
-          child: Column(
+      body: currentTab == 2
+          ? const OrderPage()
+          : HomePage(itemWidth: itemWidth, itemHeight: itemHeight),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: pink,
+        onPressed: () {},
+        child: Icon(
+          CupertinoIcons.cart,
+          size: 28,
+        ),
+      ),
+      bottomNavigationBar: buildBottomBar(),
+    );
+  }
+
+  BottomAppBar buildBottomBar() {
+    return BottomAppBar(
+      color: appColor,
+      shape: const CircularNotchedRectangle(),
+      notchMargin: 12,
+      child: Container(
+        height: 65,
+        padding: const EdgeInsets.only(top: 20),
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            Material(
+              color: appColor,
+              child: Center(
+                child: InkWell(
+                  focusColor: Colors.transparent,
+                  hoverColor: Colors.transparent,
+                  onTap: () {
+                    setState(() {
+                      currentTab = 0;
+                    });
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        CupertinoIcons.home,
+                        size: 28,
+                        color: currentTab == 0 ? pink : Colors.white,
+                      ),
+                      // Text("Home",
+                      // style:GoogleFonts.poppins(
+                      //   fontSize: 12.0,
+                      //   fontWeight: FontWeight.bold,
+                      //   color:currentTab==0?pink: Colors.white,
+                      // )
+                      // ),
+                      //const Padding(padding: EdgeInsets.all(10))
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Material(
+              color: appColor,
+              child: Center(
+                child: InkWell(
+                  focusColor: Colors.transparent,
+                  hoverColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                  onTap: () {
+                    setState(() {
+                      currentTab = 1;
+                    });
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        CupertinoIcons.rectangle_grid_2x2,
+                        size: 28,
+                        color: currentTab == 1 ? pink : Colors.white,
+                      ),
+                      // Text("Category",style:GoogleFonts.poppins(
+                      //   fontSize: 12.0,
+                      //   fontWeight: FontWeight.bold,
+                      //   color: Colors.white,
+                      // )),
+                      //const Padding(padding: EdgeInsets.only(left: 10))
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(), //to make space for the floating button
+            Material(
+              color: appColor,
+              child: Center(
+                child: InkWell(
+                    focusColor: Colors.transparent,
+                    hoverColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                    onTap: () {
+                      setState(() {
+                        currentTab = 2;
+                      });
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          CupertinoIcons.tray_2,
+                          size: 28,
+                          color: currentTab == 2 ? pink : Colors.white,
+                        ),
+                        // Text("Grocery",style:GoogleFonts.poppins(
+                        //   fontSize: 12.0,
+                        //   fontWeight: FontWeight.bold,
+                        //   color: Colors.white,
+                        // )),
+                        //const Padding(padding: EdgeInsets.only(right: 10))
+                      ],
+                    )),
+              ),
+            ),
+            Material(
+              color: appColor,
+              child: Center(
+                child: InkWell(
+                  focusColor: appColor,
+                  hoverColor: appColor,
+                  highlightColor: appColor,
+                  onTap: () {
+                    setState(() {
+                      currentTab = 3;
+                    });
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // SizedBox(height: 10,),
+                      Icon(
+                        CupertinoIcons.person,
+                        size: 28,
+                        color: currentTab == 3 ? pink : Colors.white,
+                      ),
+                      // Text("Profile",style:GoogleFonts.poppins(
+                      //   fontSize: 12.0,
+                      //   fontWeight: FontWeight.bold,
+                      //   color: Colors.white,
+                      // ))
+                      //const Padding(padding: EdgeInsets.only(left: 10))
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class HomePage extends StatelessWidget {
+  const HomePage({
+    super.key,
+    required this.itemWidth,
+    required this.itemHeight,
+  });
+
+  final double itemWidth;
+  final double itemHeight;
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
         children: [
           Padding(
             padding: const EdgeInsets.only(bottom: 100),
@@ -211,9 +385,11 @@ class _HomeBottomNavigationScreenState extends State<HomeBottomNavigationScreen>
                                       color: Colors.black,
                                     )),
                                 InkWell(
-                                  onTap: (){
-                                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => ProductPage(false)));
-
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ProductPage(false)));
                                   },
                                   child: Text("See All",
                                       style: GoogleFonts.poppins(
@@ -222,11 +398,10 @@ class _HomeBottomNavigationScreenState extends State<HomeBottomNavigationScreen>
                                         color: pink,
                                       )),
                                 )
-
                               ],
                             ),
                           ),
-                        currentTab == 1
+                    currentTab == 1
                         ? Container()
                         : const SizedBox(
                             height: 12,
@@ -306,16 +481,16 @@ class _HomeBottomNavigationScreenState extends State<HomeBottomNavigationScreen>
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
                           return InkWell(
-                            onTap: (){
-                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => ProductPage(true)));
-
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => ProductPage(true)));
                             },
                             child: Padding(
                               padding: EdgeInsets.only(
                                   left: index == 0 ? 16 : 0, right: 12),
                               child: ClipRRect(
-                                borderRadius:
-                                const BorderRadius.all(Radius.circular(12.0)),
+                                borderRadius: const BorderRadius.all(
+                                    Radius.circular(12.0)),
                                 child: Stack(
                                   children: <Widget>[
                                     Image(
@@ -330,8 +505,7 @@ class _HomeBottomNavigationScreenState extends State<HomeBottomNavigationScreen>
                                 ),
                               ),
                             ),
-                          )
-                            ;
+                          );
                         },
                       ),
                     ),
@@ -377,156 +551,6 @@ class _HomeBottomNavigationScreenState extends State<HomeBottomNavigationScreen>
             ),
           ),
         ],
-      )),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: pink,
-        onPressed: () {},
-        child: Icon(
-          CupertinoIcons.cart,
-          size: 28,
-        ),
-      ),
-      bottomNavigationBar: BottomAppBar(
-        color: appColor,
-        shape: const CircularNotchedRectangle(),
-        notchMargin: 12,
-        child: Container(
-          height: 65,
-          padding: const EdgeInsets.only(top: 20),
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              Material(
-                color: appColor,
-                child: Center(
-                  child: InkWell(
-                    focusColor: Colors.transparent,
-                    hoverColor: Colors.transparent,
-                    onTap: () {
-                      setState(() {
-                        currentTab = 0;
-                      });
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          CupertinoIcons.home,
-                          size: 28,
-                          color: currentTab == 0 ? pink : Colors.white,
-                        ),
-                        // Text("Home",
-                        // style:GoogleFonts.poppins(
-                        //   fontSize: 12.0,
-                        //   fontWeight: FontWeight.bold,
-                        //   color:currentTab==0?pink: Colors.white,
-                        // )
-                        // ),
-                        //const Padding(padding: EdgeInsets.all(10))
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              Material(
-                color: appColor,
-                child: Center(
-                  child: InkWell(
-                    focusColor: Colors.transparent,
-                    hoverColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    onTap: () {
-                      setState(() {
-                        currentTab = 1;
-                      });
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          CupertinoIcons.rectangle_grid_2x2,
-                          size: 28,
-                          color: currentTab == 1 ? pink : Colors.white,
-                        ),
-                        // Text("Category",style:GoogleFonts.poppins(
-                        //   fontSize: 12.0,
-                        //   fontWeight: FontWeight.bold,
-                        //   color: Colors.white,
-                        // )),
-                        //const Padding(padding: EdgeInsets.only(left: 10))
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(), //to make space for the floating button
-              Material(
-                color: appColor,
-                child: Center(
-                  child: InkWell(
-                      focusColor: Colors.transparent,
-                      hoverColor: Colors.transparent,
-                      highlightColor: Colors.transparent,
-                      onTap: () {
-                        setState(() {
-                          currentTab = 2;
-                        });
-                      },
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            CupertinoIcons.tray_2,
-                            size: 28,
-                            color: currentTab == 2 ? pink : Colors.white,
-                          ),
-                          // Text("Grocery",style:GoogleFonts.poppins(
-                          //   fontSize: 12.0,
-                          //   fontWeight: FontWeight.bold,
-                          //   color: Colors.white,
-                          // )),
-                          //const Padding(padding: EdgeInsets.only(right: 10))
-                        ],
-                      )),
-                ),
-              ),
-              Material(
-                color: appColor,
-                child: Center(
-                  child: InkWell(
-                    focusColor: appColor,
-                    hoverColor: appColor,
-                    highlightColor: appColor,
-                    onTap: () {
-                      setState(() {
-                        currentTab = 3;
-                      });
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        // SizedBox(height: 10,),
-                        Icon(
-                          CupertinoIcons.person,
-                          size: 28,
-                          color: currentTab == 3 ? pink : Colors.white,
-                        ),
-                        // Text("Profile",style:GoogleFonts.poppins(
-                        //   fontSize: 12.0,
-                        //   fontWeight: FontWeight.bold,
-                        //   color: Colors.white,
-                        // ))
-                        //const Padding(padding: EdgeInsets.only(left: 10))
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
       ),
     );
   }

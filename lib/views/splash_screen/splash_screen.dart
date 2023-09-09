@@ -24,7 +24,6 @@ class _SplashPageState extends State<SplashPage> {
   void initState() {
     super.initState();
     _navigate();
-    // FiduProgressDialog.instance.showProgressDialog(context);
   }
 
   ///Navigate to Login screen
@@ -121,7 +120,7 @@ class ArvLogo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Image.asset(
-      'assets/icon/icon_logo.png',
+      'assets/images/logo.png',
       width: _sizeHelper.logoSize(context).width,
       height: _sizeHelper.logoSize(context).height,
     );

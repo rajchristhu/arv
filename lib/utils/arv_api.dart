@@ -7,6 +7,7 @@ import 'package:arv/models/request/cart.dart';
 import 'package:arv/models/request/user.dart';
 import 'package:arv/models/response_models/access_token.dart';
 import 'package:arv/models/response_models/cart_items.dart';
+import 'package:arv/models/response_models/cart_list.dart';
 import 'package:arv/models/response_models/categories.dart';
 import 'package:arv/models/response_models/home_banner.dart';
 import 'package:arv/models/response_models/products.dart';
@@ -167,19 +168,27 @@ class _ArvApi {
     }
   }
 
-  Future<void> getCartItems(int pageNumber) async {
-    var url = Uri.parse("$hostUrl/cart");
+  Future<CartList> getCartItems(int pageNumber) async {
+    CartList cartList =
+        CartList(list: [], currentPage: 0, totalCount: 0, totalPages: 0);
 
-    var headers = await _getHeaders();
+    try {
+      var url = Uri.parse("$hostUrl/cart");
 
-    var response = await http.get(
-      url,
-      headers: headers,
-    );
+      var headers = await _getHeaders();
 
-    if (response.statusCode == 200) {
-      //
+      var response = await http.get(
+        url,
+        headers: headers,
+      );
+
+      if (response.statusCode == 200) {
+        cartList = CartList.fromRawJson(response.body);
+      }
+    } catch (e) {
+      log("Cart get error : $e");
     }
+    return cartList;
   }
 
   Future<CartItems> getCartItemsAndCounts() async {
