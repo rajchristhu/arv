@@ -241,6 +241,18 @@ class _ArvApi {
     }
   }
 
+  Future<void> viewUpdate(String productId) async {
+    var url = Uri.parse("$hostUrl/features/view/$productId");
+
+    var headers = await _getHeaders();
+
+    var response = await http.post(url, headers: headers);
+
+    if (response.statusCode == 200) {
+      //
+    }
+  }
+
   Future<Map<String, String>> _getHeaders() async {
     return {
       "content-type": "application/json",
