@@ -34,7 +34,7 @@ class _SplashPageState extends State<SplashPage> {
         if (await arvApi.validateLogin) {
           nextScreen = const HomeBottomNavigationScreen();
         }
-        Get.to(() => nextScreen);
+        Get.offAll(() => nextScreen);
       }
     });
   }

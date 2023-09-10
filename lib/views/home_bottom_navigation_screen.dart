@@ -1,7 +1,4 @@
-import 'dart:developer';
-
 import 'package:arv/utils/app_colors.dart';
-import 'package:arv/utils/secure_storage.dart';
 import 'package:arv/views/order_page/cart.dart';
 import 'package:arv/views/order_page/order_page.dart';
 import 'package:arv/views/widgets/banner_carousel_section.dart';
@@ -16,6 +13,7 @@ import 'package:arv/views/widgets/offer_products.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:get/get.dart';
 
 import 'product_page/product_page.dart';
 
@@ -65,13 +63,6 @@ class _HomeBottomNavigationScreenState extends State<HomeBottomNavigationScreen>
   @override
   void initState() {
     super.initState();
-    init();
-  }
-
-  init() async {
-    await Future.delayed(const Duration(seconds: 5));
-    String accessToken = await secureStorage.get("access-token");
-    log("Login Success ============= >>> $accessToken");
   }
 
   @override
@@ -130,7 +121,7 @@ class _HomeBottomNavigationScreenState extends State<HomeBottomNavigationScreen>
                         color: pink,
                       ),
                       const SizedBox(width: 6),
-                      Icon(
+                      const Icon(
                         Icons.person_2_outlined,
                         size: 30,
                         color: Colors.white,
@@ -386,18 +377,17 @@ class HomePage extends StatelessWidget {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text("Your Favourite Picks",
-                                    style: GoogleFonts.poppins(
-                                      fontSize: 18.0,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.black,
-                                    )),
+                                Text(
+                                  "Your Favourite Picks",
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.black,
+                                  ),
+                                ),
                                 InkWell(
                                   onTap: () {
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                ProductPage(false)));
+                                    Get.to(() => ProductsPage(false));
                                   },
                                   child: Text("See All",
                                       style: GoogleFonts.poppins(
@@ -491,7 +481,7 @@ class HomePage extends StatelessWidget {
                           return InkWell(
                             onTap: () {
                               Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => ProductPage(true)));
+                                  builder: (context) => ProductsPage(true)));
                             },
                             child: Padding(
                               padding: EdgeInsets.only(
@@ -526,7 +516,7 @@ class HomePage extends StatelessWidget {
                     currentTab == 1
                         ? Container()
                         : Padding(
-                            padding: EdgeInsets.only(
+                            padding: const EdgeInsets.only(
                               top: 16,
                               right: 16,
                               left: 16,
@@ -534,18 +524,22 @@ class HomePage extends StatelessWidget {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text("Your Pleasure Essentials",
-                                    style: GoogleFonts.poppins(
-                                      fontSize: 18.0,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.black,
-                                    )),
-                                Text("See All",
-                                    style: GoogleFonts.poppins(
-                                      fontSize: 18.0,
-                                      fontWeight: FontWeight.w400,
-                                      color: pink,
-                                    ))
+                                Text(
+                                  "Your Pleasure Essentials",
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                Text(
+                                  "See All",
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.w400,
+                                    color: pink,
+                                  ),
+                                ),
                               ],
                             ),
                           ),

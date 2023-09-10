@@ -61,7 +61,7 @@ class _ArvApi {
       var response = await http.post(
         url,
         headers: headers,
-        body: jsonEncode({"phone": "9385875094", "uid": "12345"}),
+        body: jsonEncode({"phone": username, "uid": uid}),
       );
 
       AccessToken accessToken = AccessToken.fromRawJson(response.body);
@@ -138,6 +138,28 @@ class _ArvApi {
   Future<Products> getAllProducts(int pageNumber) async {
     var url =
         Uri.parse("$hostUrl/public/products?majorCategoryId=Groceries&priceFrom=0&priceTo=0&page=$pageNumber");
+
+    var headers = {
+      'Content-Type': 'application/json;charset=UTF-8',
+    };
+
+    var response = await http.get(url, headers: headers);
+    Products products =
+        Products(currentPage: 0, list: [], totalCount: 0, totalPages: 0);
+    if (response.statusCode == 200) {
+      try {
+        products = Products.fromRawJson(response.body);
+      } catch (e) {
+        log("Exception : $e");
+      }
+    }
+    return products;
+  }
+
+  Future<Products> getAllProductsByCategory(
+      String category, String subCategory, int pageNumber) async {
+    var url = Uri.parse(
+        "$hostUrl/public/products?majorCategoryId=Groceries&categoryId=$category&subCategoryId=$subCategory&priceFrom=0&priceTo=0&page=$pageNumber");
 
     var headers = {
       'Content-Type': 'application/json;charset=UTF-8',

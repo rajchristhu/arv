@@ -165,7 +165,7 @@ class _VerifyPhoneState extends State<VerifyPhone> {
                           await arvApi.register(user);
                         }
                         
-                        Get.to(() => const HomeBottomNavigationScreen());
+                        Get.offAll(() => const HomeBottomNavigationScreen());
                       },
                       child: Container(
                         decoration: BoxDecoration(
