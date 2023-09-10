@@ -2,7 +2,8 @@ import 'dart:developer';
 
 import 'package:arv/utils/app_colors.dart';
 import 'package:arv/utils/secure_storage.dart';
-import 'package:arv/views/order_page/orders.dart';
+import 'package:arv/views/order_page/cart.dart';
+import 'package:arv/views/order_page/order_page.dart';
 import 'package:arv/views/widgets/banner_carousel_section.dart';
 import 'package:arv/views/widgets/carousel_one/carousel_section_one.dart';
 import 'package:arv/views/widgets/category/fixed_category_section.dart';
@@ -87,6 +88,7 @@ class _HomeBottomNavigationScreenState extends State<HomeBottomNavigationScreen>
     final labelTextStyle =
         Theme.of(context).textTheme.subtitle2!.copyWith(fontSize: 8.0);
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(160),
         child: Container(
@@ -185,13 +187,19 @@ class _HomeBottomNavigationScreenState extends State<HomeBottomNavigationScreen>
           ),
         ),
       ),
-      body: currentTab == 2
-          ? const OrderPage()
-          : HomePage(itemWidth: itemWidth, itemHeight: itemHeight),
+      body: currentTab == 4
+          ? const CartPage()
+          : currentTab == 2
+              ? const MyOrders()
+              : HomePage(itemWidth: itemWidth, itemHeight: itemHeight),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         backgroundColor: pink,
-        onPressed: () {},
+        onPressed: () {
+          setState(() {
+            currentTab = 4;
+          });
+        },
         child: Icon(
           CupertinoIcons.cart,
           size: 28,

@@ -1,5 +1,8 @@
 import 'package:arv/models/response_models/cart_items.dart';
+import 'package:arv/models/response_models/cart_value.dart';
+import 'package:arv/models/response_models/my_orders.dart';
 import 'package:arv/utils/arv_api.dart';
+
 // ignore: depend_on_referenced_packages
 import 'package:get/get.dart';
 
@@ -7,6 +10,9 @@ import 'package:get/get.dart';
 
 class CartService extends GetxController {
   CartItems items = CartItems(products: [], length: 0);
+  CartTotal cartTotal = CartTotal(orderValue: 0);
+  MyOrders myOrders =
+      MyOrders(list: [], currentPage: 0, totalCount: 0, totalPages: 0);
   List<String> productIds = [];
 
   @override
@@ -21,9 +27,16 @@ class CartService extends GetxController {
     init();
   }
 
+  updateMyOrdersList() async {
+    myOrders = await arvApi.getAllOrders();
+    update();
+  }
+
   updateList() async {
     items = await arvApi.getCartItemsAndCounts();
+    cartTotal = await arvApi.getCartValue();
     productIds = items.products.map((e) => e.id).toList();
+    updateMyOrdersList();
     update();
   }
 

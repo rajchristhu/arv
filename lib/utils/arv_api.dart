@@ -4,12 +4,16 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:arv/models/request/cart.dart';
+import 'package:arv/models/request/order.dart';
 import 'package:arv/models/request/user.dart';
 import 'package:arv/models/response_models/access_token.dart';
+import 'package:arv/models/response_models/addresses.dart';
 import 'package:arv/models/response_models/cart_items.dart';
 import 'package:arv/models/response_models/cart_list.dart';
+import 'package:arv/models/response_models/cart_value.dart';
 import 'package:arv/models/response_models/categories.dart';
 import 'package:arv/models/response_models/home_banner.dart';
+import 'package:arv/models/response_models/my_orders.dart';
 import 'package:arv/models/response_models/products.dart';
 import 'package:arv/utils/secure_storage.dart';
 import 'package:http/http.dart' as http;
@@ -209,6 +213,24 @@ class _ArvApi {
     return items;
   }
 
+  Future<CartTotal> getCartValue() async {
+    CartTotal items = CartTotal(orderValue: 0);
+
+    var url = Uri.parse("$hostUrl/cart/cartValue");
+
+    var headers = await _getHeaders();
+
+    var response = await http.get(
+      url,
+      headers: headers,
+    );
+    if (response.statusCode == 200) {
+      items = CartTotal.fromRawJson(response.body);
+    }
+
+    return items;
+  }
+
   Future<void> deleteCartItem(String productId) async {
     var url = Uri.parse("$hostUrl/cart?id=$productId");
 
@@ -227,17 +249,21 @@ class _ArvApi {
   }
 
   Future<void> deleteAllCartItems() async {
-    var url = Uri.parse("$hostUrl/cart/deleteAll");
+    try {
+      var url = Uri.parse("$hostUrl/cart/deleteAll");
 
-    var headers = await _getHeaders();
+      var headers = await _getHeaders();
 
-    var response = await http.delete(
-      url,
-      headers: headers,
-    );
+      var response = await http.delete(
+        url,
+        headers: headers,
+      );
 
-    if (response.statusCode == 200) {
-      //
+      if (response.statusCode == 200) {
+        //
+      }
+    } catch (e) {
+      log("Exception while clear cart");
     }
   }
 
@@ -251,6 +277,79 @@ class _ArvApi {
     if (response.statusCode == 200) {
       //
     }
+  }
+
+  Future<Addresses> getAddresses() async {
+    Addresses addresses = Addresses(addresses: []);
+    var url = Uri.parse("$hostUrl/address");
+    var headers = await _getHeaders();
+    try {
+      var response = await http.get(url, headers: headers);
+
+      if (response.statusCode == 200) {
+        addresses = Addresses.fromRawJson('{ "Addresses" :${response.body} }');
+      }
+    } catch (e) {
+      log("Exception : $e");
+    }
+    return addresses;
+  }
+
+  Future<void> addAddresses(Address address) async {
+    var url = Uri.parse("$hostUrl/address");
+    var headers = await _getHeaders();
+    try {
+      var response = await http.post(
+        url,
+        headers: headers,
+        body: address.toRawJson(),
+      );
+
+      if (response.statusCode == 200) {
+        //
+      }
+    } catch (e) {
+      log("Exception : $e");
+    }
+  }
+
+  Future<void> placeOrder(Order order) async {
+    var url = Uri.parse("$hostUrl/orders");
+    var headers = await _getHeaders();
+    try {
+      var response = await http.post(
+        url,
+        headers: headers,
+        body: order.toRawJson(),
+      );
+
+      if (response.statusCode == 200) {
+        //
+      }
+    } catch (e) {
+      log("Exception : $e");
+    }
+  }
+
+  Future<MyOrders> getAllOrders() async {
+    MyOrders myOrders =
+        MyOrders(list: [], currentPage: 0, totalCount: 0, totalPages: 0);
+    var url = Uri.parse("$hostUrl/orders");
+    var headers = await _getHeaders();
+    try {
+      var response = await http.get(
+        url,
+        headers: headers,
+      );
+
+      if (response.statusCode == 200) {
+        myOrders = MyOrders.fromRawJson(response.body);
+      }
+    } catch (e) {
+      log("Exception : $e");
+    }
+
+    return myOrders;
   }
 
   Future<Map<String, String>> _getHeaders() async {

@@ -3,14 +3,14 @@ import 'package:arv/utils/app_colors.dart';
 import 'package:arv/utils/arv_api.dart';
 import 'package:flutter/material.dart';
 
-class OrderDetail extends StatefulWidget {
-  const OrderDetail({Key? key}) : super(key: key);
+class CartListItems extends StatefulWidget {
+  const CartListItems({Key? key}) : super(key: key);
 
   @override
-  State createState() => _OrderDetailState();
+  State createState() => _CartListItemsState();
 }
 
-class _OrderDetailState extends State<OrderDetail> {
+class _CartListItemsState extends State<CartListItems> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -19,46 +19,48 @@ class _OrderDetailState extends State<OrderDetail> {
         Container(
           padding: const EdgeInsets.only(right: 16, left: 16),
           child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                const SizedBox(
-                  height: 20,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              const SizedBox(
+                height: 20,
+              ),
+              SizedBox(
+                child: Text(
+                  "Cart Products ",
+                  style: TextStyle(
+                      color: black,
+                      fontSize: 17.0,
+                      fontWeight: FontWeight.w700),
                 ),
-                SizedBox(
-                  child: Text(
-                    "Cart Products ",
-                    style: TextStyle(
-                        color: black,
-                        fontSize: 17.0,
-                        fontWeight: FontWeight.w700),
-                  ),
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                Container(
-                  width: 50.0,
-                  height: 1,
-                  margin: const EdgeInsets.symmetric(
-                      vertical: 0.0, horizontal: 2.0),
-                  decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.all(Radius.circular(18)),
-                      shape: BoxShape.rectangle,
-                      color: (appColor)
-                      // .withOpacity(_current == entry.key ? 0.9 : 0.1)
-                      ),
-                )
-              ]),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Container(
+                width: 50.0,
+                height: 1,
+                margin:
+                    const EdgeInsets.symmetric(vertical: 0.0, horizontal: 2.0),
+                decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(Radius.circular(18)),
+                    shape: BoxShape.rectangle,
+                    color: (appColor)
+                    // .withOpacity(_current == entry.key ? 0.9 : 0.1)
+                    ),
+              ),
+            ],
+          ),
         ),
         const SizedBox(
           height: 15,
         ),
         SizedBox(
+          height: 450,
           child: FutureBuilder<CartList>(
             future: arvApi.getCartItems(0),
             builder: (context, snapshot) {
               CartList? cartList = snapshot.data;
-              if (cartList == null) {
+              if (cartList == null || cartList.list.isEmpty) {
                 return const Center(
                   child: Text("No products to show"),
                 );
@@ -127,7 +129,7 @@ class _OrderDetailState extends State<OrderDetail> {
                                 child: SizedBox(
                                   child: Column(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         product.productName,
@@ -141,9 +143,9 @@ class _OrderDetailState extends State<OrderDetail> {
                                       ),
                                       Row(
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.center,
+                                        CrossAxisAlignment.center,
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                        MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
                                             "${product.orderProductVariation} x ${product.orderQty}",
@@ -194,7 +196,9 @@ class _OrderDetailState extends State<OrderDetail> {
                                         height: 1.6,
                                         color: gray50,
                                         padding: const EdgeInsets.only(
-                                            right: 6, left: 6),
+                                          right: 6,
+                                          left: 6,
+                                        ),
                                       ),
                                       const SizedBox(
                                         height: 6,
