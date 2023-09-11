@@ -57,14 +57,9 @@ class _ContinueWithPhoneState extends State<ContinueWithPhone> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(
-          Icons.close,
-          size: 30,
-          color: accentColor,
-        ),
         title: Text(
           "ARV Exclusive",
-          style: GoogleFonts.pacifico(
+          style: GoogleFonts.ubuntu(
             textStyle: TextStyle(
               fontSize: 32,
               fontWeight: FontWeight.bold,
@@ -84,8 +79,8 @@ class _ContinueWithPhoneState extends State<ContinueWithPhone> {
             end: Alignment.bottomCenter,
             colors: [
               Colors.white,
-              swiggyOrange,
-              swiggyOrange,
+              Colors.white,
+              Colors.white,
               swiggyOrange,
             ],
           ),
@@ -108,7 +103,7 @@ class _ContinueWithPhoneState extends State<ContinueWithPhone> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Lottie.asset(
-                      "assets/lottie/sms.json",
+                      "assets/json/phone.json",
                       key: Key('${Random().nextInt(999999999)}'),
                       height: 200,
                       alignment: Alignment.topCenter,

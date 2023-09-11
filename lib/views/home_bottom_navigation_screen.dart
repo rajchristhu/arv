@@ -10,10 +10,12 @@ import 'package:arv/views/widgets/favourite_picks.dart';
 import 'package:arv/views/widgets/fixed_dashboard_banner.dart';
 import 'package:arv/views/widgets/mini_banner.dart';
 import 'package:arv/views/widgets/offer_products.dart';
+import 'package:arv/views/widgets/profilepage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import 'product_page/product_page.dart';
 
@@ -80,7 +82,8 @@ class _HomeBottomNavigationScreenState extends State<HomeBottomNavigationScreen>
         Theme.of(context).textTheme.subtitle2!.copyWith(fontSize: 8.0);
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      appBar: PreferredSize(
+      appBar:currentTab == 0 ||currentTab == 1
+          ? PreferredSize(
         preferredSize: const Size.fromHeight(160),
         child: Container(
           height: 160,
@@ -97,12 +100,18 @@ class _HomeBottomNavigationScreenState extends State<HomeBottomNavigationScreen>
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      const Icon(
-                        Icons.location_on_outlined,
-                        size: 30,
-                        color: Colors.white,
+                      // const Icon(
+                      //   Icons.location_on_outlined,
+                      //   size: 30,
+                      //   color: Colors.white,
+                      // ),
+                      SvgPicture.asset(
+                        "assets/images/location.svg",
+                        semanticsLabel: 'Acme Logo',
+                        width: 25,
+                        height: 25,
                       ),
-                      const SizedBox(width: 2),
+                      const SizedBox(width: 8),
                       Text(
                         "Address",
                         style: GoogleFonts.poppins(
@@ -115,17 +124,23 @@ class _HomeBottomNavigationScreenState extends State<HomeBottomNavigationScreen>
                   ),
                   Row(
                     children: [
-                      Icon(
-                        Icons.notifications_none_outlined,
-                        size: 30,
-                        color: pink,
-                      ),
+                      SvgPicture.asset(
+                      "assets/images/notification.svg",
+                      semanticsLabel: 'Acme Logo',
+                        width: 25,
+                        height: 25,
+                  ),
+                      // Icon(
+                      //   Icons.notifications_none_outlined,
+                      //   size: 30,
+                      //   color: pink,
+                      // ),
                       const SizedBox(width: 6),
-                      const Icon(
-                        Icons.person_2_outlined,
-                        size: 30,
-                        color: Colors.white,
-                      ),
+                      // const Icon(
+                      //   Icons.person_2_outlined,
+                      //   size: 30,
+                      //   color: Colors.white,
+                      // ),
                     ],
                   ),
                 ],
@@ -140,13 +155,23 @@ class _HomeBottomNavigationScreenState extends State<HomeBottomNavigationScreen>
                 ),
                 child: Row(
                   children: <Widget>[
-                    IconButton(
-                      icon: Icon(
-                        Icons.search_outlined,
-                        color: gray,
-                      ),
-                      onPressed: () {},
+                    // IconButton(
+                    //   icon: Icon(
+                    //     Icons.search_outlined,
+                    //     color: gray,
+                    //   ),
+                    //   onPressed: () {},
+                    // ),
+                    const SizedBox(width: 6),
+
+                    SvgPicture.asset(
+                      "assets/images/search.svg",
+                      semanticsLabel: 'Acme Logo',
+                      color: gray,
+                      width: 20,
+                      height: 20,
                     ),
+                    const SizedBox(width: 6),
 
                     Expanded(
                       child: TextField(
@@ -177,11 +202,138 @@ class _HomeBottomNavigationScreenState extends State<HomeBottomNavigationScreen>
             ],
           ),
         ),
+      ):currentTab == 2?
+      PreferredSize(
+        preferredSize: const Size.fromHeight(80),
+        child: Container(
+          height: 80,
+          width: MediaQuery.of(context).size.width,
+          padding: const EdgeInsets.only(top: 25, right: 16, left: 16),
+          color: appColor,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              const SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      // const Icon(
+                      //   Icons.location_on_outlined,
+                      //   size: 30,
+                      //   color: Colors.white,
+                      // ),
+
+                      const SizedBox(width: 8),
+                      Text(
+                        "My Order",
+                        style: GoogleFonts.poppins(
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                        ),
+                      )
+                    ],
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+
+            ],
+          ),
+        ),
+      ):currentTab == 4?
+      PreferredSize(
+        preferredSize: const Size.fromHeight(80),
+        child: Container(
+          height: 80,
+          width: MediaQuery.of(context).size.width,
+          padding: const EdgeInsets.only(top: 25, right: 16, left: 16),
+          color: appColor,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              const SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      // const Icon(
+                      //   Icons.location_on_outlined,
+                      //   size: 30,
+                      //   color: Colors.white,
+                      // ),
+
+                      const SizedBox(width: 8),
+                      Text(
+                        "Cart Page",
+                        style: GoogleFonts.poppins(
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                        ),
+                      )
+                    ],
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+
+            ],
+          ),
+        ),
+      ):PreferredSize(
+        preferredSize: const Size.fromHeight(80),
+        child: Container(
+          height: 80,
+          width: MediaQuery.of(context).size.width,
+          padding: const EdgeInsets.only(top: 25, right: 16, left: 16),
+          color: appColor,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              const SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      // const Icon(
+                      //   Icons.location_on_outlined,
+                      //   size: 30,
+                      //   color: Colors.white,
+                      // ),
+
+                      const SizedBox(width: 8),
+                      Text(
+                        "Profile",
+                        style: GoogleFonts.poppins(
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                        ),
+                      )
+                    ],
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+
+            ],
+          ),
+        ),
       ),
       body: currentTab == 4
           ? const CartPage()
           : currentTab == 2
-              ? const MyOrders()
+              ? const MyOrders():
+      currentTab == 3
+          ?Profile()
               : HomePage(itemWidth: itemWidth, itemHeight: itemHeight),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
@@ -191,11 +343,16 @@ class _HomeBottomNavigationScreenState extends State<HomeBottomNavigationScreen>
             currentTab = 4;
           });
         },
-        child: Icon(
-          CupertinoIcons.cart,
-          size: 28,
+        child:
+        SvgPicture.asset(
+          "assets/images/bag.svg",
+          semanticsLabel: 'Acme Logo',
+          color:Colors.white,
+          width: 28,
+          height: 28,
         ),
       ),
+
       bottomNavigationBar: buildBottomBar(),
     );
   }
@@ -226,11 +383,15 @@ class _HomeBottomNavigationScreenState extends State<HomeBottomNavigationScreen>
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
-                        CupertinoIcons.home,
-                        size: 28,
+                      SvgPicture.asset(
+                        "assets/images/home.svg",
+                        semanticsLabel: 'Acme Logo',
                         color: currentTab == 0 ? pink : Colors.white,
+                        width: 28,
+                        height: 28,
                       ),
+
+
                       // Text("Home",
                       // style:GoogleFonts.poppins(
                       //   fontSize: 12.0,
@@ -259,10 +420,17 @@ class _HomeBottomNavigationScreenState extends State<HomeBottomNavigationScreen>
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
-                        CupertinoIcons.rectangle_grid_2x2,
-                        size: 28,
+                      // Icon(
+                      //   CupertinoIcons.rectangle_grid_2x2,
+                      //   size: 28,
+                      //   color: currentTab == 1 ? pink : Colors.white,
+                      // ),
+                      SvgPicture.asset(
+                        "assets/images/category.svg",
+                        semanticsLabel: 'Acme Logo',
                         color: currentTab == 1 ? pink : Colors.white,
+                        width: 28,
+                        height: 28,
                       ),
                       // Text("Category",style:GoogleFonts.poppins(
                       //   fontSize: 12.0,
@@ -292,8 +460,8 @@ class _HomeBottomNavigationScreenState extends State<HomeBottomNavigationScreen>
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
-                          CupertinoIcons.tray_2,
-                          size: 28,
+                          Icons.history_sharp,
+                          size: 30,
                           color: currentTab == 2 ? pink : Colors.white,
                         ),
                         // Text("Grocery",style:GoogleFonts.poppins(
@@ -322,10 +490,17 @@ class _HomeBottomNavigationScreenState extends State<HomeBottomNavigationScreen>
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       // SizedBox(height: 10,),
-                      Icon(
-                        CupertinoIcons.person,
-                        size: 28,
+                      // Icon(
+                      //   CupertinoIcons.person,
+                      //   size: 28,
+                      //   color: currentTab == 3 ? pink : Colors.white,
+                      // ),
+                      SvgPicture.asset(
+                        "assets/images/profile.svg",
+                        semanticsLabel: 'Acme Logo',
                         color: currentTab == 3 ? pink : Colors.white,
+                        width: 28,
+                        height: 28,
                       ),
                       // Text("Profile",style:GoogleFonts.poppins(
                       //   fontSize: 12.0,
