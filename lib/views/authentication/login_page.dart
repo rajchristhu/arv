@@ -162,7 +162,7 @@ class _ContinueWithPhoneState extends State<ContinueWithPhone> {
                     ),
                     Expanded(
                       child: GestureDetector(
-                        onTap: () {
+                        onTap: () async {
                           login();
                         },
                         child: Container(

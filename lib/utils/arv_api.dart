@@ -61,7 +61,7 @@ class _ArvApi {
       var response = await http.post(
         url,
         headers: headers,
-        body: jsonEncode({"phone": username, "uid": uid}),
+        body: jsonEncode({"phone": '9385875094', "uid": '12345'}),
       );
 
       AccessToken accessToken = AccessToken.fromRawJson(response.body);
@@ -92,7 +92,7 @@ class _ArvApi {
         return await login(user.phone, user.uid);
       }
     } catch (e) {
-      log("Exception : $e");
+      log("Register Exception : $e");
     }
     return "";
   }

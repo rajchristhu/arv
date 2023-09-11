@@ -159,7 +159,7 @@ class _VerifyPhoneState extends State<VerifyPhone> {
                             email: "",
                             uid: uid,
                             username: '',
-                            userType: "",
+                            userType: "CUSTOMER",
                           );
 
                           await arvApi.register(user);
