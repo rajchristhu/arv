@@ -43,8 +43,11 @@ final List<String> bnrList = [
 
 class ProductsPage extends StatefulWidget {
   final bool isCategoryPage;
+  final String? category;
+  final int currentPage;
 
-  const ProductsPage(this.isCategoryPage, {super.key});
+  const ProductsPage(this.isCategoryPage, this.category, this.currentPage,
+      {super.key});
 
   @override
   State createState() => _ProductsPageState();
@@ -53,15 +56,19 @@ class ProductsPage extends StatefulWidget {
 var currentTab = 0;
 
 class _ProductsPageState extends State<ProductsPage> {
+  bool isDisposed = false;
+  int page = 0;
   int selectedIndex = 0;
   int indexVal = 0;
   String selectedCategory = "";
   Products products =
       Products(list: [], currentPage: 0, totalCount: 0, totalPages: 0);
 
-  getProductsByCategory() async {
+  getProductsByCategory(String categoryId) async {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      products = await arvApi.getAllProducts(0);
+      debugPrint("Products updated : $categoryId");
+      if (isDisposed) return;
+      products = await arvApi.getAllProducts(page, categoryId);
       setState(() {});
     });
   }
@@ -69,7 +76,16 @@ class _ProductsPageState extends State<ProductsPage> {
   @override
   void initState() {
     super.initState();
-    getProductsByCategory();
+    page = widget.currentPage;
+    if (widget.isCategoryPage) {
+      getProductsByCategory("${widget.category}");
+    }
+  }
+
+  @override
+  void dispose() {
+    isDisposed = true;
+    super.dispose();
   }
 
   @override
@@ -132,12 +148,14 @@ class _ProductsPageState extends State<ProductsPage> {
                                   Category category = categories.list[index];
                                   if (selectedCategory == "") {
                                     selectedCategory = category.id;
+                                    getProductsByCategory(category.id);
                                   }
                                   return InkWell(
                                     onTap: () {
                                       setState(() {
                                         indexVal = index;
-                                        getProductsByCategory();
+                                        selectedCategory = category.id;
+                                        getProductsByCategory(category.id);
                                       });
                                     },
                                     child: Container(
@@ -156,11 +174,24 @@ class _ProductsPageState extends State<ProductsPage> {
                                         height: 50,
                                         errorBuilder:
                                             (context, error, stackTrace) {
-                                          return Center(
-                                            child: Text(
-                                              "No image",
-                                              style: TextStyle(
-                                                color: gray,
+                                          return Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  const BorderRadius.all(
+                                                      Radius.circular(5)),
+                                              color: indexVal == index
+                                                  ? pink
+                                                  : gray50,
+                                            ),
+                                            child: Center(
+                                              child: Text(
+                                                category.name,
+                                                style: TextStyle(
+                                                  color: indexVal == index
+                                                      ? white
+                                                      : black,
+                                                ),
+                                                textAlign: TextAlign.center,
                                               ),
                                             ),
                                           );
@@ -188,7 +219,7 @@ class _ProductsPageState extends State<ProductsPage> {
                 mainAxisSpacing: 8.0,
                 children: List.generate(
                   products.list.length,
-                  (index) {
+                      (index) {
                     Product product = products.list[index];
                     return GetBuilder<CartService>(
                       init: Get.find<CartService>(),
@@ -252,7 +283,7 @@ class _ProductsPageState extends State<ProductsPage> {
                                           left: 8, top: 4),
                                       // Add padding
                                       child: Text(
-                                        product.productCategory?.name ?? "",
+                                        product.productSubCategory.name,
                                         style: GoogleFonts.poppins(
                                           fontSize: 14.0,
                                           fontWeight: FontWeight.w300,

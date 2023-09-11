@@ -1,4 +1,6 @@
+import 'package:arv/models/response_models/categories.dart';
 import 'package:arv/utils/app_colors.dart';
+import 'package:arv/utils/arv_api.dart';
 import 'package:arv/views/order_page/cart.dart';
 import 'package:arv/views/order_page/order_page.dart';
 import 'package:arv/views/widgets/banner_carousel_section.dart';
@@ -11,11 +13,10 @@ import 'package:arv/views/widgets/fixed_dashboard_banner.dart';
 import 'package:arv/views/widgets/mini_banner.dart';
 import 'package:arv/views/widgets/offer_products.dart';
 import 'package:arv/views/widgets/profilepage.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:get/get.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'product_page/product_page.dart';
 
@@ -79,128 +80,130 @@ class _HomeBottomNavigationScreenState extends State<HomeBottomNavigationScreen>
     //   statusBarBrightness: Brightness.dark,
     // ));
     final labelTextStyle =
-        Theme.of(context).textTheme.subtitle2!.copyWith(fontSize: 8.0);
+    Theme.of(context).textTheme.subtitle2!.copyWith(fontSize: 8.0);
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      appBar:currentTab == 0 ||currentTab == 1
+      appBar: currentTab == 0 || currentTab == 1
           ? PreferredSize(
-        preferredSize: const Size.fromHeight(160),
-        child: Container(
-          height: 160,
-          width: MediaQuery.of(context).size.width,
-          padding: const EdgeInsets.only(top: 25, right: 16, left: 16),
-          color: appColor,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              const SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      // const Icon(
-                      //   Icons.location_on_outlined,
-                      //   size: 30,
-                      //   color: Colors.white,
-                      // ),
-                      SvgPicture.asset(
-                        "assets/images/location.svg",
-                        semanticsLabel: 'Acme Logo',
-                        width: 25,
-                        height: 25,
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        "Address",
-                        style: GoogleFonts.poppins(
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white,
+              preferredSize: const Size.fromHeight(160),
+              child: Container(
+                height: 160,
+                width: MediaQuery.of(context).size.width,
+                padding: const EdgeInsets.only(top: 25, right: 16, left: 16),
+                color: appColor,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            // const Icon(
+                            //   Icons.location_on_outlined,
+                            //   size: 30,
+                            //   color: Colors.white,
+                            // ),
+                            SvgPicture.asset(
+                              "assets/images/location.svg",
+                              semanticsLabel: 'Acme Logo',
+                              width: 25,
+                              height: 25,
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              "Address",
+                              style: GoogleFonts.poppins(
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white,
+                              ),
+                            )
+                          ],
                         ),
-                      )
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      SvgPicture.asset(
-                      "assets/images/notification.svg",
-                      semanticsLabel: 'Acme Logo',
-                        width: 25,
-                        height: 25,
-                  ),
-                      // Icon(
-                      //   Icons.notifications_none_outlined,
-                      //   size: 30,
-                      //   color: pink,
-                      // ),
-                      const SizedBox(width: 6),
-                      // const Icon(
-                      //   Icons.person_2_outlined,
-                      //   size: 30,
-                      //   color: Colors.white,
-                      // ),
-                    ],
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              Container(
-                height: 50,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.white),
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12.0),
-                ),
-                child: Row(
-                  children: <Widget>[
-                    // IconButton(
-                    //   icon: Icon(
-                    //     Icons.search_outlined,
-                    //     color: gray,
-                    //   ),
-                    //   onPressed: () {},
-                    // ),
-                    const SizedBox(width: 6),
-
-                    SvgPicture.asset(
-                      "assets/images/search.svg",
-                      semanticsLabel: 'Acme Logo',
-                      color: gray,
-                      width: 20,
-                      height: 20,
-                    ),
-                    const SizedBox(width: 6),
-
-                    Expanded(
-                      child: TextField(
-                        decoration: InputDecoration(
-                          hintText: 'Search for Products and food',
-                          hintStyle:
-                              Theme.of(context).textTheme.subtitle2!.copyWith(
-                                    color: gray,
-                                    fontSize: 17.0,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                          border: InputBorder.none,
+                        Row(
+                          children: [
+                            SvgPicture.asset(
+                              "assets/images/notification.svg",
+                              semanticsLabel: 'Acme Logo',
+                              width: 25,
+                              height: 25,
+                            ),
+                            // Icon(
+                            //   Icons.notifications_none_outlined,
+                            //   size: 30,
+                            //   color: pink,
+                            // ),
+                            const SizedBox(width: 6),
+                            // const Icon(
+                            //   Icons.person_2_outlined,
+                            //   size: 30,
+                            //   color: Colors.white,
+                            // ),
+                          ],
                         ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    Container(
+                      height: 50,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.white),
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      child: Row(
+                        children: <Widget>[
+                          // IconButton(
+                          //   icon: Icon(
+                          //     Icons.search_outlined,
+                          //     color: gray,
+                          //   ),
+                          //   onPressed: () {},
+                          // ),
+                          const SizedBox(width: 6),
+
+                          SvgPicture.asset(
+                            "assets/images/search.svg",
+                            semanticsLabel: 'Acme Logo',
+                            color: gray,
+                            width: 20,
+                            height: 20,
+                          ),
+                          const SizedBox(width: 6),
+
+                          Expanded(
+                            child: TextField(
+                              decoration: InputDecoration(
+                                hintText: 'Search for Products and food',
+                                hintStyle: Theme.of(context)
+                                    .textTheme
+                                    .subtitle2!
+                                    .copyWith(
+                                      color: gray,
+                                      fontSize: 17.0,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                border: InputBorder.none,
+                              ),
+                            ),
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              Icons.filter_list,
+                              color: gray,
+                            ),
+                            onPressed: () {},
+                          ),
+                          // UIHelper.horizontalSpaceMedium(),
+                        ],
                       ),
                     ),
-                    IconButton(
-                      icon: Icon(
-                        Icons.filter_list,
-                        color: gray,
-                      ),
-                      onPressed: () {},
-                    ),
-                    // UIHelper.horizontalSpaceMedium(),
+                    const SizedBox(height: 20),
                   ],
                 ),
-              ),
-              const SizedBox(height: 20),
-            ],
-          ),
         ),
       ):currentTab == 2?
       PreferredSize(
@@ -299,42 +302,41 @@ class _HomeBottomNavigationScreenState extends State<HomeBottomNavigationScreen>
               const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      // const Icon(
-                      //   Icons.location_on_outlined,
-                      //   size: 30,
-                      //   color: Colors.white,
-                      // ),
+                              children: [
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    // const Icon(
+                                    //   Icons.location_on_outlined,
+                                    //   size: 30,
+                                    //   color: Colors.white,
+                                    // ),
 
-                      const SizedBox(width: 8),
-                      Text(
-                        "Profile",
-                        style: GoogleFonts.poppins(
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white,
+                                    const SizedBox(width: 8),
+                                    Text(
+                                      "Profile",
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.white,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 10),
+                          ],
                         ),
-                      )
-                    ],
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-
-            ],
-          ),
-        ),
-      ),
+                      ),
+                    ),
       body: currentTab == 4
           ? const CartPage()
           : currentTab == 2
-              ? const MyOrders():
-      currentTab == 3
-          ?Profile()
-              : HomePage(itemWidth: itemWidth, itemHeight: itemHeight),
+              ? const MyOrders()
+              : currentTab == 3
+                  ? Profile()
+                  : HomePage(itemWidth: itemWidth, itemHeight: itemHeight),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         backgroundColor: pink,
@@ -343,11 +345,10 @@ class _HomeBottomNavigationScreenState extends State<HomeBottomNavigationScreen>
             currentTab = 4;
           });
         },
-        child:
-        SvgPicture.asset(
+        child: SvgPicture.asset(
           "assets/images/bag.svg",
           semanticsLabel: 'Acme Logo',
-          color:Colors.white,
+          color: Colors.white,
           width: 28,
           height: 28,
         ),
@@ -547,58 +548,59 @@ class HomePage extends StatelessWidget {
                     currentTab == 1
                         ? Container()
                         : Padding(
-                            padding: const EdgeInsets.only(
-                                top: 16, right: 16, left: 16),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "Your Favourite Picks",
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 18.0,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                                InkWell(
-                                  onTap: () {
-                                    Get.to(() => ProductsPage(false));
-                                  },
-                                  child: Text("See All",
-                                      style: GoogleFonts.poppins(
-                                        fontSize: 18.0,
-                                        fontWeight: FontWeight.w400,
-                                        color: pink,
-                                      )),
-                                )
-                              ],
+                      padding: const EdgeInsets.only(
+                          top: 16, right: 16, left: 16),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Your Favourite Picks",
+                            style: GoogleFonts.poppins(
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black,
                             ),
                           ),
+                          InkWell(
+                            onTap: () {
+                                    Get.to(() =>
+                                        const ProductsPage(false, null, 0));
+                                  },
+                            child: Text("See All",
+                                style: GoogleFonts.poppins(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.w400,
+                                  color: pink,
+                                )),
+                          )
+                        ],
+                      ),
+                    ),
                     currentTab == 1
                         ? Container()
                         : const SizedBox(
-                            height: 12,
-                          ),
+                      height: 12,
+                    ),
                     currentTab == 1
                         ? Container()
                         : const FavouritePicks(pageNumber: 0),
                     currentTab == 1
                         ? Container()
                         : const SizedBox(
-                            height: 12,
-                          ),
+                      height: 12,
+                    ),
                     currentTab == 1
                         ? Container()
                         : const FixedDashboardBanner(),
                     currentTab == 1
                         ? Container()
                         : const SizedBox(
-                            height: 12,
-                          ),
+                      height: 12,
+                    ),
                     currentTab == 1 ? Container() : const DualCardSection(),
                     Padding(
                       padding:
-                          const EdgeInsets.only(top: 16, right: 16, left: 16),
+                      const EdgeInsets.only(top: 16, right: 16, left: 16),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -610,12 +612,17 @@ class HomePage extends StatelessWidget {
                               color: Colors.black,
                             ),
                           ),
-                          Text(
-                            "See All",
-                            style: GoogleFonts.poppins(
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.w400,
-                              color: pink,
+                          InkWell(
+                            onTap: () {
+                              Get.to(() => const ProductsPage(false, null, 0));
+                            },
+                            child: Text(
+                              "See All",
+                              style: GoogleFonts.poppins(
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.w400,
+                                color: pink,
+                              ),
                             ),
                           ),
                         ],
@@ -628,7 +635,7 @@ class HomePage extends StatelessWidget {
                     ),
                     Padding(
                       padding:
-                          const EdgeInsets.only(top: 16, right: 16, left: 16),
+                      const EdgeInsets.only(top: 16, right: 16, left: 16),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -647,37 +654,64 @@ class HomePage extends StatelessWidget {
                     SizedBox(
                       height: 150,
                       width: MediaQuery.of(context).size.width,
-                      child: ListView.builder(
-                        itemCount: bnrList.length,
-                        primary: false,
-                        scrollDirection: Axis.horizontal,
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          return InkWell(
-                            onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => ProductsPage(true)));
-                            },
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                  left: index == 0 ? 16 : 0, right: 12),
-                              child: ClipRRect(
-                                borderRadius: const BorderRadius.all(
-                                    Radius.circular(12.0)),
-                                child: Stack(
-                                  children: <Widget>[
-                                    Image(
-                                      image: AssetImage(
-                                        bnrList[index],
-                                      ),
-                                      fit: BoxFit.fill,
-                                      width: 110,
-                                      height: 150,
+                      child: FutureBuilder<Categories>(
+                        future: arvApi.getAllCategories(),
+                        builder: (context, snapshot) {
+                          List<Category> newCategories =
+                              snapshot.data?.list ?? [];
+                          int l = newCategories.length;
+                          return ListView.builder(
+                            itemCount: l >= 4 ? 4 : l,
+                            primary: false,
+                            scrollDirection: Axis.horizontal,
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              return InkWell(
+                                onTap: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) =>
+                                          const ProductsPage(false, null, 0)));
+                                },
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                      left: index == 0 ? 16 : 0, right: 12),
+                                  child: ClipRRect(
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(12.0)),
+                                    child: Stack(
+                                      children: <Widget>[
+                                        Image(
+                                          image: NetworkImage(
+                                            '${newCategories[index].image}',
+                                          ),
+                                          fit: BoxFit.fill,
+                                          width: 110,
+                                          height: 150,
+                                          errorBuilder:
+                                              (context, error, stackTrace) {
+                                            return Container(
+                                              color: gray50,
+                                              width: 120,
+                                              child: Center(
+                                                child: Text(
+                                                  newCategories[index].name,
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: black,
+                                                  ),
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ],
                                     ),
-                                  ],
+                                  ),
                                 ),
-                              ),
-                            ),
+                              );
+                            },
                           );
                         },
                       ),
@@ -691,14 +725,14 @@ class HomePage extends StatelessWidget {
                     currentTab == 1
                         ? Container()
                         : Padding(
-                            padding: const EdgeInsets.only(
-                              top: 16,
-                              right: 16,
-                              left: 16,
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
+                      padding: const EdgeInsets.only(
+                        top: 16,
+                        right: 16,
+                        left: 16,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
                                 Text(
                                   "Your Pleasure Essentials",
                                   style: GoogleFonts.poppins(
@@ -707,12 +741,18 @@ class HomePage extends StatelessWidget {
                                     color: Colors.black,
                                   ),
                                 ),
-                                Text(
-                                  "See All",
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 18.0,
-                                    fontWeight: FontWeight.w400,
-                                    color: pink,
+                                InkWell(
+                                  onTap: () {
+                                    Get.to(() => const ProductsPage(
+                                        true, '64ff716ec78bc62fc17ef206', 0));
+                                  },
+                                  child: Text(
+                                    "See All",
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.w400,
+                                      color: pink,
+                                    ),
                                   ),
                                 ),
                               ],
@@ -721,7 +761,7 @@ class HomePage extends StatelessWidget {
                     currentTab == 1 ? Container() : const SizedBox(height: 12),
                     currentTab == 1
                         ? Container()
-                        : const FavouritePicks(pageNumber: 0),
+                        : const FavouritePicks(pageNumber: 1),
                   ],
                 )
               ],

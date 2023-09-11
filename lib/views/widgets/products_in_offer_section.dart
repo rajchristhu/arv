@@ -11,7 +11,7 @@ class ProductsInOfferSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Products>(
-      future: arvApi.getAllProducts(0),
+      future: arvApi.getAllProducts(0, null),
       builder: (context, snapshot) {
         List<Product> products = snapshot.data?.list ?? [];
         return SizedBox(

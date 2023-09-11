@@ -117,6 +117,9 @@ class _ArvApi {
   }
 
   Future<Categories> getAllCategories() async {
+    Categories categories =
+        Categories(currentPage: 0, list: [], totalCount: 0, totalPages: 0);
+    ;
     var url = Uri.parse("$hostUrl/productCategories?pageNumber=0");
 
     var headers = {
@@ -124,20 +127,15 @@ class _ArvApi {
     };
 
     var response = await http.get(url, headers: headers);
-    Categories categories;
-    log(response.body);
     if (response.statusCode == 200) {
       categories = Categories.fromRawJson(response.body);
-    } else {
-      categories =
-          Categories(currentPage: 0, list: [], totalCount: 0, totalPages: 0);
     }
     return categories;
   }
 
-  Future<Products> getAllProducts(int pageNumber) async {
-    var url =
-        Uri.parse("$hostUrl/public/products?majorCategoryId=Groceries&priceFrom=0&priceTo=0&page=$pageNumber");
+  Future<Products> getAllProducts(int pageNumber, String? categoryId) async {
+    var url = Uri.parse(
+        "$hostUrl/public/products?majorCategoryId=Groceries${categoryId != null ? "&categoryId=$categoryId" : ""}&priceFrom=0&priceTo=0&page=$pageNumber");
 
     var headers = {
       'Content-Type': 'application/json;charset=UTF-8',
