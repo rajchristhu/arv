@@ -61,7 +61,7 @@ class _ArvApi {
       var response = await http.post(
         url,
         headers: headers,
-        body: jsonEncode({"phone": '9385875094', "uid": '12345'}),
+        body: jsonEncode({"phone": username, "uid": uid}),
       );
 
       AccessToken accessToken = AccessToken.fromRawJson(response.body);
