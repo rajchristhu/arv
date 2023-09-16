@@ -19,8 +19,13 @@ class FixedDashboardBanner extends StatelessWidget {
         return InkWell(
           onTap: () {
             Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) =>
-                    const ProductsPage(true, '64ff716ec78bc62fc17ef206', 1)));
+                builder: (context) => const ProductsPage(
+                      true,
+                      1,
+                      null,
+                      '64ff716ec78bc62fc17ef206',
+                      null,
+                    )));
           },
           child: Padding(
             padding: const EdgeInsets.only(right: 16, left: 16),

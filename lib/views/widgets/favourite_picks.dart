@@ -14,7 +14,7 @@ class FavouritePicks extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Products>(
-      future: arvApi.getAllProducts(pageNumber, "64ff716ec78bc62fc17ef206"),
+      future: arvApi.getAllProducts(pageNumber,null, "64ff716ec78bc62fc17ef206"),
       builder: (context, snapshot) {
         List<Product> productList = snapshot.data?.list ?? [];
         if (productList.isEmpty) return Container();

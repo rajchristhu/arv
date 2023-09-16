@@ -1,9 +1,13 @@
 // ignore_for_file: depend_on_referenced_packages
 
+import 'dart:developer';
+
 import 'package:arv/models/response_models/home_banner.dart';
 import 'package:arv/utils/arv_api.dart';
+import 'package:arv/views/product_page/product_page.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class CarouselSectionOne extends StatelessWidget {
   const CarouselSectionOne({
@@ -23,15 +27,40 @@ class CarouselSectionOne extends StatelessWidget {
               aspectRatio: 2.35,
               enlargeCenterPage: false,
               autoPlayAnimationDuration: const Duration(seconds: 1)),
-          items: homeBanners
-                  .map(
-                    (banner) => CarouselWidget(
-                      imageUri: arvApi.getMediaUri(banner.imageUri),
-                      onTap: () {},
+          items: homeBanners.map(
+            (banner) {
+              return InkWell(
+                child: CarouselWidget(
+                  imageUri: arvApi.getMediaUri(banner.imageUri),
+                  onTap: () {},
+                ),
+                onTap: () {
+                  log("Banner Image Section Touch");
+                  String? majorCategory = ["Select Category", null, ""]
+                          .contains(banner.majorCategory)
+                      ? null
+                      : banner.majorCategory;
+                  String? subCategory = ["Select Sub Category", null, ""]
+                          .contains(banner.majorCategory)
+                      ? null
+                      : banner.categoryId;
+                  String? subSubCategory = ["Select Sub-Sub Category", null, ""]
+                          .contains(banner.majorCategory)
+                      ? null
+                      : banner.subCategoryId;
+                  Get.to(
+                    () => ProductsPage(
+                      subCategory != "",
+                      0,
+                      majorCategory,
+                      subCategory,
+                      subSubCategory,
                     ),
-                  )
-                  .toList() ??
-              [],
+                  );
+                },
+              );
+            },
+          ).toList(),
         );
       },
     );

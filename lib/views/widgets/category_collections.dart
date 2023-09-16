@@ -36,7 +36,13 @@ class CategoryCollections extends StatelessWidget {
               (index) {
                 return InkWell(
                   onTap: () {
-                    Get.to(() => ProductsPage(true, categories[index].id, 0));
+                    Get.to(() => ProductsPage(
+                          true,
+                          0,
+                          null,
+                          categories[index].id,
+                          null,
+                        ));
                   },
                   child: ClipRRect(
                     borderRadius: const BorderRadius.all(Radius.circular(12.0)),

@@ -39,6 +39,9 @@ class HomeBanner {
   double percentage;
   String name;
   String imageUri;
+  String? majorCategory;
+  String? categoryId;
+  String? subCategoryId;
   String homeBannerSection;
 
   HomeBanner({
@@ -47,6 +50,9 @@ class HomeBanner {
     required this.name,
     required this.imageUri,
     required this.homeBannerSection,
+    this.majorCategory,
+    this.categoryId,
+    this.subCategoryId,
   });
 
   factory HomeBanner.fromRawJson(String str) =>
@@ -55,18 +61,25 @@ class HomeBanner {
   String toRawJson() => json.encode(toJson());
 
   factory HomeBanner.fromJson(Map<String, dynamic> json) => HomeBanner(
-        id: json["id"],
+    id: json["id"],
         percentage: json["percentage"],
         name: json["name"],
         imageUri: json["imageUri"],
         homeBannerSection: json["homeBannerSection"],
+        majorCategory: json["majorCategory"],
+        categoryId: json["categoryId"],
+        subCategoryId: json["subCategoryId"],
       );
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() =>
+      {
         "id": id,
         "percentage": percentage,
         "name": name,
         "imageUri": imageUri,
         "homeBannerSection": homeBannerSection,
+        "majorCategory": majorCategory,
+        "categoryId": categoryId,
+        "subCategoryId": subCategoryId,
       };
 }

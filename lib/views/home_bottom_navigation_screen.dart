@@ -563,8 +563,13 @@ class HomePage extends StatelessWidget {
                           ),
                           InkWell(
                             onTap: () {
-                                    Get.to(() =>
-                                        const ProductsPage(false, null, 0));
+                                    Get.to(() => const ProductsPage(
+                                          false,
+                                          0,
+                                          null,
+                                          null,
+                                          null,
+                                        ));
                                   },
                             child: Text("See All",
                                 style: GoogleFonts.poppins(
@@ -614,7 +619,13 @@ class HomePage extends StatelessWidget {
                           ),
                           InkWell(
                             onTap: () {
-                              Get.to(() => const ProductsPage(false, null, 0));
+                              Get.to(() => const ProductsPage(
+                                    false,
+                                    0,
+                                    null,
+                                    null,
+                                    null,
+                                  ));
                             },
                             child: Text(
                               "See All",
@@ -669,8 +680,13 @@ class HomePage extends StatelessWidget {
                               return InkWell(
                                 onTap: () {
                                   Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) =>
-                                          const ProductsPage(false, null, 0)));
+                                      builder: (context) => const ProductsPage(
+                                            false,
+                                            0,
+                                            null,
+                                            null,
+                                            null,
+                                          )));
                                 },
                                 child: Padding(
                                   padding: EdgeInsets.only(
@@ -744,7 +760,11 @@ class HomePage extends StatelessWidget {
                                 InkWell(
                                   onTap: () {
                                     Get.to(() => const ProductsPage(
-                                        true, '64ff716ec78bc62fc17ef206', 0));
+                                        true,
+                                        0,
+                                        null,
+                                        '64ff716ec78bc62fc17ef206',
+                                        null));
                                   },
                                   child: Text(
                                     "See All",

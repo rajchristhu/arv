@@ -28,7 +28,12 @@ class DualCardSection extends StatelessWidget {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => const ProductsPage(
-                            true, '64ff7289c78bc62fc17ef212', 0),
+                          true,
+                          0,
+                          null,
+                          '64ff7289c78bc62fc17ef212',
+                          null,
+                        ),
                       ),
                     );
                   },
@@ -59,7 +64,12 @@ class DualCardSection extends StatelessWidget {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => const ProductsPage(
-                            true, '64ff72cbc78bc62fc17ef216', 0),
+                          true,
+                          0,
+                          null,
+                          '64ff72cbc78bc62fc17ef216',
+                          null,
+                        ),
                       ),
                     );
                   },

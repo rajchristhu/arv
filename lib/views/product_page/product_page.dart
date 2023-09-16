@@ -43,10 +43,13 @@ final List<String> bnrList = [
 
 class ProductsPage extends StatefulWidget {
   final bool isCategoryPage;
+  final String? majorCategory;
   final String? category;
+  final String? subSubCategory;
   final int currentPage;
 
-  const ProductsPage(this.isCategoryPage, this.category, this.currentPage,
+  const ProductsPage(this.isCategoryPage, this.currentPage, this.majorCategory,
+      this.category, this.subSubCategory,
       {super.key});
 
   @override
@@ -66,9 +69,9 @@ class _ProductsPageState extends State<ProductsPage> {
 
   getProductsByCategory(String categoryId) async {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      debugPrint("Products updated : $categoryId");
       if (isDisposed) return;
-      products = await arvApi.getAllProducts(page, categoryId);
+      products =
+          await arvApi.getAllProducts(page, widget.majorCategory, categoryId);
       setState(() {});
     });
   }

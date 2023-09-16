@@ -61,7 +61,7 @@ class _ArvApi {
       var response = await http.post(
         url,
         headers: headers,
-        body: jsonEncode({"phone": username, "uid": uid}),
+        body: jsonEncode({"phone": "9385875094", "uid": "12345"}),
       );
 
       AccessToken accessToken = AccessToken.fromRawJson(response.body);
@@ -133,9 +133,9 @@ class _ArvApi {
     return categories;
   }
 
-  Future<Products> getAllProducts(int pageNumber, String? categoryId) async {
+  Future<Products> getAllProducts(int pageNumber, String? majorCategory, String? categoryId) async {
     var url = Uri.parse(
-        "$hostUrl/public/products?majorCategoryId=Groceries${categoryId != null ? "&categoryId=$categoryId" : ""}&priceFrom=0&priceTo=0&page=$pageNumber");
+        "$hostUrl/public/products?majorCategoryId=${majorCategory ?? 'Groceries'}${categoryId != null ? "&categoryId=$categoryId" : ""}&priceFrom=0&priceTo=0&page=$pageNumber");
 
     var headers = {
       'Content-Type': 'application/json;charset=UTF-8',
