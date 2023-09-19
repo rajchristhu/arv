@@ -51,10 +51,11 @@ class _ProductInOfferListState extends State<ProductInOfferList> {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<CartService>(
-      init: Get.find<CartService>(),
-      builder: (controller) {
-        count = controller.isPresentInCart(widget.product.id);
+    return FutureBuilder<int>(
+      future: arvApi.getCartCountById(widget.product.id),
+      initialData: 0,
+      builder: (context, snapshot) {
+        count = snapshot.data ?? 0;
         return Padding(
           padding:
               EdgeInsets.only(left: widget.index == 0 ? 100 : 0, right: 12),

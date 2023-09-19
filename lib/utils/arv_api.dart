@@ -8,6 +8,7 @@ import 'package:arv/models/request/order.dart';
 import 'package:arv/models/request/user.dart';
 import 'package:arv/models/response_models/access_token.dart';
 import 'package:arv/models/response_models/addresses.dart';
+import 'package:arv/models/response_models/cart_count.dart';
 import 'package:arv/models/response_models/cart_items.dart';
 import 'package:arv/models/response_models/cart_list.dart';
 import 'package:arv/models/response_models/cart_value.dart';
@@ -249,6 +250,24 @@ class _ArvApi {
     }
 
     return items;
+  }
+
+  Future<int> getCartCountById(String id) async {
+    CartCount items = CartCount(count: 0);
+
+    var url = Uri.parse("$hostUrl/cart/cartCount");
+
+    var headers = await _getHeaders();
+
+    var response = await http.get(
+      url,
+      headers: headers,
+    );
+    if (response.statusCode == 200) {
+      items = CartCount.fromRawJson(response.body);
+    }
+
+    return items.count;
   }
 
   Future<void> deleteCartItem(String productId) async {

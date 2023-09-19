@@ -224,14 +224,15 @@ class _ProductsPageState extends State<ProductsPage> {
                   products.list.length,
                       (index) {
                     Product product = products.list[index];
-                    return GetBuilder<CartService>(
-                      init: Get.find<CartService>(),
-                      builder: (controller) {
-                        int count = controller.isPresentInCart(product.id);
-                        int quantity =
-                            product.stock!.isNotEmpty ? product.stock![0] : 0;
-                        String productId = product.id;
-                        String productVariant = product.productVariation![0];
+                    int quantity =
+                        product.stock!.isNotEmpty ? product.stock![0] : 0;
+                    String productId = product.id;
+                    String productVariant = product.productVariation![0];
+                    return FutureBuilder<int>(
+                      initialData: 0,
+                      future: arvApi.getCartCountById(product.id),
+                      builder: (context, snapshot) {
+                        int count = snapshot.data ?? 0;
                         return Center(
                           child: Container(
                             decoration: BoxDecoration(

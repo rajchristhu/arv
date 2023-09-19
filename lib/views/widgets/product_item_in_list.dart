@@ -4,10 +4,8 @@ import 'package:arv/shared/cart_service.dart';
 import 'package:arv/utils/app_colors.dart';
 import 'package:arv/utils/arv_api.dart';
 import 'package:flutter/material.dart';
-
 // ignore: depend_on_referenced_packages
 import 'package:get/get.dart';
-
 // ignore: depend_on_referenced_packages
 import 'package:google_fonts/google_fonts.dart';
 
@@ -53,10 +51,11 @@ class _ProductItemInListState extends State<ProductItemInList> {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<CartService>(
-      init: Get.find<CartService>(),
-      builder: (controller) {
-        count = controller.isPresentInCart(widget.product.id);
+    return FutureBuilder<int>(
+      initialData: 0,
+      future: arvApi.getCartCountById(widget.product.id),
+      builder: (context, snapshot) {
+        count = snapshot.data ?? 0;
         return Container(
           decoration: BoxDecoration(
             border: Border.all(color: lightpink),
