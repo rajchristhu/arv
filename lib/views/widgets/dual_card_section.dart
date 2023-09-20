@@ -13,11 +13,19 @@ class DualCardSection extends StatelessWidget {
     return FutureBuilder<HomeBanners>(
       future: arvApi.getAllHomeBanners("DUAL_CARD"),
       builder: (context, snapshot) {
-        int length = snapshot.data?.list.length ?? 0;
-        String? imageUri1 =
-            length == 0 ? null : snapshot.data?.list[0].imageUri;
-        String? imageUri2 =
-            length == 1 ? null : snapshot.data?.list[1].imageUri;
+        List<HomeBanner> banners = snapshot.data?.list ?? [];
+        int length = banners.length;
+        String? imageUri1;
+        String? imageUri2;
+        String? category1;
+        String? category2;
+        imageUri1 = getValue(imageUri1, banners, 0, true);
+        imageUri2 = getValue(imageUri1, banners, 1, true);
+        category1 = getValue(imageUri1, banners, 0, false);
+        category2 = getValue(imageUri1, banners, 1, false);
+        try {
+          imageUri2 = length == 1 ? null : snapshot.data?.list[1].imageUri;
+        } catch (e) {}
         return Padding(
           padding: const EdgeInsets.only(right: 16, left: 16),
           child: Row(
@@ -27,11 +35,11 @@ class DualCardSection extends StatelessWidget {
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => const ProductsPage(
+                        builder: (context) => ProductsPage(
                           true,
                           0,
                           null,
-                          '64ff7289c78bc62fc17ef212',
+                          category1,
                           null,
                         ),
                       ),
@@ -63,11 +71,11 @@ class DualCardSection extends StatelessWidget {
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => const ProductsPage(
+                        builder: (context) => ProductsPage(
                           true,
                           0,
                           null,
-                          '64ff72cbc78bc62fc17ef216',
+                          category2,
                           null,
                         ),
                       ),
@@ -96,5 +104,20 @@ class DualCardSection extends StatelessWidget {
         );
       },
     );
+  }
+
+  String? getValue(
+      String? value, List<HomeBanner> banners, int index, bool isImage) {
+    if (isImage) {
+      try {
+        value = banners[index].imageUri;
+      } catch (e) {}
+      return value;
+    } else {
+      try {
+        value = banners[index].categoryId;
+      } catch (e) {}
+      return value;
+    }
   }
 }
