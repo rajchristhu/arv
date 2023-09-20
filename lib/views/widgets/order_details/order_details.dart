@@ -10,7 +10,6 @@ import 'package:arv/utils/custom_progress_bar.dart';
 import 'package:arv/utils/secure_storage.dart';
 import 'package:arv/views/order_page/input_box.dart';
 import 'package:flutter/material.dart';
-
 // ignore: depend_on_referenced_packages
 import 'package:get/get.dart';
 
@@ -68,7 +67,8 @@ class _CartValueState extends State<CartValue> {
         country.text = address.nation;
         landmark.text = address.landMark;
       }
-      setState(() {});
+      WidgetsBinding.instance
+          .addPostFrameCallback((timeStamp) => setState(() {}));
     });
   }
 
@@ -325,6 +325,7 @@ class _CartValueState extends State<CartValue> {
                 padding: const EdgeInsets.all(20),
                 child: ElevatedButton(
                   onPressed: () async {
+                    ArvProgressDialog.instance.showProgressDialog(context);
                     Address address = Address(
                       id: addressId,
                       name: name.text,
@@ -355,15 +356,18 @@ class _CartValueState extends State<CartValue> {
                       addressId: addressId ?? "",
                       accessToken: await secureStorage.get("access-token"),
                     );
-                    // ArvProgressDialog.instance.showProgressDialog(context);
 
                     await arvApi.placeOrder(order);
                     await arvApi.deleteAllCartItems();
                     await controller.updateList();
-                    // ArvProgressDialog.instance.dismissDialog(context);
+                    controller.update();
 
-                    // ignore: use_build_context_synchronously
-                    Navigator.of(context).pop();
+                    try {
+                      // ignore: use_build_context_synchronously
+                      ArvProgressDialog.instance.dismissDialog(context);
+                      // ignore: use_build_context_synchronously
+                      Navigator.of(context).pop();
+                    } catch (e) {}
                   },
                   style: ElevatedButton.styleFrom(
                     elevation: 0,
