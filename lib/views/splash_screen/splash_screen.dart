@@ -30,7 +30,7 @@ class _SplashPageState extends State<SplashPage> {
   void _navigate() async {
     Future.delayed(const Duration(seconds: 5), () async {
       if (mounted) {
-        Widget nextScreen = const HomeBottomNavigationScreen();
+        Widget nextScreen = const ContinueWithPhone();
         if (await arvApi.validateLogin) {
           nextScreen = const HomeBottomNavigationScreen();
         }

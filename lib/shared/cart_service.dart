@@ -16,12 +16,7 @@ class CartService extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    init();
-  }
-
-  init() async {
     updateList();
-    init();
   }
 
   updateMyOrdersList() async {

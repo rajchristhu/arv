@@ -62,7 +62,7 @@ class _ArvApi {
       var response = await http.post(
         url,
         headers: headers,
-        body: jsonEncode({"phone": username, "uid": uid}),
+        body: jsonEncode({"phone": "9385875094", "uid": '12345'}),
       );
 
       AccessToken accessToken = AccessToken.fromRawJson(response.body);
@@ -74,6 +74,23 @@ class _ArvApi {
     }
 
     return "";
+  }
+
+  Future<void> getProfile() async {
+    var url = Uri.parse("$hostUrl/auth/myProfile");
+
+    var headers = {
+      'Content-Type': 'application/json;charset=UTF-8',
+    };
+    try {
+      var response = await http.post(
+        url,
+        headers: headers,
+        body: jsonEncode({"phone": "9385875094", "uid": '12345'}),
+      );
+    } catch (e) {
+      log("Login Exception : $e");
+    }
   }
 
   Future<String> register(ArvUser user) async {
@@ -255,7 +272,7 @@ class _ArvApi {
   Future<int> getCartCountById(String id) async {
     CartCount items = CartCount(count: 0);
 
-    var url = Uri.parse("$hostUrl/cart/cartCount");
+    var url = Uri.parse("$hostUrl/cart/cartCount?productId=$id");
 
     var headers = await _getHeaders();
 
