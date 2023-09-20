@@ -35,4 +35,5 @@ class CartService extends GetxController {
     updateMyOrdersList();
     update();
   }
+
 }

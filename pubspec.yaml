@@ -76,6 +76,15 @@ flutter:
     - assets/images/
     - assets/icons/
     - assets/json/
+    - images/back_button.png
+    - images/bag_button.png
+    - images/checker.png
+    - images/heart_icon.png
+    - images/heart_icon_disabled.png
+    - images/shoe_blue.png
+    - images/shoe_green.png
+    - images/shoe_pink.png
+    - images/shoe_yellow.png
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

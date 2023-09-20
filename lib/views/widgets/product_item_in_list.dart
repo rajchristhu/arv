@@ -3,6 +3,7 @@ import 'package:arv/models/response_models/products.dart';
 import 'package:arv/shared/cart_service.dart';
 import 'package:arv/utils/app_colors.dart';
 import 'package:arv/utils/arv_api.dart';
+import 'package:arv/utils/custom_progress_bar.dart';
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:get/get.dart';
@@ -223,6 +224,8 @@ class _ProductItemInListState extends State<ProductItemInList> {
   }
 
   Future<void> performCartOperation(bool isInc) async {
+    ArvProgressDialog.instance.showProgressDialog(context);
+
     if (quantity == 0 ||
         (count == 0 && !isInc) ||
         (count == quantity && isInc)) {
@@ -240,7 +243,9 @@ class _ProductItemInListState extends State<ProductItemInList> {
         ),
       );
     }
+
     await Get.find<CartService>().updateList();
+    ArvProgressDialog.instance.dismissDialog(context);
 
     setState(() {});
   }

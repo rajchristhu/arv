@@ -37,7 +37,7 @@ class CartList {
 }
 
 class Product {
-  String id;
+  String? id;
   String? storeId;
   String? majorCategoryId;
   String productName;
@@ -56,9 +56,9 @@ class Product {
   List<int>? stock;
   double? discount;
   String? tags;
-  String imageUri;
-  int orderQty;
-  String orderProductVariation;
+  String? imageUri;
+  int? orderQty;
+  String? orderProductVariation;
 
   Product({
     required this.id,

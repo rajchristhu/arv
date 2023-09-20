@@ -24,7 +24,9 @@ class _ContinueWithPhoneState extends State<ContinueWithPhone> {
   FirebaseAuth auth = FirebaseAuth.instance;
 
   login() async {
+    print("ajhdf");
     await secureStorage.add("username", phoneNumber);
+    print("ajhdfsdfsd");
     await auth.verifyPhoneNumber(
       phoneNumber: countryCode + phoneNumber,
       timeout: const Duration(seconds: 60),
@@ -32,6 +34,7 @@ class _ContinueWithPhoneState extends State<ContinueWithPhone> {
         print("SMS Code ${credential.smsCode}");
       },
       verificationFailed: (FirebaseAuthException e) {
+        print("e.code");
         print(e.code);
         if (e.code == 'invalid-phone-number') {
           print('The provided phone number is not valid.');
@@ -51,6 +54,8 @@ class _ContinueWithPhoneState extends State<ContinueWithPhone> {
       },
       codeAutoRetrievalTimeout: (String verificationId) {},
     );
+    print("sropwpeo");
+
   }
 
   @override

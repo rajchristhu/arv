@@ -6,6 +6,7 @@ import 'package:arv/models/response_models/cart_list.dart';
 import 'package:arv/shared/cart_service.dart';
 import 'package:arv/utils/app_colors.dart';
 import 'package:arv/utils/arv_api.dart';
+import 'package:arv/utils/custom_progress_bar.dart';
 import 'package:arv/utils/secure_storage.dart';
 import 'package:arv/views/order_page/input_box.dart';
 import 'package:flutter/material.dart';
@@ -344,9 +345,9 @@ class _CartValueState extends State<CartValue> {
                     CartList cartList = await arvApi.getCartItems(0);
                     List<OrderItem> orderItems = cartList.list
                         .map((e) => OrderItem(
-                            productId: e.id,
-                            variant: e.orderProductVariation,
-                            qty: e.orderQty))
+                            productId: e.id!,
+                            variant: e.orderProductVariation!,
+                            qty: e.orderQty!))
                         .toList();
                     Order order = Order(
                       orderItems: orderItems,
@@ -354,10 +355,12 @@ class _CartValueState extends State<CartValue> {
                       addressId: addressId ?? "",
                       accessToken: await secureStorage.get("access-token"),
                     );
+                    // ArvProgressDialog.instance.showProgressDialog(context);
 
                     await arvApi.placeOrder(order);
                     await arvApi.deleteAllCartItems();
                     await controller.updateList();
+                    // ArvProgressDialog.instance.dismissDialog(context);
 
                     // ignore: use_build_context_synchronously
                     Navigator.of(context).pop();
