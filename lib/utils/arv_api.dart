@@ -32,7 +32,8 @@ class _ArvApi {
 
   // Image Uri : /public/products/image
 
-  String getMediaUri(String mediaId) {
+  String getMediaUri(String? mediaId) {
+    if (mediaId == null) return "";
     return "$hostUrl/public/products/image/${Uri.encodeComponent(mediaId)}";
   }
 
@@ -214,6 +215,27 @@ class _ArvApi {
     return products;
   }
 
+  Future<ProductDto?> getProductById(String? productId) async {
+    var url = Uri.parse(
+      "$hostUrl/products/$productId",
+    );
+
+    var headers = {
+      'Content-Type': 'application/json;charset=UTF-8',
+    };
+
+    var response = await http.get(url, headers: headers);
+    ProductDto? product;
+    if (response.statusCode == 200) {
+      try {
+        product = ProductDto.fromRawJson(response.body);
+      } catch (e) {
+        log("Exception : $e");
+      }
+    }
+    return product;
+  }
+
   Future<Products> getAllProductsByCategory(
     String category,
     String subCategory,
@@ -314,7 +336,7 @@ class _ArvApi {
     return items;
   }
 
-  Future<int> getCartCountById(String id) async {
+  Future<int> getCartCountById(String? id) async {
     CartCount items = CartCount(count: 0);
 
     var url = Uri.parse("$hostUrl/cart/cartCount?productId=$id");

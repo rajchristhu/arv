@@ -13,7 +13,7 @@ class ProductsInOfferSection extends StatelessWidget {
     return FutureBuilder<Products>(
       future: arvApi.getAllProducts(0, null, null, null),
       builder: (context, snapshot) {
-        List<Product> products = snapshot.data?.list ?? [];
+        List<ProductDto> products = snapshot.data?.list ?? [];
         return SizedBox(
           height: 180,
           width: MediaQuery.of(context).size.width,

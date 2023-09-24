@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 class Products {
-  List<Product> list;
+  List<ProductDto> list;
   int currentPage;
   int totalCount;
   int totalPages;
@@ -19,8 +19,8 @@ class Products {
   String toRawJson() => json.encode(toJson());
 
   factory Products.fromJson(Map<String, dynamic> json) => Products(
-        list: List<Product>.from(
-            json["products"].map((x) => Product.fromJson(x))),
+        list: List<ProductDto>.from(
+            json["products"].map((x) => ProductDto.fromJson(x))),
         currentPage: json["currentPage"],
         totalCount: json["totalCount"],
         totalPages: json["totalPages"],
@@ -34,7 +34,7 @@ class Products {
       };
 }
 
-class Product {
+class ProductDto {
   String id;
   String? storeId;
   String? majorCategoryId;
@@ -56,7 +56,7 @@ class Product {
   String? tags;
   String? imageUri;
 
-  Product({
+  ProductDto({
     required this.id,
     required this.storeId,
     required this.majorCategoryId,
@@ -79,12 +79,12 @@ class Product {
     required this.imageUri,
   });
 
-  factory Product.fromRawJson(String str) => Product.fromJson(json.decode(str));
+  factory ProductDto.fromRawJson(String str) => ProductDto.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory Product.fromJson(Map<String, dynamic> json) {
-    return Product(
+  factory ProductDto.fromJson(Map<String, dynamic> json) {
+    return ProductDto(
       id: json["id"],
       storeId: json["storeId"],
       majorCategoryId: json["majorCategoryId"],
