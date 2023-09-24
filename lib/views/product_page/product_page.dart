@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:arv/models/request/cart.dart';
 import 'package:arv/models/response_models/categories.dart';
 import 'package:arv/models/response_models/products.dart';
+import 'package:arv/models/response_models/sub_categories.dart';
 import 'package:arv/shared/cart_service.dart';
 import 'package:arv/utils/app_colors.dart';
 import 'package:arv/utils/arv_api.dart';
@@ -43,15 +44,22 @@ final List<String> bnrList = [
 ];
 
 class ProductsPage extends StatefulWidget {
+  final bool isExploreAll;
   final bool isCategoryPage;
   final String? majorCategory;
   final String? category;
   final String? subSubCategory;
   final int currentPage;
 
-  const ProductsPage(this.isCategoryPage, this.currentPage, this.majorCategory,
-      this.category, this.subSubCategory,
-      {super.key});
+  const ProductsPage(
+    this.isExploreAll,
+    this.isCategoryPage,
+    this.currentPage,
+    this.majorCategory,
+    this.category,
+    this.subSubCategory, {
+    super.key,
+  });
 
   @override
   State createState() => _ProductsPageState();
@@ -68,24 +76,31 @@ class _ProductsPageState extends State<ProductsPage> {
   Products products =
       Products(list: [], currentPage: 0, totalCount: 0, totalPages: 0);
 
-  getProductsByCategory(String categoryId) async {
+  getProductsByCategory(String categoryId, String? subCategory) async {
     ArvProgressDialog.instance.showProgressDialog(context);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       if (isDisposed) return;
-      products =
-          await arvApi.getAllProducts(page, widget.majorCategory, categoryId);
-      setState(() {});
+      products = await arvApi.getAllProducts(
+        page,
+        widget.majorCategory,
+        categoryId,
+        subCategory,
+      );
+      safeUpdate();
       // ignore: use_build_context_synchronously
       ArvProgressDialog.instance.dismissDialog(context);
     });
   }
+
+  void safeUpdate() => WidgetsBinding.instance
+      .addPostFrameCallback((timeStamp) => setState(() {}));
 
   @override
   void initState() {
     super.initState();
     page = widget.currentPage;
     if (widget.isCategoryPage) {
-      getProductsByCategory("${widget.category}");
+      getProductsByCategory("${widget.category}", widget.subSubCategory);
     }
   }
 
@@ -127,7 +142,7 @@ class _ProductsPageState extends State<ProductsPage> {
         ),
         body: Row(
           children: [
-            !widget.isCategoryPage
+            widget.isExploreAll
                 ? Container(
                     padding: const EdgeInsets.only(top: 10, right: 10),
                     decoration: BoxDecoration(
@@ -155,14 +170,20 @@ class _ProductsPageState extends State<ProductsPage> {
                                   Category category = categories.list[index];
                                   if (selectedCategory == "") {
                                     selectedCategory = category.id;
-                                    getProductsByCategory(category.id);
+                                    getProductsByCategory(
+                                      category.id,
+                                      widget.subSubCategory,
+                                    );
                                   }
                                   return InkWell(
                                     onTap: () {
                                       setState(() {
                                         indexVal = index;
                                         selectedCategory = category.id;
-                                        getProductsByCategory(category.id);
+                                        getProductsByCategory(
+                                          category.id,
+                                          widget.subSubCategory,
+                                        );
                                       });
                                     },
                                     child: Container(
@@ -214,14 +235,112 @@ class _ProductsPageState extends State<ProductsPage> {
                       ],
                     ),
                   )
-                : Container(),
+                : widget.isCategoryPage
+                    ? Container(
+                        padding: const EdgeInsets.only(top: 10, right: 10),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: lightpink),
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              width: 100,
+                              height: MediaQuery.of(context).size.height * 0.85,
+                              child: FutureBuilder<SubCategories>(
+                                future: arvApi.getAllSubCategoriesById(
+                                    '${widget.category}'),
+                                builder: (context, snapshot) {
+                                  SubCategories? subCategories = snapshot.data;
+                                  if (subCategories == null) return Container();
+                                  return ListView.builder(
+                                    physics:
+                                        const AlwaysScrollableScrollPhysics(),
+                                    itemCount: subCategories.list.length,
+                                    primary: false,
+                                    scrollDirection: Axis.vertical,
+                                    shrinkWrap: true,
+                                    itemBuilder: (context, index) {
+                                      SubCategory subCategory =
+                                          subCategories.list[index];
+                                      if (selectedCategory == "") {
+                                        selectedCategory = subCategory.id;
+                                        getProductsByCategory(
+                                          '${widget.category}',
+                                          subCategory.id,
+                                        );
+                                      }
+                                      return InkWell(
+                                        onTap: () {
+                                          setState(() {
+                                            indexVal = index;
+                                            selectedCategory = subCategory.id;
+                                            getProductsByCategory(
+                                              '${widget.category}',
+                                              subCategory.id,
+                                            );
+                                          });
+                                        },
+                                        child: Container(
+                                          color: indexVal == index
+                                              ? pink
+                                              : Colors.white,
+                                          height: 100,
+                                          padding: const EdgeInsets.only(
+                                              bottom: 20, top: 10),
+                                          margin:
+                                              const EdgeInsets.only(left: 10),
+                                          width: 50,
+                                          child: Image.network(
+                                            arvApi.getMediaUri(
+                                                subCategory.image ?? ""),
+                                            width: 50,
+                                            height: 50,
+                                            errorBuilder:
+                                                (context, error, stackTrace) {
+                                              return Container(
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      const BorderRadius.all(
+                                                          Radius.circular(5)),
+                                                  color: indexVal == index
+                                                      ? pink
+                                                      : gray50,
+                                                ),
+                                                child: Center(
+                                                  child: Text(
+                                                    subCategory.name,
+                                                    style: TextStyle(
+                                                      color: indexVal == index
+                                                          ? white
+                                                          : black,
+                                                    ),
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
+                            )
+                          ],
+                        ),
+                      )
+                    : Container(),
             Container(
-              width: widget.isCategoryPage
+              width: !(widget.isCategoryPage || widget.isExploreAll)
                   ? MediaQuery.of(context).size.width
                   : MediaQuery.of(context).size.width - 120,
               padding: const EdgeInsets.only(top: 10),
               child: GridView.count(
-                crossAxisCount: !widget.isCategoryPage ? 2 : 3,
+                crossAxisCount:
+                    (widget.isCategoryPage || widget.isExploreAll) ? 2 : 3,
                 crossAxisSpacing: 2.0,
                 childAspectRatio: (itemWidth / itemHeight),
                 mainAxisSpacing: 12.0,
@@ -260,6 +379,7 @@ class _ProductGridState extends State<ProductGridCard> {
 
   @override
   Widget build(BuildContext context) {
+    double pixelRatio = MediaQuery.of(context).devicePixelRatio;
     return FutureBuilder<int>(
       initialData: 0,
       future: arvApi.getCartCountById(product.id),

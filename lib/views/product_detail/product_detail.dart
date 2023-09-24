@@ -1,32 +1,11 @@
-import 'package:arv/utils/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/material/outlined_button.dart';
 
-void main() {
-  runApp(ProductDetailPage());
-}
-
-class ProductDetailPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        fontFamily: "Montserrat",
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: ProductDetailPageView(),
-    );
-  }
-}
 
 class ProductDetailPageView extends StatefulWidget {
-  ProductDetailPageView();
+  const ProductDetailPageView({super.key});
 
   @override
-  _ProductDetailPageViewState createState() => _ProductDetailPageViewState();
+  State createState() => _ProductDetailPageViewState();
 }
 
 class _ProductDetailPageViewState extends State<ProductDetailPageView> {

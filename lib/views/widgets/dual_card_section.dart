@@ -37,6 +37,7 @@ class DualCardSection extends StatelessWidget {
                       MaterialPageRoute(
                         builder: (context) => ProductsPage(
                           true,
+                          false,
                           0,
                           null,
                           category1,
@@ -73,6 +74,7 @@ class DualCardSection extends StatelessWidget {
                       MaterialPageRoute(
                         builder: (context) => ProductsPage(
                           true,
+                          false,
                           0,
                           null,
                           category2,

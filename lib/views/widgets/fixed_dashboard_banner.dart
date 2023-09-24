@@ -20,6 +20,7 @@ class FixedDashboardBanner extends StatelessWidget {
           onTap: () {
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => const ProductsPage(
+                      false,
                       true,
                       1,
                       null,

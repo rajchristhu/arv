@@ -16,6 +16,7 @@ import 'package:arv/models/response_models/categories.dart';
 import 'package:arv/models/response_models/home_banner.dart';
 import 'package:arv/models/response_models/my_orders.dart';
 import 'package:arv/models/response_models/products.dart';
+import 'package:arv/models/response_models/sub_categories.dart';
 import 'package:arv/utils/secure_storage.dart';
 import 'package:http/http.dart' as http;
 
@@ -151,9 +152,50 @@ class _ArvApi {
     return categories;
   }
 
-  Future<Products> getAllProducts(int pageNumber, String? majorCategory, String? categoryId) async {
+  Future<Categories> getAllCategoriesList() async {
+    Categories categories =
+        Categories(currentPage: 0, list: [], totalCount: 0, totalPages: 0);
+    ;
+    var url = Uri.parse("$hostUrl/productCategories/all");
+
+    var headers = {
+      'Content-Type': 'application/json;charset=UTF-8',
+    };
+
+    var response = await http.get(url, headers: headers);
+    if (response.statusCode == 200) {
+      categories = Categories.fromRawJson(response.body);
+    }
+    return categories;
+  }
+
+  Future<SubCategories> getAllSubCategoriesById(String categoryId) async {
+    SubCategories categories =
+        SubCategories(currentPage: 0, list: [], totalCount: 0, totalPages: 0);
+    ;
+    var url =
+        Uri.parse("$hostUrl/productSubCategories/all?categoryId=$categoryId");
+
+    var headers = {
+      'Content-Type': 'application/json;charset=UTF-8',
+    };
+
+    var response = await http.get(url, headers: headers);
+    if (response.statusCode == 200) {
+      categories = SubCategories.fromRawJson(response.body);
+    }
+    return categories;
+  }
+
+  Future<Products> getAllProducts(
+    int pageNumber,
+    String? majorCategory,
+    String? categoryId,
+    String? subCategoryId,
+  ) async {
     var url = Uri.parse(
-        "$hostUrl/public/products?majorCategoryId=${majorCategory ?? 'Groceries'}${categoryId != null ? "&categoryId=$categoryId" : ""}&priceFrom=0&priceTo=0&page=$pageNumber");
+      "$hostUrl/public/products?majorCategoryId=${majorCategory ?? 'Groceries'}${categoryId != null ? "&categoryId=$categoryId" : ""}${subCategoryId != null ? "&subCategoryId=$subCategoryId" : ""}&priceFrom=0&priceTo=0&page=$pageNumber&storeId=64f0325d9d11a45a659031b2",
+    );
 
     var headers = {
       'Content-Type': 'application/json;charset=UTF-8',
@@ -173,7 +215,10 @@ class _ArvApi {
   }
 
   Future<Products> getAllProductsByCategory(
-      String category, String subCategory, int pageNumber) async {
+    String category,
+    String subCategory,
+    int pageNumber,
+  ) async {
     var url = Uri.parse(
         "$hostUrl/public/products?majorCategoryId=Groceries&categoryId=$category&subCategoryId=$subCategory&priceFrom=0&priceTo=0&page=$pageNumber");
 

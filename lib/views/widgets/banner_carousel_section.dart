@@ -43,6 +43,7 @@ class BannerCarouselSection extends StatelessWidget {
                       : banner.subCategoryId;
                   Get.to(
                     () => ProductsPage(
+                      false,
                       subCategory != "",
                       0,
                       majorCategory,

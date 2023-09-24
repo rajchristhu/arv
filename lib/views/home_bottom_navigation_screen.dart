@@ -564,6 +564,7 @@ class HomePage extends StatelessWidget {
                           InkWell(
                             onTap: () {
                                     Get.to(() => const ProductsPage(
+                                      true,
                                           false,
                                           0,
                                           null,
@@ -620,6 +621,7 @@ class HomePage extends StatelessWidget {
                           InkWell(
                             onTap: () {
                               Get.to(() => const ProductsPage(
+                                true,
                                     false,
                                     0,
                                     null,
@@ -641,6 +643,7 @@ class HomePage extends StatelessWidget {
                     ),
                     const FixedCategorySection(),
                     CategoryCollections(
+                      isAllCategories: currentTab == 1,
                       itemWidth: itemWidth,
                       itemHeight: itemHeight,
                     ),
@@ -681,6 +684,7 @@ class HomePage extends StatelessWidget {
                                 onTap: () {
                                   Navigator.of(context).push(MaterialPageRoute(
                                       builder: (context) => const ProductsPage(
+                                        false,
                                             false,
                                             0,
                                             null,
@@ -761,6 +765,7 @@ class HomePage extends StatelessWidget {
                                   onTap: () {
                                     Get.to(() => const ProductsPage(
                                         true,
+                                        false,
                                         0,
                                         null,
                                         '64ff716ec78bc62fc17ef206',

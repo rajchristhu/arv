@@ -10,15 +10,19 @@ class CategoryCollections extends StatelessWidget {
     super.key,
     required this.itemWidth,
     required this.itemHeight,
+    required this.isAllCategories,
   });
 
   final double itemWidth;
   final double itemHeight;
+  final bool isAllCategories;
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Categories>(
-      future: arvApi.getAllCategories(),
+      future: isAllCategories
+          ? arvApi.getAllCategoriesList()
+          : arvApi.getAllCategories(),
       builder: (context, snapshot) {
         List<Category> categories = snapshot.data?.list ?? [];
         if (categories.isEmpty) return Container();
@@ -36,13 +40,16 @@ class CategoryCollections extends StatelessWidget {
               (index) {
                 return InkWell(
                   onTap: () {
-                    Get.to(() => ProductsPage(
-                          true,
-                          0,
-                          null,
-                          categories[index].id,
-                          null,
-                        ));
+                    Get.to(
+                      () => ProductsPage(
+                        false,
+                        true,
+                        0,
+                        null,
+                        categories[index].id,
+                        null,
+                      ),
+                    );
                   },
                   child: ClipRRect(
                     borderRadius: const BorderRadius.all(Radius.circular(12.0)),
