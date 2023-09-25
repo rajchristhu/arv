@@ -354,7 +354,7 @@ class _ArvApi {
     return items.count;
   }
 
-  Future<void> deleteCartItem(String productId) async {
+  Future<void> deleteCartItem(String? productId) async {
     var url = Uri.parse("$hostUrl/cart?id=$productId");
 
     var headers = await _getHeaders();
