@@ -682,15 +682,18 @@ class HomePage extends StatelessWidget {
                             itemBuilder: (context, index) {
                               return InkWell(
                                 onTap: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => const ProductsPage(
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => ProductsPage(
                                         false,
-                                            false,
-                                            0,
-                                            null,
-                                            null,
-                                            null,
-                                          )));
+                                        true,
+                                        0,
+                                        null,
+                                        newCategories[index].id,
+                                        null,
+                                      ),
+                                    ),
+                                  );
                                 },
                                 child: Padding(
                                   padding: EdgeInsets.only(

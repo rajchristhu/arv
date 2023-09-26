@@ -78,6 +78,7 @@ class _CartValueState extends State<CartValue> {
       init: Get.find<CartService>(),
       builder: (controller) {
         double totalAmount = controller.cartTotal.orderValue;
+        // double deliveryCharge = getDeliveryAddress();
         if (totalAmount == 0) return Container();
         return Container(
           height: 200,
@@ -322,7 +323,8 @@ class _CartValueState extends State<CartValue> {
                 ),
               ),
               Container(
-                padding: const EdgeInsets.all(20),
+                margin: const EdgeInsets.symmetric(vertical: 25, horizontal: 10),
+                padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 10),
                 child: ElevatedButton(
                   onPressed: () async {
                     ArvProgressDialog.instance.showProgressDialog(context);
@@ -367,7 +369,9 @@ class _CartValueState extends State<CartValue> {
                       ArvProgressDialog.instance.dismissDialog(context);
                       // ignore: use_build_context_synchronously
                       Navigator.of(context).pop();
-                    } catch (e) {}
+                    } catch (e) {
+                    //
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     elevation: 0,
@@ -375,7 +379,7 @@ class _CartValueState extends State<CartValue> {
                   ),
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width * 0.8,
-                    height: MediaQuery.of(context).size.width * 0.125,
+                    height: MediaQuery.of(context).size.height * 0.065,
                     child: const Center(
                       child: Text(
                         "Save & Continue",
