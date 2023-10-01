@@ -54,6 +54,7 @@ dev_dependencies:
   animate_do: ^3.0.2
   firebase_core: ^2.3.0
   flutter_svg: 2.0.5
+  flutter_statusbarcolor_ns: ^0.5.0
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

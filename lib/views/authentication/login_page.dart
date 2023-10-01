@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 
+import '../../main.dart';
 import 'numeric_pad.dart';
 import 'verify_phone.dart';
 
@@ -55,7 +56,6 @@ class _ContinueWithPhoneState extends State<ContinueWithPhone> {
       codeAutoRetrievalTimeout: (String verificationId) {},
     );
     print("sropwpeo");
-
   }
 
   @override
