@@ -45,7 +45,6 @@ class CategoryCollections extends StatelessWidget {
                         false,
                         true,
                         0,
-                        null,
                         categories[index].id,
                         null,
                       ),

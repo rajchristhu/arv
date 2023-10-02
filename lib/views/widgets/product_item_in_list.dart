@@ -60,7 +60,7 @@ class _ProductItemInListState extends State<ProductItemInList> {
         count = snapshot.data ?? 0;
         return InkWell(
           onTap: () {
-            Get.to(() => const ProductDetailPageView());
+            Get.to(() => ProductDetailPageView(productId: widget.product.id));
           },
           child: Container(
             decoration: BoxDecoration(

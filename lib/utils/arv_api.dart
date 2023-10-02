@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:arv/models/request/cart.dart';
+import 'package:arv/models/request/favourite.dart';
 import 'package:arv/models/request/order.dart';
 import 'package:arv/models/request/user.dart';
 import 'package:arv/models/response_models/access_token.dart';
@@ -16,6 +17,8 @@ import 'package:arv/models/response_models/categories.dart';
 import 'package:arv/models/response_models/home_banner.dart';
 import 'package:arv/models/response_models/my_orders.dart';
 import 'package:arv/models/response_models/products.dart';
+import 'package:arv/models/response_models/profile.dart';
+import 'package:arv/models/response_models/store_locations.dart';
 import 'package:arv/models/response_models/sub_categories.dart';
 import 'package:arv/utils/secure_storage.dart';
 import 'package:http/http.dart' as http;
@@ -28,7 +31,7 @@ class _ArvApi {
   static final _ArvApi instance = _ArvApi._();
   static const int cacheDurationInDays = 7;
 
-  final String hostUrl = "http://85.31.233.21:8090";
+  final String hostUrl = "http://34.93.69.101:8090";
 
   // Image Uri : /public/products/image
 
@@ -51,6 +54,13 @@ class _ArvApi {
   Future<bool> get validateLogin async {
     String token = await secureStorage.get("access-token");
     return await _isValidCacheData("loginTime") && token != "";
+  }
+
+  Future<void> clearUser() async {
+    await secureStorage.delete("location");
+    await secureStorage.delete("loginTime");
+    await secureStorage.delete("access-token");
+    await secureStorage.delete("username");
   }
 
   Future<String> login(String username, String uid) async {
@@ -78,21 +88,28 @@ class _ArvApi {
     return "";
   }
 
-  Future<void> getProfile() async {
+  Future<Profile> getProfile() async {
     var url = Uri.parse("$hostUrl/auth/myProfile");
+    String phone = await secureStorage.get("username");
+    Profile profile = Profile(
+      id: "",
+      phone: "+91 $phone",
+      email: "",
+      profileName: "",
+      profileImage: null,
+    );
 
-    var headers = {
-      'Content-Type': 'application/json;charset=UTF-8',
-    };
     try {
-      var response = await http.post(
+      var response = await http.get(
         url,
-        headers: headers,
-        body: jsonEncode({"phone": "9385875094", "uid": '12345'}),
+        headers: await _getHeaders(),
       );
+
+      profile = Profile.fromRawJson(response.body);
     } catch (e) {
-      log("Login Exception : $e");
+      log("Profile get Exception : $e");
     }
+    return profile;
   }
 
   Future<String> register(ArvUser user) async {
@@ -115,6 +132,23 @@ class _ArvApi {
       log("Register Exception : $e");
     }
     return "";
+  }
+
+  Future<void> updateProfile(String name) async {
+    Profile profile = await getProfile();
+    profile.profileName = name;
+
+    var url = Uri.parse("$hostUrl/auth");
+    try {
+      http.Response response = await http.put(
+        url,
+        headers: await _getHeaders(),
+        body: profile.toRawJson(),
+      );
+      log("Update Response ${response.body}");
+    } catch (e) {
+      log("Profile Update Exception : $e");
+    }
   }
 
   Future<HomeBanners> getAllHomeBanners(String section) async {
@@ -194,8 +228,9 @@ class _ArvApi {
     String? categoryId,
     String? subCategoryId,
   ) async {
+    String location = await secureStorage.get("location");
     var url = Uri.parse(
-      "$hostUrl/public/products?majorCategoryId=${majorCategory ?? 'Groceries'}${categoryId != null ? "&categoryId=$categoryId" : ""}${subCategoryId != null ? "&subCategoryId=$subCategoryId" : ""}&priceFrom=0&priceTo=0&page=$pageNumber&storeId=64f0325d9d11a45a659031b2",
+      "$hostUrl/public/products?majorCategoryId=${majorCategory ?? 'Groceries'}${categoryId != null ? "&categoryId=$categoryId" : ""}${subCategoryId != null ? "&subCategoryId=$subCategoryId" : ""}&priceFrom=0&priceTo=0&page=$pageNumber&storeId=$location",
     );
 
     var headers = {
@@ -213,6 +248,46 @@ class _ArvApi {
       }
     }
     return products;
+  }
+
+  Future<Products> getRecentViews(bool isRecentViews) async {
+    var url = Uri.parse(
+        "$hostUrl/features/recent?isRecentViews=$isRecentViews"
+    );
+
+    var response = await http.get(url, headers: await _getHeaders(),);
+    Products products =
+    Products(currentPage: 0, list: [], totalCount: 0, totalPages: 0);
+    if (response.statusCode == 200) {
+      try {
+        products = Products.fromRawJson(response.body);
+      } catch (e) {
+        log("Exception : $e");
+      }
+    }
+    return products;
+  }
+
+  Future<void> addFavourite(String productId) async {
+    var url = Uri.parse(
+        "$hostUrl/wishlist"
+    );
+
+    Favourite favourite = Favourite(productId: productId);
+
+    await http.post(
+      url, headers: await _getHeaders(), body: favourite.toRawJson(),);
+  }
+
+  Future<void> checkFavourite(String productId) async {
+    var url = Uri.parse(
+        "$hostUrl/wishlist/$productId"
+    );
+
+    Favourite favourite = Favourite(productId: productId);
+
+    await http.post(
+      url, headers: await _getHeaders(), body: favourite.toRawJson(),);
   }
 
   Future<ProductDto?> getProductById(String? productId) async {
@@ -271,7 +346,7 @@ class _ArvApi {
       headers: headers,
       body: cart.toRawJson(),
     );
-
+    log("Cart Response : ${response.statusCode}");
     if (response.statusCode == 200) {
       log("Add to cart : ${response.body}");
     }
@@ -473,6 +548,59 @@ class _ArvApi {
     }
 
     return myOrders;
+  }
+
+  Future<List<Store>> getAvailableLocations() async {
+    StoreLocation stores =
+        StoreLocation(stores: [], currentPage: 0, totalCount: 0, totalPages: 0);
+    var url = Uri.parse("$hostUrl/store?page=0");
+    var headers = await _getHeaders();
+    try {
+      var response = await http.get(
+        url,
+        headers: headers,
+      );
+
+      if (response.statusCode == 200) {
+        stores = StoreLocation.fromRawJson(response.body);
+      }
+    } catch (e) {
+      log("Location Exception : $e");
+    }
+
+    return stores.stores;
+  }
+
+  Future<void> productView(String id) async {
+    var url = Uri.parse("$hostUrl/features/view/$id");
+    var headers = await _getHeaders();
+    try {
+      await http.post(url, headers: headers);
+    } catch (e) {
+      log("Location Exception : $e");
+    }
+  }
+
+  Future<double> getDeliveryCharge() async {
+    String id = await secureStorage.get("location");
+    double deliveryCharge = 0.0;
+    var url = Uri.parse("$hostUrl/store/$id");
+    var headers = await _getHeaders();
+    try {
+      var response = await http.get(
+        url,
+        headers: headers,
+      );
+
+      if (response.statusCode == 200) {
+        Store store = Store.fromRawJson(response.body);
+        deliveryCharge = store.minDeliveryPrice;
+      }
+    } catch (e) {
+      log("Location Exception : $e");
+    }
+
+    return deliveryCharge;
   }
 
   Future<Map<String, String>> _getHeaders() async {

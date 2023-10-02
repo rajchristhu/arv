@@ -34,32 +34,37 @@ class SubCategories {
 
 class SubCategory {
     String id;
-    String categoryId;
-    String name;
-    dynamic image;
+  String categoryId;
+  String name;
+  String majorCategory;
+  dynamic image;
 
-    SubCategory({
-        required this.id,
-        required this.categoryId,
-        required this.name,
-        required this.image,
-    });
+  SubCategory({
+    required this.id,
+    required this.categoryId,
+    required this.name,
+    required this.majorCategory,
+    required this.image,
+  });
 
-    factory SubCategory.fromRawJson(String str) => SubCategory.fromJson(json.decode(str));
+  factory SubCategory.fromRawJson(String str) =>
+      SubCategory.fromJson(json.decode(str));
 
-    String toRawJson() => json.encode(toJson());
+  String toRawJson() => json.encode(toJson());
 
-    factory SubCategory.fromJson(Map<String, dynamic> json) => SubCategory(
+  factory SubCategory.fromJson(Map<String, dynamic> json) => SubCategory(
         id: json["id"],
         categoryId: json["categoryId"],
         name: json["name"],
+        majorCategory: json["majorCategory"],
         image: json["image"],
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "id": id,
         "categoryId": categoryId,
+        "majorCategory": majorCategory,
         "name": name,
         "image": image,
-    };
+      };
 }

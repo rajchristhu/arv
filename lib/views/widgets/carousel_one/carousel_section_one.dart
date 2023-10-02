@@ -53,7 +53,6 @@ class CarouselSectionOne extends StatelessWidget {
                       false,
                       subCategory != "",
                       0,
-                      majorCategory,
                       subCategory,
                       subSubCategory,
                     ),

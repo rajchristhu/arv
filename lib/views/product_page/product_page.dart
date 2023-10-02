@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 class ProductsPage extends StatefulWidget {
   final bool isExploreAll;
   final bool isCategoryPage;
-  final String? majorCategory;
   final String? category;
   final String? subSubCategory;
   final int currentPage;
@@ -19,7 +18,6 @@ class ProductsPage extends StatefulWidget {
     this.isExploreAll,
     this.isCategoryPage,
     this.currentPage,
-    this.majorCategory,
     this.category,
     this.subSubCategory, {
     super.key,
@@ -51,13 +49,14 @@ class _ProductsPageState extends State<ProductsPage> {
     totalPages: 0,
   ));
 
-  getProductsByCategory(String categoryId, String? subCategory) async {
+  getProductsByCategory(
+      String majorCategory, String categoryId, String? subCategory) async {
     if (isDisposed) return;
     ArvProgressDialog.instance.showProgressDialog(context);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       products = await arvApi.getAllProducts(
         page,
-        widget.majorCategory,
+        majorCategory,
         categoryId,
         subCategory,
       );
@@ -136,6 +135,7 @@ class _ProductsPageState extends State<ProductsPage> {
                                   if (selectedCategory == "") {
                                     selectedCategory = category.id;
                                     getProductsByCategory(
+                                      category.majorCategory,
                                       category.id,
                                       widget.subSubCategory,
                                     );
@@ -147,6 +147,7 @@ class _ProductsPageState extends State<ProductsPage> {
                                         indexVal = index;
                                         selectedCategory = category.id;
                                         getProductsByCategory(
+                                          category.majorCategory,
                                           category.id,
                                           widget.subSubCategory,
                                         );
@@ -233,6 +234,7 @@ class _ProductsPageState extends State<ProductsPage> {
                                       if (selectedCategory == "") {
                                         selectedCategory = subCategory.id;
                                         getProductsByCategory(
+                                          subCategory.majorCategory,
                                           '${widget.category}',
                                           subCategory.id,
                                         );
@@ -244,6 +246,7 @@ class _ProductsPageState extends State<ProductsPage> {
                                             isDisposed = false;
                                             selectedCategory = subCategory.id;
                                             getProductsByCategory(
+                                              subCategory.majorCategory,
                                               '${widget.category}',
                                               subCategory.id,
                                             );

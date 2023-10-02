@@ -45,11 +45,11 @@ class InputBox extends StatelessWidget {
               bottom: 10,
             ),
             hintStyle: TextStyle(
-              fontSize: 10.0,
+              fontSize: 14.0,
               color: black,
             ),
             labelStyle: TextStyle(
-              fontSize: 15.0,
+              fontSize: 16.0,
               color: black,
               overflow: TextOverflow.visible,
             ),

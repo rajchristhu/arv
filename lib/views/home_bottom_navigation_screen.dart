@@ -20,36 +20,6 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'product_page/product_page.dart';
 
-final List<String> imgList = [
-  'assets/images/pp1.png.webp',
-  'assets/images/pp2.png.webp',
-  'assets/images/pp3.png.webp'
-];
-final List<String> imgLists = [
-  'assets/images/tr.webp',
-  'assets/images/tr1.webp',
-  'assets/images/tr3.webp',
-  'assets/images/tr4.webp',
-  'assets/images/tr5.webp',
-  'assets/images/tr6.webp',
-  'assets/images/tr7.webp',
-  'assets/images/tr8.webp',
-  'assets/images/tr9.webp',
-  'assets/images/tr10.webp',
-  'assets/images/tr11.webp',
-  'assets/images/tr12.webp',
-];
-final List<String> imgListss = [
-  'assets/images/qw1.webp',
-  'assets/images/qw2.webp',
-];
-
-final List<String> bnrList = [
-  'assets/images/q1.png',
-  'assets/images/q2.png',
-  'assets/images/q3.png',
-  'assets/images/q2.png',
-];
 
 class HomeBottomNavigationScreen extends StatefulWidget {
   const HomeBottomNavigationScreen({Key? key}) : super(key: key);
@@ -61,7 +31,6 @@ class HomeBottomNavigationScreen extends StatefulWidget {
 var currentTab = 0;
 
 class _HomeBottomNavigationScreenState extends State<HomeBottomNavigationScreen> {
-  int selectedIndex = 0;
 
   @override
   void initState() {
@@ -335,7 +304,7 @@ class _HomeBottomNavigationScreenState extends State<HomeBottomNavigationScreen>
           : currentTab == 2
               ? const MyOrders()
               : currentTab == 3
-                  ? Profile()
+                  ? const ProfilePage()
                   : HomePage(itemWidth: itemWidth, itemHeight: itemHeight),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
@@ -444,7 +413,7 @@ class _HomeBottomNavigationScreenState extends State<HomeBottomNavigationScreen>
                 ),
               ),
             ),
-            SizedBox(), //to make space for the floating button
+            const SizedBox(),
             Material(
               color: appColor,
               child: Center(
@@ -563,50 +532,51 @@ class HomePage extends StatelessWidget {
                           ),
                           InkWell(
                             onTap: () {
-                                    Get.to(() => const ProductsPage(
-                                      true,
-                                          false,
-                                          0,
-                                          null,
-                                          null,
-                                          null,
-                                        ));
+                                    Get.to(
+                                      () => const ProductsPage(
+                                        true,
+                                        false,
+                                        0,
+                                        null,
+                                        null,
+                                      ),
+                                    );
                                   },
-                            child: Text("See All",
-                                style: GoogleFonts.poppins(
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.w400,
-                                  color: pink,
-                                )),
-                          )
-                        ],
-                      ),
-                    ),
+                                  child: Text("See All",
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.w400,
+                                        color: pink,
+                                      )),
+                                )
+                              ],
+                            ),
+                          ),
                     currentTab == 1
                         ? Container()
                         : const SizedBox(
-                      height: 12,
-                    ),
+                            height: 12,
+                          ),
                     currentTab == 1
                         ? Container()
                         : const FavouritePicks(pageNumber: 0),
                     currentTab == 1
                         ? Container()
                         : const SizedBox(
-                      height: 12,
-                    ),
+                            height: 12,
+                          ),
                     currentTab == 1
                         ? Container()
                         : const FixedDashboardBanner(),
                     currentTab == 1
                         ? Container()
                         : const SizedBox(
-                      height: 12,
-                    ),
+                            height: 12,
+                          ),
                     currentTab == 1 ? Container() : const DualCardSection(),
                     Padding(
                       padding:
-                      const EdgeInsets.only(top: 16, right: 16, left: 16),
+                          const EdgeInsets.only(top: 16, right: 16, left: 16),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -624,7 +594,6 @@ class HomePage extends StatelessWidget {
                                 true,
                                     false,
                                     0,
-                                    null,
                                     null,
                                     null,
                                   ));
@@ -688,7 +657,6 @@ class HomePage extends StatelessWidget {
                                         false,
                                         true,
                                         0,
-                                        null,
                                         newCategories[index].id,
                                         null,
                                       ),
@@ -770,7 +738,6 @@ class HomePage extends StatelessWidget {
                                         true,
                                         false,
                                         0,
-                                        null,
                                         '64ff716ec78bc62fc17ef206',
                                         null));
                                   },
@@ -790,6 +757,12 @@ class HomePage extends StatelessWidget {
                     currentTab == 1
                         ? Container()
                         : const FavouritePicks(pageNumber: 1),
+                    currentTab == 1
+                        ? Container()
+                        : const UserFavourites(isRecentViews: true),
+                    currentTab == 1
+                        ? Container()
+                        : const UserFavourites(isRecentViews: false),
                   ],
                 )
               ],

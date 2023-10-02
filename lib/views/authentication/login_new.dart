@@ -1,18 +1,50 @@
 import 'package:arv/utils/app_colors.dart';
+import 'package:arv/utils/secure_storage.dart';
+import 'package:arv/views/authentication/verify_phone.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage();
+  const LoginPage({super.key});
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  State createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
   TextEditingController phoneController = TextEditingController();
+  bool check = false;
+  FirebaseAuth auth = FirebaseAuth.instance;
+
+  login() async {
+    await secureStorage.add("username", phoneController.text);
+    String number = "+91 ${phoneController.text}";
+
+    await auth.verifyPhoneNumber(
+      phoneNumber: number,
+      timeout: const Duration(seconds: 60),
+      verificationCompleted: (PhoneAuthCredential credential) {},
+      verificationFailed: (FirebaseAuthException e) {
+        if (e.code == 'invalid-phone-number') {}
+      },
+      codeSent: (String verificationId, int? resendToken) async {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => VerifyPhone(
+              phoneNumber: number,
+              verificationId: verificationId,
+              resendToken: resendToken,
+            ),
+          ),
+        );
+      },
+      codeAutoRetrievalTimeout: (String verificationId) {},
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +104,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(20),
                   child: Expanded(
                     flex: 1,
                     child: Column(
@@ -86,9 +118,7 @@ class _LoginPageState extends State<LoginPage> {
                                   fontWeight: FontWeight.w600,
                                   color: primaryColor)),
                         ),
-                        SizedBox(
-                          height: 6,
-                        ),
+                        const SizedBox(height: 6),
                         Text(
                           'Quickly Login Account',
                           style: GoogleFonts.poppins(
@@ -97,9 +127,7 @@ class _LoginPageState extends State<LoginPage> {
                                   fontWeight: FontWeight.w400,
                                   color: primaryLightColor)),
                         ),
-                        SizedBox(
-                          height: 20,
-                        ),
+                        const SizedBox(height: 20),
                         Row(
                           // mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -141,9 +169,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ],
                         ),
-                        SizedBox(
-                          height: 20,
-                        ),
+                        const SizedBox(height: 20),
                         Container(
                           margin: const EdgeInsets.symmetric(
                               horizontal: 0, vertical: 10),
@@ -151,18 +177,23 @@ class _LoginPageState extends State<LoginPage> {
                           child: ElevatedButton(
                             onPressed: () {
                               if (phoneController.text.isNotEmpty) {
+                                login();
                               } else {}
                             },
                             style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                    primaryColorLight),
-                                shape: MaterialStateProperty.all<
-                                        RoundedRectangleBorder>(
-                                    const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(14))))),
+                              backgroundColor:
+                                  MaterialStateProperty.all(primaryColorLight),
+                              shape: MaterialStateProperty.all<
+                                  RoundedRectangleBorder>(
+                                const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(14),
+                                  ),
+                                ),
+                              ),
+                            ),
                             child: Container(
-                              width: MediaQuery.sizeOf(context).width,
+                              width: MediaQuery.of(context).size.width,
                               color: primaryColorLight,
                               padding: const EdgeInsets.symmetric(
                                   vertical: 18, horizontal: 8),
@@ -172,11 +203,11 @@ class _LoginPageState extends State<LoginPage> {
                                   Text(
                                     'Get OTP',
                                     style: GoogleFonts.poppins(
-                                        fontSize: 16, fontWeight: FontWeight.w500),
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500),
                                   ),
                                 ],
-                              )
-
+                              ),
                             ),
                           ),
                         )

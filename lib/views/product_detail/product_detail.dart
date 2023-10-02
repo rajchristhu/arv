@@ -4,8 +4,8 @@ import 'package:arv/shared/cart_service.dart';
 import 'package:arv/utils/app_colors.dart';
 import 'package:arv/utils/arv_api.dart';
 import 'package:arv/utils/custom_progress_bar.dart';
+import 'package:arv/views/widgets/favourite_picks.dart';
 import 'package:flutter/material.dart';
-
 // ignore: depend_on_referenced_packages
 import 'package:get/get.dart';
 
@@ -31,12 +31,15 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
   String? productId;
   int count = 0;
   int quantity = 0;
-  String productVariant = "";
+  int variantIndex = 0;
+  List<ProductVariant> variantList = [];
+  List<double> mrpPrices = [];
 
   @override
   void initState() {
     super.initState();
     productId = widget.productId;
+    arvApi.productView('$productId');
   }
 
   @override
@@ -53,18 +56,24 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
                 ? productDto.stock![0]
                 : 0;
 
-            try {
-              productVariant = productDto.productVariation![0];
-            } catch (e) {
-              productVariant = "";
-            }
+            mrpPrices = productDto.mrpPrice ?? [];
+            variantList = productDto.productVariants;
             return Column(
               children: [
                 header(productDto),
-                hero(productDto),
-                Expanded(child: section(productDto)),
-                bottomButton(productDto),
-                const SizedBox(height: 20),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height - 110,
+                  width: MediaQuery.of(context).size.width,
+                  child: ListView(
+                    scrollDirection: Axis.vertical,
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    children: [
+                      hero(productDto),
+                      Expanded(child: section(productDto)),
+                      const SizedBox(height: 20),
+                    ],
+                  ),
+                ),
               ],
             );
           },
@@ -74,39 +83,37 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
   }
 
   Widget header(ProductDto? productDto) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Image.asset("images/back_button.png"),
-          Column(
-            children: [
-              Text(
-                productDto?.productName ?? "",
-                style: const TextStyle(
-                  fontWeight: FontWeight.w100,
-                  fontSize: 16,
-                ),
-              ),
-              Text(
-                productDto?.brand ?? "",
-                style: const TextStyle(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 24,
-                ),
-              )
-            ],
+    return PreferredSize(
+      preferredSize: const Size.fromHeight(160),
+      child: Container(
+        height: 60,
+        width: MediaQuery.of(context).size.width,
+        padding:
+            const EdgeInsets.only(top: 10, right: 16, left: 16, bottom: 25),
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.only(
+            bottomLeft: Radius.circular(10),
+            bottomRight: Radius.circular(10),
           ),
-          InkWell(
-            onTap: () {},
-            child: Image.asset(
-              "images/bag_button.png",
-              height: 34,
-              width: 34,
+          color: appColor,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: const [
+            Icon(
+              Icons.arrow_back_ios,
+              size: 30,
+              color: Colors.white,
             ),
-          ),
-        ],
+            Spacer(),
+            Icon(
+              Icons.search,
+              size: 30,
+              color: Colors.white,
+            ),
+            SizedBox(height: 10),
+          ],
+        ),
       ),
     );
   }
@@ -114,15 +121,24 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
   Widget hero(ProductDto? productDto) {
     return Stack(
       children: [
-        Image.network(arvApi.getMediaUri(productDto?.imageUri)),
+        Container(
+          padding: const EdgeInsets.all(40),
+          height: MediaQuery.of(context).size.height * 0.3,
+          width: MediaQuery.of(context).size.width,
+          child: Image.network(
+            arvApi.getMediaUri(productDto?.imageUri),
+            fit: BoxFit.contain,
+          ),
+        ),
         Positioned(
-          bottom: 10,
+          top: 10,
           right: 20,
           child: FloatingActionButton(
             backgroundColor: Colors.white,
             onPressed: () {
               setState(() {
                 isFavourite = !isFavourite;
+                arvApi.addFavourite('${widget.productId}');
               });
             },
             child: Image.asset(
@@ -133,7 +149,7 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
               width: 34,
             ),
           ),
-        )
+        ),
       ],
     );
   }
@@ -142,18 +158,215 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            productDto?.description ?? "",
-            textAlign: TextAlign.justify,
-            style: const TextStyle(
-              color: Colors.black,
-              fontSize: 14,
-              height: 1.5,
-            ),
+          const SizedBox(height: 10),
+          Row(
+            children: [
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.8,
+                child: Text(
+                  productDto?.productName ?? "",
+                  textAlign: TextAlign.justify,
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 22,
+                    height: 1.5,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 3,
+                ),
+              )
+            ],
+          ),
+          const SizedBox(height: 15),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SizedBox(
+                height: 25,
+                child: Text(
+                  "4.5",
+                  textAlign: TextAlign.justify,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 16,
+                    height: 1.5,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 170,
+                height: 25,
+                child: ListView.builder(
+                  itemCount: 5,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) {
+                    return Icon(
+                      index == 4 ? Icons.star_half_rounded : Icons.star,
+                      color: Colors.orange,
+                    );
+                  },
+                ),
+              ),
+              const Spacer(),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Row(
+            children: [
+              Text(
+                '₹ ${variantList[variantIndex].price ?? 0}',
+                textAlign: TextAlign.justify,
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 28,
+                  height: 1.5,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Column(
+                children: [
+                  const SizedBox(height: 5),
+                  Container(
+                    padding: const EdgeInsets.all(20),
+                    child: Text(
+                      '₹ ${mrpPrices[variantIndex]}',
+                      textAlign: TextAlign.justify,
+                      style: TextStyle(
+                        color: gray,
+                        fontSize: 17.5,
+                        height: 1.5,
+                        fontWeight: FontWeight.bold,
+                        decoration: TextDecoration.lineThrough,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const Spacer(),
+              FutureBuilder(
+                future: arvApi.getCartCountById(productDto?.id),
+                initialData: 0,
+                builder: (context, snapshot) {
+                  count = snapshot.data ?? 0;
+                  return count == 0
+                      ? SizedBox(
+                          width: 100,
+                          height: 35,
+                          child: ElevatedButton(
+                            onPressed: () async =>
+                                await performCartOperation(true),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.pink,
+                            ),
+                            child: const Text(
+                              "Add",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
+                            ),
+                          ),
+                        )
+                      : Container(
+                          width: 100,
+                          height: 35,
+                          margin: const EdgeInsets.all(3),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              width: 1.0,
+                              color: pink,
+                            ),
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(5),
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              InkWell(
+                                child: Icon(
+                                  Icons.remove,
+                                  size: 20,
+                                  color: gray,
+                                ),
+                                onTap: () async =>
+                                    await performCartOperation(false),
+                              ),
+                              Container(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Text(
+                                  '$count',
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w300,
+                                  ),
+                                ),
+                              ),
+                              InkWell(
+                                child: Icon(
+                                  Icons.add,
+                                  size: 20,
+                                  color: gray,
+                                ),
+                                onTap: () async =>
+                                    await performCartOperation(true),
+                              ),
+                            ],
+                          ),
+                        );
+                },
+              ),
+            ],
           ),
           const SizedBox(height: 20),
-          // property(productDto),
+          SizedBox(
+            height: 50,
+            width: MediaQuery.of(context).size.width,
+            child: ListView.builder(
+              itemCount: variantList.length,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) {
+                bool selectedIndex = index == variantIndex;
+                return InkWell(
+                  onTap: () {
+                    variantIndex = index;
+                    setState(() {});
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(2),
+                    width: 70,
+                    margin: const EdgeInsets.symmetric(horizontal: 5),
+                    decoration: BoxDecoration(
+                      color: selectedIndex ? Colors.green : Colors.black12,
+                      borderRadius: const BorderRadius.all(Radius.circular(15)),
+                    ),
+                    child: Center(
+                      child: Text(
+                        variantList[index].productVariant,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: selectedIndex ? Colors.white : appColor,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+          const SizedBox(height: 10),
+          const UserFavourites(isRecentViews: true),
+          const UserFavourites(isRecentViews: false),
         ],
       ),
     );
@@ -166,7 +379,7 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               "Color",
               style: TextStyle(
                 color: Colors.black,
@@ -180,7 +393,6 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
                   4,
                       (index) => GestureDetector(
                     onTap: () {
-                      print("index $index clicked");
                       setState(() {
                         selectedColor = colors[index];
                       });
@@ -223,117 +435,6 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
     );
   }
 
-  Widget bottomButton(ProductDto? productDto) {
-    return FutureBuilder(
-      future: arvApi.getCartCountById(productDto?.id),
-      initialData: 0,
-      builder: (context, snapshot) {
-        count = snapshot.data ?? 0;
-        return Container(
-          padding: const EdgeInsets.only(right: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Spacer(),
-              count == 0
-                  ? Container(
-                      width: 200,
-                      height: 50,
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: ElevatedButton(
-                        onPressed: () async => await performCartOperation(true),
-                        style: ElevatedButton.styleFrom(
-                          elevation: 0,
-                          backgroundColor: Colors.purple,
-                        ),
-                        child: const Text(
-                          "Add to cart",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    )
-                  : Container(
-                      width: 160,
-                      height: 50,
-                      margin: const EdgeInsets.all(3),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          width: 1.0,
-                          color: pink,
-                        ),
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(5),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          InkWell(
-                            child: Icon(
-                              Icons.remove,
-                              size: 20,
-                              color: gray,
-                            ),
-                            onTap: () async =>
-                                await performCartOperation(false),
-                          ),
-                          Container(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: Text(
-                              '$count',
-                              style: const TextStyle(
-                                color: Colors.black,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w300,
-                              ),
-                            ),
-                          ),
-                          InkWell(
-                            child: Icon(
-                              Icons.add,
-                              size: 20,
-                              color: gray,
-                            ),
-                            onTap: () async => await performCartOperation(true),
-                          ),
-                        ],
-                      ),
-                    ),
-              const Spacer(),
-              Container(
-                width: 200,
-                height: 50,
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    elevation: 0,
-                    backgroundColor: Colors.purple,
-                  ),
-                  child: const Text(
-                    "Place Order",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-              const Spacer(),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
   Future<void> performCartOperation(bool isInc) async {
     ArvProgressDialog.instance.showProgressDialog(context);
     if (quantity == 0 ||
@@ -348,7 +449,7 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
       await arvApi.addToCart(
         Cart(
           productId: productId!,
-          variant: productVariant,
+          variant: variantList[variantIndex].productVariant,
           qty: count,
         ),
       );

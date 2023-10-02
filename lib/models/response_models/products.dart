@@ -48,6 +48,7 @@ class ProductDto {
   String? subCategoryTags;
   ProductSubCategory productSubCategory;
   List<String>? productVariation;
+  List<ProductVariant> productVariants;
   List<double>? mrpPrice;
   List<double>? sellingPrice;
   List<int>? quantity;
@@ -70,6 +71,7 @@ class ProductDto {
     required this.subCategoryTags,
     required this.productSubCategory,
     required this.productVariation,
+    required this.productVariants,
     required this.mrpPrice,
     required this.sellingPrice,
     required this.quantity,
@@ -107,6 +109,8 @@ class ProductDto {
           ? []
           : List<int>.from(json["quantity"].map((x) => x)),
       stock: List<int>.from(json["stock"].map((x) => x)),
+      productVariants: json["productVariants"] == null ? [] : List<ProductVariant>.from(
+          json["productVariants"].map((x) => ProductVariant.fromJson(x))),
       discount: json["discount"]?.toDouble(),
       tags: json["tags"],
       imageUri: json["imageUri"],
@@ -198,5 +202,46 @@ class ProductSubCategory {
         "id": id,
         "categoryId": categoryId,
         "name": name,
+      };
+}
+
+class ProductVariant {
+  String productVariant;
+  dynamic color;
+  dynamic size;
+  String unit;
+  double price;
+  int qty;
+
+  ProductVariant({
+    required this.productVariant,
+    required this.color,
+    required this.size,
+    required this.unit,
+    required this.price,
+    required this.qty,
+  });
+
+  factory ProductVariant.fromRawJson(String str) =>
+      ProductVariant.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory ProductVariant.fromJson(Map<String, dynamic> json) => ProductVariant(
+        productVariant: json["productVariant"],
+        color: json["color"],
+        size: json["size"],
+        unit: json["unit"],
+        price: json["price"],
+        qty: json["qty"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "productVariant": productVariant,
+        "color": color,
+        "size": size,
+        "unit": unit,
+        "price": price,
+        "qty": qty,
       };
 }

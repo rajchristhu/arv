@@ -36,6 +36,7 @@ class _CartValueState extends State<CartValue> {
       TextEditingController(text: "Cash On Delivery ( COD )");
 
   String defaultPaymentMode = "COD";
+  double deliveryCharge = 0.0;
 
   String? addressId;
 
@@ -44,6 +45,12 @@ class _CartValueState extends State<CartValue> {
     super.initState();
     Get.find<CartService>().updateList();
     getAddress();
+    getDeliveryCharge();
+  }
+
+  getDeliveryCharge() async {
+    deliveryCharge = await arvApi.getDeliveryCharge();
+    safeUpdate();
   }
 
   getAddress() async {
@@ -67,9 +74,13 @@ class _CartValueState extends State<CartValue> {
         country.text = address.nation;
         landmark.text = address.landMark;
       }
-      WidgetsBinding.instance
-          .addPostFrameCallback((timeStamp) => setState(() {}));
+      safeUpdate();
     });
+  }
+
+  void safeUpdate() {
+    WidgetsBinding.instance
+        .addPostFrameCallback((timeStamp) => setState(() {}));
   }
 
   @override
@@ -78,7 +89,6 @@ class _CartValueState extends State<CartValue> {
       init: Get.find<CartService>(),
       builder: (controller) {
         double totalAmount = controller.cartTotal.orderValue;
-        // double deliveryCharge = getDeliveryAddress();
         if (totalAmount == 0) return Container();
         return Container(
           height: 200,
@@ -137,7 +147,7 @@ class _CartValueState extends State<CartValue> {
                     ),
                     const Spacer(),
                     Text(
-                      "₹ ${totalAmount == 0 ? 0.0 : "35.0"}",
+                      "₹ $deliveryCharge",
                       style: TextStyle(
                         color: black,
                         fontSize: 18,
@@ -164,7 +174,7 @@ class _CartValueState extends State<CartValue> {
                     ),
                     const Spacer(),
                     Text(
-                      "₹ ${totalAmount == 0 ? 0.0 : totalAmount + 35.0}",
+                      "₹ ${totalAmount == 0 ? 0.0 : totalAmount + deliveryCharge}",
                       style: TextStyle(
                         color: black,
                         fontSize: 18,

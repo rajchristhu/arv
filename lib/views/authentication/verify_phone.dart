@@ -3,10 +3,10 @@ import 'package:arv/utils/app_colors.dart';
 import 'package:arv/utils/arv_api.dart';
 import 'package:arv/utils/secure_storage.dart';
 import 'package:arv/views/authentication/numeric_pad.dart';
-import 'package:arv/views/home_bottom_navigation_screen.dart';
+import 'package:arv/views/authentication/user_info_form.dart';
+// ignore: depend_on_referenced_packages
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class VerifyPhone extends StatefulWidget {
   final String phoneNumber;
@@ -66,7 +66,7 @@ class _VerifyPhoneState extends State<VerifyPhone> {
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 14),
                     child: Text(
-                      "We have sent an OTP to +91- " + widget.phoneNumber,
+                      "We have sent an OTP to " + widget.phoneNumber,
                       style: TextStyle(
                         fontSize: 16,
                         color: Color(0xFF818181),
@@ -153,7 +153,8 @@ class _VerifyPhoneState extends State<VerifyPhone> {
                         String uid = userCredential.user?.uid ?? "";
                         await secureStorage.add("uid", uid);
                         String token = await arvApi.login(phone, uid);
-                        if (token == "") {
+                        bool isNewUser = token == "";
+                        if (isNewUser) {
                           ArvUser user = ArvUser(
                             phone: phone,
                             email: "",
@@ -164,17 +165,17 @@ class _VerifyPhoneState extends State<VerifyPhone> {
 
                           await arvApi.register(user);
                         }
-                        
-                        Get.offAll(() => const HomeBottomNavigationScreen());
+                        // ignore: use_build_context_synchronously
+                        _showBottomSheet(context);
                       },
                       child: Container(
                         decoration: BoxDecoration(
-                          color: accentColor,
-                          borderRadius: BorderRadius.all(
+                          color: appColor,
+                          borderRadius: const BorderRadius.all(
                             Radius.circular(60),
                           ),
                         ),
-                        child: Center(
+                        child: const Center(
                           child: Text(
                             "Submit",
                             style: TextStyle(
@@ -209,14 +210,14 @@ class _VerifyPhoneState extends State<VerifyPhone> {
 
   Widget buildCodeNumberBox(String codeNumber) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 6),
       child: SizedBox(
         width: 50,
         height: 50,
         child: Container(
           decoration: BoxDecoration(
-            color: Color(0xFFF6F5FA),
-            borderRadius: BorderRadius.all(
+            color: const Color(0xFFF6F5FA),
+            borderRadius: const BorderRadius.all(
               Radius.circular(15),
             ),
             boxShadow: <BoxShadow>[
@@ -224,13 +225,13 @@ class _VerifyPhoneState extends State<VerifyPhone> {
                   color: gray,
                   blurRadius: 20.0,
                   spreadRadius: 1,
-                  offset: Offset(8.0, 4.2))
+                  offset: const Offset(8.0, 4.2))
             ],
           ),
           child: Center(
             child: Text(
               codeNumber,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
                 color: Color(0xFF1F1F1F),
@@ -239,6 +240,26 @@ class _VerifyPhoneState extends State<VerifyPhone> {
           ),
         ),
       ),
+    );
+  }
+
+  void _showBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: false,
+      isDismissible: false,
+      enableDrag: false,
+      useSafeArea: true,
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30.0),
+          topRight: Radius.circular(30.0),
+        ),
+      ),
+      builder: (BuildContext context) {
+        return const UserInfoForm();
+      },
     );
   }
 }

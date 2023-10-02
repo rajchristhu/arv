@@ -37,12 +37,14 @@ class Categories {
 class Category {
   String id;
   String name;
+  String majorCategory;
   dynamic image;
 
   Category({
     required this.id,
     required this.name,
     required this.image,
+    required this.majorCategory,
   });
 
   factory Category.fromRawJson(String str) =>
@@ -51,14 +53,17 @@ class Category {
   String toRawJson() => json.encode(toJson());
 
   factory Category.fromJson(Map<String, dynamic> json) => Category(
-        id: json["id"],
+    id: json["id"],
         name: json["name"],
         image: json["image"],
+        majorCategory: json["majorCategory"],
       );
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() =>
+      {
         "id": id,
         "name": name,
+        "majorCategory": majorCategory,
         "image": image,
       };
 }

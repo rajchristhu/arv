@@ -1,12 +1,15 @@
 // ignore_for_file: depend_on_referenced_packages
 
+import 'dart:developer';
+
 import 'package:animate_do/animate_do.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:arv/utils/app_colors.dart';
 import 'package:arv/utils/arv_api.dart';
+import 'package:arv/utils/secure_storage.dart';
 import 'package:arv/utils/size_helper.dart';
 import 'package:arv/views/authentication/login_new.dart';
-import 'package:arv/views/authentication/login_page.dart';
+import 'package:arv/views/authentication/user_info_form.dart';
 import 'package:arv/views/home_bottom_navigation_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -32,10 +35,16 @@ class _SplashPageState extends State<SplashPage> {
     Future.delayed(const Duration(seconds: 5), () async {
       if (mounted) {
         Widget nextScreen = const LoginPage();
-        if (await arvApi.validateLogin) {
+        bool validUser = await arvApi.validateLogin;
+        if (validUser) {
           nextScreen = const HomeBottomNavigationScreen();
         }
-        Get.offAll(() => nextScreen);
+        if (validUser && await secureStorage.get("location") == "") {
+          // ignore: use_build_context_synchronously
+          _showBottomSheet(context);
+        } else {
+          Get.offAll(() => nextScreen);
+        }
       }
     });
   }
@@ -109,6 +118,26 @@ class _SplashPageState extends State<SplashPage> {
       duration: const Duration(milliseconds: 1000),
       delay: const Duration(milliseconds: 500),
       child: ArvLogo(),
+    );
+  }
+
+  void _showBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: false,
+      isDismissible: false,
+      enableDrag: false,
+      useSafeArea: true,
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30.0),
+          topRight: Radius.circular(30.0),
+        ),
+      ),
+      builder: (BuildContext context) {
+        return const UserInfoForm();
+      },
     );
   }
 }

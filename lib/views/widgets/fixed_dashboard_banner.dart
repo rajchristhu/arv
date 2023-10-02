@@ -23,7 +23,6 @@ class FixedDashboardBanner extends StatelessWidget {
                       false,
                       true,
                       1,
-                      null,
                       '64ff716ec78bc62fc17ef206',
                       null,
                     )));
