@@ -130,7 +130,6 @@ class _UserInfoFormState extends State<UserInfoForm> {
               onPressed: () async {
                 if (location != null && name.text.isNotEmpty) {
                   await arvApi.updateProfile(name.text);
-                  await secureStorage.delete("location");
                   await secureStorage.add("location", '$location');
                   Get.offAll(() => const HomeBottomNavigationScreen());
                 } else {}

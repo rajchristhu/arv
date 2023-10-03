@@ -1,14 +1,12 @@
 // ignore_for_file: depend_on_referenced_packages
 
-import 'dart:developer';
-
 import 'package:animate_do/animate_do.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:arv/utils/app_colors.dart';
 import 'package:arv/utils/arv_api.dart';
 import 'package:arv/utils/secure_storage.dart';
 import 'package:arv/utils/size_helper.dart';
-import 'package:arv/views/authentication/login_new.dart';
+import 'package:arv/views/authentication/login_page.dart';
 import 'package:arv/views/authentication/user_info_form.dart';
 import 'package:arv/views/home_bottom_navigation_screen.dart';
 import 'package:flutter/material.dart';
@@ -27,14 +25,14 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
-    _navigate();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) => _navigate());
   }
 
   ///Navigate to Login screen
   void _navigate() async {
     Future.delayed(const Duration(seconds: 5), () async {
       if (mounted) {
-        Widget nextScreen = const LoginPage();
+        Widget nextScreen = const ContinueWithPhone();
         bool validUser = await arvApi.validateLogin;
         if (validUser) {
           nextScreen = const HomeBottomNavigationScreen();

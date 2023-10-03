@@ -17,7 +17,15 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   TextEditingController phoneController = TextEditingController();
   bool check = false;
-  FirebaseAuth auth = FirebaseAuth.instance;
+  late FirebaseAuth auth;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      auth = FirebaseAuth.instance;
+    });
+  }
 
   login() async {
     await secureStorage.add("username", phoneController.text);
