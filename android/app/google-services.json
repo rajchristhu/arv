@@ -1,44 +1,26 @@
 {
   "project_info": {
-    "project_number": "202920770583",
-    "project_id": "arvapp-5dcfc",
-    "storage_bucket": "arvapp-5dcfc.appspot.com"
+    "project_number": "951096803626",
+    "project_id": "decent-space-400616",
+    "storage_bucket": "decent-space-400616.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:202920770583:android:5d4f17573a6e7be6a7b052",
+        "mobilesdk_app_id": "1:951096803626:android:84ae3f21e4305382be5e53",
         "android_client_info": {
           "package_name": "com.arv.app.arv"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "202920770583-ld3ppabhbeehb2qki2b31enkicgsfnc7.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.arv.app.arv",
-            "certificate_hash": "4662e43ff2be04fe3317662dddaf987621c0329e"
-          }
-        },
-        {
-          "client_id": "202920770583-8oa27degj5tdfc95qamltrqt64nqb6cg.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDXFmgAG6G-MhTeMGgbgB6jiz7e4KdSYK8"
+          "current_key": "AIzaSyDXkUAVatGIyJk3JCyUpj3Tc9BJkRBwo30"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "202920770583-8oa27degj5tdfc95qamltrqt64nqb6cg.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }
