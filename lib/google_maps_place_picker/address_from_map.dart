@@ -3,6 +3,7 @@ import 'package:arv/utils/app_colors.dart';
 import 'package:arv/views/map/pick_location.dart';
 import 'package:arv/views/order_page/resources.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../views/widget/custom_buttom.dart';
 
@@ -95,26 +96,67 @@ class _AddressSelectState extends State<AddressSelect> {
                         },
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 8),
                   ],
                 ),
               ),
               Container(
-                decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(60),
-                    ),
-                    color: Resources(context).color.colorPrimary),
-                width: MediaQuery.of(context).size.width,
-                height: 45,
-                child: CustomButton(
-                  'Confirm Location ',
-                  () {
+                margin: const EdgeInsets.symmetric(
+                    horizontal: 0, vertical: 0),
+                constraints: const BoxConstraints(maxWidth: 500),
+                child: ElevatedButton(
+                  onPressed: () {
                     SelectedLocation.instance.locationInfo = widget.location;
                     Navigator.maybePop(context);
                   },
+                  style: ButtonStyle(
+                    backgroundColor:
+                    MaterialStateProperty.all(primaryColorLight),
+                    shape: MaterialStateProperty.all<
+                        RoundedRectangleBorder>(
+                      const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(14),
+                        ),
+                      ),
+                    ),
+                  ),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    color: primaryColorLight,
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 14, horizontal: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Confirm Location ',
+                          style: GoogleFonts.poppins(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
+              )
+
+              // Container(
+              //   decoration: BoxDecoration(
+              //       borderRadius: const BorderRadius.all(
+              //         Radius.circular(60),
+              //       ),
+              //       color: Resources(context).color.colorPrimary),
+              //   width: MediaQuery.of(context).size.width,
+              //   height: 45,
+              //   child: CustomButton(
+              //     'Confirm Location ',
+              //     () {
+              //       SelectedLocation.instance.locationInfo = widget.location;
+              //       Navigator.maybePop(context);
+              //     },
+              //   ),
+              // ),
             ],
           ),
         ),
