@@ -123,8 +123,8 @@ class _SplashPageState extends State<SplashPage> {
   Widget _buildLogo() {
     return FadeInDownBig(
       from: 1,
-      duration: const Duration(milliseconds: 1000),
-      delay: const Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 500),
+      delay: const Duration(milliseconds: 250),
       child: ArvLogo(),
     );
   }

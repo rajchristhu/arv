@@ -70,12 +70,18 @@ class _OTPNewPageState extends State<OTPNewPage> {
                     SizedBox(
                       width: 20,
                     ),
-                    SvgPicture.asset(
-                      "assets/images/back.svg",
-                      semanticsLabel: 'Acme Logo',
-                      width: 10,
-                      height: 15,
-                    ),
+                    InkWell(
+                      onTap: (){
+                        Navigator.pop(context);
+                      },
+                      child: SvgPicture.asset(
+                        "assets/images/back.svg",
+                        semanticsLabel: 'Acme Logo',
+                        width: 10,
+                        height: 15,
+                      ),
+                    )
+                    ,
                     SizedBox(
                       width: (MediaQuery.of(context).size.width) / 5,
                     ),
@@ -91,154 +97,154 @@ class _OTPNewPageState extends State<OTPNewPage> {
                     ),
                   ],
                 ),
-                SizedBox(
-                  height: (MediaQuery.of(context).size.width) / 8,
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Expanded(
-                    flex: 1,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          'Verify your number',
-                          style: GoogleFonts.poppins(
-                              textStyle: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w600,
-                                  color: primaryColor)),
-                        ),
-                        const SizedBox(height: 6),
-                        Text(
-                          'Enter your OTP code below',
-                          style: GoogleFonts.poppins(
-                              textStyle: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  color: primaryLightColor)),
-                        ),
-                        const SizedBox(height: 20),
-                        OtpTextField(
-                          numberOfFields: 6,
-                          // focusedBorderColor: accentPurpleColor,
-                          // styles: otpTextStyles,
-                          showFieldAsBox: true,
-                          borderWidth: 2.0,
-                          fieldWidth: 50,
-                          borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                          focusedBorderColor: pinkColor,
-                          autoFocus: true,
-                          cursorColor: pinkColor,
-                          //runs when a code is typed in
-                          onCodeChanged: (String code) {
-                            code="";
-                            //handle validation or checks here if necessary
-                          },
-                          //runs when every textfield is filled
-                          onSubmit: (String verificationCode) {
-                            print("object");
-                            print(verificationCode);
-                            code=verificationCode;
-                          },
-                        ),
-                        const SizedBox(height: 20),
-                        Container(
-                          margin: const EdgeInsets.symmetric(
-                              horizontal: 0, vertical: 10),
-                          constraints: const BoxConstraints(maxWidth: 500),
-                          child: ElevatedButton(
-                            onPressed: () async {
-                              if (code.length==6) {
-                                ArvProgressDialog.instance.showProgressDialog(context);
 
-                                PhoneAuthCredential credential =
-                                PhoneAuthProvider.credential(
-                                  verificationId: widget.verificationId,
-                                  smsCode: code,
-                                );
-                                UserCredential userCredential = await FirebaseAuth
-                                    .instance
-                                    .signInWithCredential(credential);
-                                String phone = await secureStorage.get("username");
-                                String uid = userCredential.user?.uid ?? "";
-                                await secureStorage.add("uid", uid);
-                                String token = await arvApi.login(phone, uid);
-                                bool isNewUser = token == "";
-                                if (isNewUser) {
-                                  ArvUser user = ArvUser(
-                                    phone: phone,
-                                    email: "",
-                                    uid: uid,
-                                    username: '',
-                                    userType: "CUSTOMER",
-                                  );
+Padding(
+  padding: EdgeInsets.only(top: MediaQuery.of(context).size.width/4),
+  child:Padding(
+    padding: const EdgeInsets.all(20),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Text(
+          'Verify your number',
+          style: GoogleFonts.poppins(
+              textStyle: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                  color: primaryColor)),
+        ),
+        const SizedBox(height: 6),
+        Text(
+          'Enter your OTP code below',
+          style: GoogleFonts.poppins(
+              textStyle: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400,
+                  color: primaryLightColor)),
+        ),
+        const SizedBox(height: 20),
+        OtpTextField(
+          numberOfFields: 6,
+          // focusedBorderColor: accentPurpleColor,
+          // styles: otpTextStyles,
+          showFieldAsBox: true,
+          borderWidth: 2.0,
+          fieldWidth: 50,
+          borderRadius: BorderRadius.all(Radius.circular(15.0)),
+          focusedBorderColor: pinkColor,
+          autoFocus: true,
+          cursorColor: pinkColor,
+          //runs when a code is typed in
+          onCodeChanged: (String code) {
+            code="";
+            //handle validation or checks here if necessary
+          },
+          //runs when every textfield is filled
+          onSubmit: (String verificationCode) {
+            print("object");
+            print(verificationCode);
+            code=verificationCode;
+          },
+        ),
+        const SizedBox(height: 20),
+        Container(
+          margin: const EdgeInsets.symmetric(
+              horizontal: 0, vertical: 10),
+          constraints: const BoxConstraints(maxWidth: 500),
+          child: ElevatedButton(
+            onPressed: () async {
+              if (code.length==6) {
+                ArvProgressDialog.instance.showProgressDialog(context);
 
-                                  await arvApi.register(user);
-                                }
-                                // ignore: use_build_context_synchronously
-                                ArvProgressDialog.instance.dismissDialog(context);
+                PhoneAuthCredential credential =
+                PhoneAuthProvider.credential(
+                  verificationId: widget.verificationId,
+                  smsCode: code,
+                );
+                UserCredential userCredential = await FirebaseAuth
+                    .instance
+                    .signInWithCredential(credential);
+                String phone = await secureStorage.get("username");
+                String uid = userCredential.user?.uid ?? "";
+                await secureStorage.add("uid", uid);
+                String token = await arvApi.login(phone, uid);
+                bool isNewUser = token == "";
+                if (isNewUser) {
+                  ArvUser user = ArvUser(
+                    phone: phone,
+                    email: "",
+                    uid: uid,
+                    username: '',
+                    userType: "CUSTOMER",
+                  );
 
-                                Get.offAll(() => HomeBottomNavigationScreen());
-                              } else {}
-                            },
-                            style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.all(primaryColorLight),
-                              shape: MaterialStateProperty.all<
-                                  RoundedRectangleBorder>(
-                                const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(14),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            child: Container(
-                              width: MediaQuery.of(context).size.width,
-                              color: primaryColorLight,
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 18, horizontal: 8),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'Login',
-                                    style: GoogleFonts.poppins(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Center(
-                          child: Text(
-                            'Did’nt receive the code ?',
-                            style: GoogleFonts.poppins(
-                                textStyle: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400,
-                                    color: primaryLightColor)),
-                          ),
-                        ),
-                        const SizedBox(height: 2),
-                        Center(
-                          child: Text(
-                            'Resend a new code',
-                            style: GoogleFonts.poppins(
-                                textStyle: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
-                                    color: pinkColor)),
-                          ),
-                        ),
-                      ],
-                    ),
+                  await arvApi.register(user);
+                }
+                // ignore: use_build_context_synchronously
+                ArvProgressDialog.instance.dismissDialog(context);
+
+                Get.offAll(() => HomeBottomNavigationScreen());
+              } else {}
+            },
+            style: ButtonStyle(
+              backgroundColor:
+              MaterialStateProperty.all(primaryColorLight),
+              shape: MaterialStateProperty.all<
+                  RoundedRectangleBorder>(
+                const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(14),
                   ),
-                )
+                ),
+              ),
+            ),
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              color: primaryColorLight,
+              padding: const EdgeInsets.symmetric(
+                  vertical: 18, horizontal: 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Login',
+                    style: GoogleFonts.poppins(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        Center(
+          child: Text(
+            'Did’nt receive the code ?',
+            style: GoogleFonts.poppins(
+                textStyle: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                    color: primaryLightColor)),
+          ),
+        ),
+        const SizedBox(height: 2),
+        Center(
+          child: Text(
+            'Resend a new code',
+            style: GoogleFonts.poppins(
+                textStyle: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: pinkColor)),
+          ),
+        ),
+      ],
+    ),
+  ) ,
+)
+
               ],
             ),
           ),
