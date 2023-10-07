@@ -7,7 +7,6 @@ import 'package:arv/shared/cart_service.dart';
 import 'package:arv/utils/app_colors.dart';
 import 'package:arv/utils/arv_api.dart';
 import 'package:arv/utils/custom_progress_bar.dart';
-import 'package:arv/utils/secure_storage.dart';
 import 'package:arv/views/order_page/input_box.dart';
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
@@ -220,6 +219,8 @@ class _CartValueState extends State<CartValue> {
       context: context,
       isScrollControlled: true,
       isDismissible: true,
+      useSafeArea: true,
+      enableDrag: false,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(30.0),
@@ -227,12 +228,14 @@ class _CartValueState extends State<CartValue> {
         ),
       ),
       builder: (BuildContext context) {
-        return Padding(
+        return Container(
+          height: MediaQuery.of(context).size.height * 0.62,
           padding: MediaQuery.of(context).viewInsets,
-          child: Wrap(
+          child: Column(
             children: <Widget>[
+              const SizedBox(height: 20),
               Container(
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(10),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -254,7 +257,7 @@ class _CartValueState extends State<CartValue> {
               ),
               const Spacer(),
               SizedBox(
-                height: MediaQuery.of(context).size.height * 0.45,
+                height: MediaQuery.of(context).size.height * 0.35,
                 child: ListView(
                   physics: const AlwaysScrollableScrollPhysics(),
                   scrollDirection: Axis.vertical,
@@ -333,8 +336,10 @@ class _CartValueState extends State<CartValue> {
                 ),
               ),
               Container(
-                margin: const EdgeInsets.symmetric(vertical: 25, horizontal: 10),
-                padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 10),
+                margin:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 25, horizontal: 10),
                 child: ElevatedButton(
                   onPressed: () async {
                     ArvProgressDialog.instance.showProgressDialog(context);
@@ -357,16 +362,23 @@ class _CartValueState extends State<CartValue> {
                     }
                     CartList cartList = await arvApi.getCartItems(0);
                     List<OrderItem> orderItems = cartList.list
-                        .map((e) => OrderItem(
+                        .map(
+                          (e) => OrderItem(
                             productId: e.id!,
                             variant: e.orderProductVariation!,
-                            qty: e.orderQty!))
+                            qty: e.orderQty!,
+                            itemTotalPrice: e.orderPrice ?? 0.0,
+                          ),
+                        )
                         .toList();
                     Order order = Order(
                       orderItems: orderItems,
                       paymentMode: defaultPaymentMode,
                       addressId: addressId ?? "",
-                      accessToken: await secureStorage.get("access-token"),
+                      deliveryBoyTip: 0,
+                      deliveryCharge: deliveryCharge,
+                      couponCode: "",
+                      accessToken: await arvApi.getAccessToken(),
                     );
 
                     await arvApi.placeOrder(order);
@@ -402,6 +414,7 @@ class _CartValueState extends State<CartValue> {
                   ),
                 ),
               ),
+              const SizedBox(height: 40),
             ],
           ),
         );

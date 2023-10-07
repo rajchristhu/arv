@@ -49,12 +49,11 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
         child: FutureBuilder(
           future: arvApi.getProductById(productId),
           builder: (context, snapshot) {
-            ProductDto? productDto = snapshot.data;
-            if (productDto == null) return Container();
-            quantity = (productDto.stock != null &&
+            ProductDto? productDto = snapshot.data!;
+            quantity = ((productDto.stock != null &&
                     (productDto.stock?.length ?? 0) > 0)
                 ? productDto.stock![0]
-                : 0;
+                : 0);
 
             mrpPrices = productDto.mrpPrice ?? [];
             variantList = productDto.productVariants;
@@ -69,7 +68,7 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
                     physics: const AlwaysScrollableScrollPhysics(),
                     children: [
                       hero(productDto),
-                      Expanded(child: section(productDto)),
+                      section(productDto),
                       const SizedBox(height: 20),
                     ],
                   ),
@@ -154,7 +153,7 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
     );
   }
 
-  Widget section(ProductDto? productDto) {
+  Widget section(ProductDto productDto) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
       child: Column(
@@ -167,7 +166,7 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.8,
                 child: Text(
-                  productDto?.productName ?? "",
+                  productDto.productName ?? "",
                   textAlign: TextAlign.justify,
                   style: const TextStyle(
                     color: Colors.black,
@@ -220,7 +219,7 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
           Row(
             children: [
               Text(
-                '₹ ${variantList[variantIndex].price ?? 0}',
+                '₹ ${variantList[variantIndex].price}',
                 textAlign: TextAlign.justify,
                 style: const TextStyle(
                   color: Colors.black,
@@ -250,7 +249,7 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
               ),
               const Spacer(),
               FutureBuilder(
-                future: arvApi.getCartCountById(productDto?.id),
+                future: arvApi.getCartCountById(productDto.id),
                 initialData: 0,
                 builder: (context, snapshot) {
                   count = snapshot.data ?? 0;
@@ -398,17 +397,17 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
                       });
                     },
                     child: Container(
-                      padding: EdgeInsets.all(8),
-                      margin: EdgeInsets.only(right: 10),
-                      height: 34,
-                      width: 34,
-                      child: selectedColor == colors[index]
-                          ? Image.asset("images/checker.png")
-                          : SizedBox(),
-                      decoration: BoxDecoration(
-                          color: colors[index],
-                          borderRadius: BorderRadius.circular(17)),
-                    ),
+                          padding: const EdgeInsets.all(8),
+                          margin: const EdgeInsets.only(right: 10),
+                          height: 34,
+                          width: 34,
+                          decoration: BoxDecoration(
+                              color: colors[index],
+                              borderRadius: BorderRadius.circular(17)),
+                          child: selectedColor == colors[index]
+                              ? Image.asset("images/checker.png")
+                              : const SizedBox(),
+                        ),
                   )),
             )
           ],
@@ -416,15 +415,18 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Size",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16)),
-            SizedBox(height: 10),
+            const Text(
+              "Size",
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
+            ),
+            const SizedBox(height: 10),
             Container(
-              padding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-              child: Text(
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+              child: const Text(
                 "10.2",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),

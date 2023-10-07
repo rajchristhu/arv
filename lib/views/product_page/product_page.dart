@@ -27,7 +27,6 @@ class ProductsPage extends StatefulWidget {
   State createState() => _ProductsPageState();
 }
 
-var currentTab = 0;
 
 class _ProductsPageState extends State<ProductsPage> {
   bool isDisposed = false;

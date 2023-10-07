@@ -59,6 +59,7 @@ class Product {
   String? imageUri;
   int? orderQty;
   String? orderProductVariation;
+  double? orderPrice;
 
   Product({
     required this.id,
@@ -83,6 +84,7 @@ class Product {
     required this.imageUri,
     required this.orderQty,
     required this.orderProductVariation,
+    this.orderPrice = 0.0,
   });
 
   factory Product.fromRawJson(String str) => Product.fromJson(json.decode(str));
@@ -122,6 +124,7 @@ class Product {
         imageUri: json["imageUri"],
         orderQty: json["orderQty"],
         orderProductVariation: json["orderProductVariation"],
+        orderPrice: json["orderPrice"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -153,5 +156,6 @@ class Product {
         "imageUri": imageUri,
         "orderQty": orderQty,
         "orderProductVariation": orderProductVariation,
+        "orderPrice": orderPrice,
       };
 }

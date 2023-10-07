@@ -44,7 +44,7 @@ class Category {
     required this.id,
     required this.name,
     required this.image,
-    required this.majorCategory,
+    this.majorCategory ="",
   });
 
   factory Category.fromRawJson(String str) =>
@@ -56,7 +56,7 @@ class Category {
     id: json["id"],
         name: json["name"],
         image: json["image"],
-        majorCategory: json["majorCategory"],
+        majorCategory: json["majorCategory"] ?? "",
       );
 
   Map<String, dynamic> toJson() =>
