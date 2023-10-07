@@ -103,6 +103,8 @@ class _ProductGridState extends State<ProductGridCard> {
                             fontWeight: FontWeight.w300,
                             color: Colors.black,
                           ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                       Row(

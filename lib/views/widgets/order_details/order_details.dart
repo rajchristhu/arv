@@ -174,7 +174,7 @@ class _CartValueState extends State<CartValue> {
                     ),
                     const Spacer(),
                     Text(
-                      "₹ ${totalAmount == 0 ? 0.0 : totalAmount + deliveryCharge}",
+                      "₹ ${totalAmount == 0 ? 0.0 : totalAmount +(deliveryCharge==null?0.0: deliveryCharge.toDouble())}",
                       style: TextStyle(
                         color: black,
                         fontSize: 18,

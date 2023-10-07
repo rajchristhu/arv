@@ -24,6 +24,7 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController phoneController = TextEditingController();
   bool check = false;
   late FirebaseAuth auth;
+  FocusNode myfocus = FocusNode(); //create focus node
 
   @override
   void initState() {
@@ -177,6 +178,13 @@ class _LoginPageState extends State<LoginPage> {
                               child: CupertinoTextField(
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 16),
+                                autofocus: true,
+                                focusNode: myfocus,
+                                onChanged: (content) {
+                                  if(content.length==10){
+                                    myfocus.unfocus();
+                                  }
+                                },
                                 decoration: const BoxDecoration(
                                     color: Colors.white,
                                     borderRadius:

@@ -8,6 +8,7 @@ import 'package:arv/views/widgets/favourite_picks.dart';
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ProductDetailPageView extends StatefulWidget {
   const ProductDetailPageView({super.key, this.productId});
@@ -99,18 +100,33 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: const [
-            Icon(
-              Icons.arrow_back_ios,
-              size: 30,
-              color: Colors.white,
+          children:  [
+            InkWell(
+              onTap: (){
+                Navigator.pop(context);
+              },
+              child: Icon(
+                Icons.arrow_back_ios,
+                size: 25,
+                color: Colors.white,
+              ),
+            )
+            ,
+            const Text(
+             "Product Details",
+              style: TextStyle(
+                fontSize: 18.0,
+                fontWeight: FontWeight.w600,
+                color: Colors.white,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
-            Spacer(),
-            Icon(
-              Icons.search,
-              size: 30,
-              color: Colors.white,
-            ),
+            // Icon(
+            //   Icons.search,
+            //   size: 30,
+            //   color: Colors.white,
+            // ),
             SizedBox(height: 10),
           ],
         ),
