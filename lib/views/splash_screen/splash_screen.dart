@@ -7,11 +7,12 @@ import 'package:arv/utils/arv_api.dart';
 import 'package:arv/utils/secure_storage.dart';
 import 'package:arv/utils/size_helper.dart';
 import 'package:arv/views/authentication/login_new.dart';
-import 'package:arv/views/authentication/login_page.dart';
 import 'package:arv/views/authentication/user_info_form.dart';
 import 'package:arv/views/home_bottom_navigation_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../onboard/onboard_screen.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -38,13 +39,20 @@ class _SplashPageState extends State<SplashPage> {
         if (validUser) {
           nextScreen = const HomeBottomNavigationScreen();
         }
-        if (validUser && await secureStorage.get("location") == "") {
-          // ignore: use_build_context_synchronously
-          // _showBottomSheet(context);
-          Get.offAll(() => nextScreen);
-        } else {
-          Get.offAll(() => nextScreen);
-        }
+        secureStorage.get("isFirst").then((value) async => {
+              if (value != "1")
+                {
+                  secureStorage.add("isFirst", "1"),
+                  Get.offAll(OnboardingScreen())}
+              else if (validUser && await secureStorage.get("location") == "")
+                {
+                  // ignore: use_build_context_synchronously
+                  // _showBottomSheet(context);
+                  Get.offAll(() => nextScreen)
+                }
+              else
+                {Get.offAll(() => nextScreen)}
+            });
       }
     });
   }
