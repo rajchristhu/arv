@@ -5,8 +5,10 @@ import 'package:arv/utils/app_colors.dart';
 import 'package:arv/utils/arv_api.dart';
 import 'package:arv/utils/custom_progress_bar.dart';
 import 'package:arv/views/product_page/product_grid_card.dart';
+import 'package:arv/views/product_page/product_provider.dart';
 import 'package:flutter/material.dart';
-
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:provider/provider.dart';
 class ProductsPage extends StatefulWidget {
   final bool isExploreAll;
   final bool isCategoryPage;
@@ -28,6 +30,7 @@ class ProductsPage extends StatefulWidget {
 }
 
 var currentTab = 0;
+var coung ;
 
 class _ProductsPageState extends State<ProductsPage> {
   bool isDisposed = false;
@@ -42,6 +45,8 @@ class _ProductsPageState extends State<ProductsPage> {
     totalPages: 0,
   );
 
+  final PagingController<int, ProductDto> _pagingController =
+  PagingController(firstPageKey: 0);
   ValueNotifier<Products> productsNotifier = ValueNotifier(Products(
     list: [],
     currentPage: 0,
@@ -72,19 +77,52 @@ class _ProductsPageState extends State<ProductsPage> {
   @override
   void initState() {
     super.initState();
-    page = widget.currentPage;
-  }
 
+    page = widget.currentPage;
+    _pagingController.addPageRequestListener((pageKey) {
+      fetchApiCall(pageKey,
+        widget.category,
+        "",
+        widget.subSubCategory,);
+    });
+  }
+  static const _pageSize = 100;
+
+  Future<void> fetchApiCall(int pageKey, String? majorCategory,
+      String? categoryId,
+      String? subCategoryId,) async {
+
+    try {
+      Products articles =
+      await Provider.of<NewsProvider>(context, listen: false)
+          .fetchNews(pageKey,majorCategory,categoryId,subCategoryId);
+      final isLastPage = articles.list.length < 15;
+      print("isLastPage");
+      print(isLastPage);
+      print(articles.list.length );
+      // articles.list.clear();
+      if (isLastPage) {
+
+        _pagingController.appendLastPage(articles.list );
+      } else {
+        // _pagingController.appendPage(articles.list , pageKey + 1);
+      }
+    } catch (error) {
+      _pagingController.error = error;
+    }
+  }
   @override
   void dispose() {
     isDisposed = true;
+    _pagingController.dispose();
+
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-
+    coung = (widget.isCategoryPage || widget.isExploreAll) ? 2 : 3;
     final double itemHeight = (size.height - kToolbarHeight) / 3;
     final double itemWidth = size.width / 2.5;
     return SafeArea(
@@ -132,6 +170,7 @@ class _ProductsPageState extends State<ProductsPage> {
                                 shrinkWrap: true,
                                 itemBuilder: (context, index) {
                                   Category category = categories.list[index];
+
                                   if (selectedCategory == "") {
                                     selectedCategory = category.id;
                                     getProductsByCategory(
@@ -139,6 +178,13 @@ class _ProductsPageState extends State<ProductsPage> {
                                       category.id,
                                       widget.subSubCategory,
                                     );
+                                    _pagingController.itemList!.clear();
+
+                                    fetchApiCall(0,
+                                        category.majorCategory,
+                                        category.id,
+                                        widget.subSubCategory,);
+
                                   }
                                   return InkWell(
                                     onTap: () {
@@ -151,6 +197,12 @@ class _ProductsPageState extends State<ProductsPage> {
                                           category.id,
                                           widget.subSubCategory,
                                         );
+                                        _pagingController.itemList!.clear();
+
+                                        fetchApiCall(0,
+                                            category.majorCategory,
+                                            category.id,
+                                            widget.subSubCategory,);
                                       });
                                     },
                                     child: Container(
@@ -238,6 +290,12 @@ class _ProductsPageState extends State<ProductsPage> {
                                           '${widget.category}',
                                           subCategory.id,
                                         );
+                                        _pagingController.itemList!.clear();
+
+                                        fetchApiCall(0,
+                                            subCategory.majorCategory,
+                                            '${widget.category}',
+                                            subCategory.id,);
                                       }
                                       return InkWell(
                                         onTap: () {
@@ -250,6 +308,12 @@ class _ProductsPageState extends State<ProductsPage> {
                                               '${widget.category}',
                                               subCategory.id,
                                             );
+                                            _pagingController.itemList!.clear();
+
+                                            fetchApiCall(0,
+                                                subCategory.majorCategory,
+                                                '${widget.category}',
+                                                subCategory.id,);
                                           });
                                         },
                                         child: Container(
@@ -303,28 +367,50 @@ class _ProductsPageState extends State<ProductsPage> {
                         ),
                       )
                     : Container(),
+            // Container(
+            //   width: !(widget.isCategoryPage || widget.isExploreAll)
+            //       ? MediaQuery.of(context).size.width
+            //       : MediaQuery.of(context).size.width - 120,
+            //   padding: const EdgeInsets.only(top: 10),
+            //   child: ValueListenableBuilder<Products>(
+            //     valueListenable: productsNotifier,
+            //     builder: (context, value, child) {
+            //       return GridView.count(
+            //         crossAxisCount:
+            //             (widget.isCategoryPage || widget.isExploreAll) ? 2 : 3,
+            //         crossAxisSpacing: 6.0,
+            //         childAspectRatio: (itemWidth / itemHeight),
+            //         mainAxisSpacing: 8.0,
+            //         children: List.generate(
+            //           value.list.length,
+            //           (index) => ProductGridCard(product: value.list[index]),
+            //           growable: true,
+            //         ),
+            //       );
+            //     },
+            //   ),
+            // ),
             Container(
               width: !(widget.isCategoryPage || widget.isExploreAll)
                   ? MediaQuery.of(context).size.width
                   : MediaQuery.of(context).size.width - 120,
-              padding: const EdgeInsets.only(top: 10),
-              child: ValueListenableBuilder<Products>(
-                valueListenable: productsNotifier,
-                builder: (context, value, child) {
-                  return GridView.count(
-                    crossAxisCount:
-                        (widget.isCategoryPage || widget.isExploreAll) ? 2 : 3,
-                    crossAxisSpacing: 2.0,
-                    childAspectRatio: (itemWidth / itemHeight),
-                    mainAxisSpacing: 12.0,
-                    children: List.generate(
-                      value.list.length,
-                      (index) => ProductGridCard(product: value.list[index]),
-                      growable: true,
-                    ),
-                  );
-                },
-              ),
+              padding:  EdgeInsets.only(top: 10),
+              child:PagedGridView<int, ProductDto>(
+                showNewPageProgressIndicatorAsGridChild: false,
+                showNewPageErrorIndicatorAsGridChild: false,
+                showNoMoreItemsIndicatorAsGridChild: false,
+                pagingController: _pagingController,
+                gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
+                  childAspectRatio: (itemWidth / itemHeight),
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                  crossAxisCount: coung,
+                ),
+    builderDelegate: PagedChildBuilderDelegate<ProductDto>(
+    itemBuilder: (context, value, index) =>ProductGridCard(product: value),
+    ),
+    )
+
             ),
           ],
         ),

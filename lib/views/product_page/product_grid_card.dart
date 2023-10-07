@@ -44,7 +44,6 @@ class _ProductGridState extends State<ProductGridCard> {
           },
           child: Center(
             child: Container(
-              height: 600,
               decoration: BoxDecoration(
                 border: Border.all(color: lightpink),
                 color: Colors.white,
@@ -61,12 +60,12 @@ class _ProductGridState extends State<ProductGridCard> {
                     children: [
                       Image.network(
                         arvApi.getMediaUri(widget.product.imageUri ?? ""),
-                        height: 100,
+                        height: 70,
                         width: double.infinity,
                         fit: BoxFit.contain,
                         errorBuilder: (context, error, stackTrace) {
                           return Container(
-                            height: 100,
+                            height: 70,
                             padding: const EdgeInsets.all(10),
                             child: Center(
                               child: Text(
@@ -79,7 +78,7 @@ class _ProductGridState extends State<ProductGridCard> {
                           );
                         },
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 4),
                       Padding(
                         padding: const EdgeInsets.only(left: 0),
                         // Add padding to text
@@ -94,18 +93,18 @@ class _ProductGridState extends State<ProductGridCard> {
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 0, top: 4),
-                        // Add padding
-                        child: Text(
-                          widget.product.productSubCategory.name,
-                          style: GoogleFonts.poppins(
-                            fontSize: 14.0,
-                            fontWeight: FontWeight.w300,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
+                      // Padding(
+                      //   padding: const EdgeInsets.only(left: 0, top: 0),
+                      //   // Add padding
+                      //   child: Text(
+                      //     widget.product.productSubCategory.name,
+                      //     style: GoogleFonts.poppins(
+                      //       fontSize: 14.0,
+                      //       fontWeight: FontWeight.w300,
+                      //       color: Colors.black,
+                      //     ),
+                      //   ),
+                      // ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -130,7 +129,7 @@ class _ProductGridState extends State<ProductGridCard> {
                       ),
                       Container(
                         width: 1000000,
-                        padding: const EdgeInsets.only(right: 0, top: 10),
+                        padding: const EdgeInsets.only(right: 0, top: 0),
                         child: count == 0
                             ? OutlinedButton(
                                 onPressed: () async {
