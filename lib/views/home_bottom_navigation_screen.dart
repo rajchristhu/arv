@@ -1,6 +1,4 @@
 import 'package:arv/models/response_models/categories.dart';
-import 'package:arv/shared/cart_service.dart';
-import 'package:arv/shared/navigation_service.dart';
 import 'package:arv/utils/app_colors.dart';
 import 'package:arv/utils/arv_api.dart';
 import 'package:arv/views/order_page/cart.dart';
@@ -16,12 +14,15 @@ import 'package:arv/views/widgets/mini_banner.dart';
 import 'package:arv/views/widgets/offer_products.dart';
 import 'package:arv/views/widgets/profilepage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:permission_handler/permission_handler.dart';
 
+import 'map/maps_place_picker_page.dart';
 import 'product_page/product_page.dart';
-
 
 class HomeBottomNavigationScreen extends StatefulWidget {
   const HomeBottomNavigationScreen({Key? key}) : super(key: key);
@@ -34,8 +35,44 @@ class _HomeBottomNavigationScreenState extends State<HomeBottomNavigationScreen>
 
   @override
   void initState() {
+    changeStatusColor(primaryColor);
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light); // 2
+    _getCurrentLocation();
     super.initState();
     Get.lazyPut(() => CartService());
+  }
+
+  final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
+  Position? _currentPosition;
+  String? _currentAddress;
+
+  _getCurrentLocation() {
+    geolocator
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
+        .then((Position position) {
+      setState(() {
+        _currentPosition = position;
+      });
+
+      _getAddressFromLatLng();
+    }).catchError((e) {
+      print(e);
+    });
+  }
+
+  _getAddressFromLatLng() async {
+    try {
+      List<Placemark> p = await geolocator.placemarkFromCoordinates(
+          _currentPosition!.latitude, _currentPosition!.longitude);
+
+      Placemark place = p[0];
+      setState(() {
+        _currentAddress =
+            "${place.name != null ? place.name + " ," : ""}${place.subLocality != null ? place.subLocality + " ," : ""}${place.locality} ${place.postalCode}, ${place.country}";
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override

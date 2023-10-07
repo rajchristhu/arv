@@ -22,6 +22,7 @@ import 'package:arv/models/response_models/store_locations.dart';
 import 'package:arv/models/response_models/sub_categories.dart';
 import 'package:arv/utils/secure_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 _ArvApi arvApi = _ArvApi.instance;
 
@@ -53,14 +54,24 @@ class _ArvApi {
 
   Future<bool> get validateLogin async {
     String token = await secureStorage.get("access-token");
+    bool bds = await _isValidCacheData("loginTime");
+    print("token");
+    print(token);
+    print(bds);
     return await _isValidCacheData("loginTime") && token != "";
   }
 
   Future<void> clearUser() async {
-    await secureStorage.delete("location");
-    await secureStorage.delete("loginTime");
-    await secureStorage.delete("access-token");
-    await secureStorage.delete("username");
+    FlutterSecureStorage storage = FlutterSecureStorage();
+
+    await storage.deleteAll();
+    // await secureStorage.delete("location");
+    // // await secureStorage.delete("loginTime");
+    // // await secureStorage.delete("access-token");
+    // await secureStorage.delete("username");
+    // await secureStorage.add('loginTime', '');
+    // await secureStorage.add('access-token', '');
+
   }
 
   Future<String> login(String username, String uid) async {

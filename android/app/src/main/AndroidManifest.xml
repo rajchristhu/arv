@@ -5,6 +5,8 @@
         android:label="arv"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+       <meta-data android:name="com.google.android.geo.API_KEY"
+           android:value="AIzaSyCRW-f7wM1mFtMvsrX8oNZ7_yhUv5Apkh8"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"
