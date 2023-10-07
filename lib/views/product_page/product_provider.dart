@@ -29,7 +29,7 @@ var test="";
         "$hostUrl/public/products?majorCategoryId=${majorCategory ?? 'Groceries'}${categoryId != null ? "&categoryId=$categoryId" : ""}${subCategoryId != null ? "&subCategoryId=$subCategoryId" : ""}&priceFrom=0&priceTo=0&page=$pageNo&storeId=$location",
       ));
       print("object");
-      print(('$hostUrl/public/products?majorCategoryId=${majorCategory ?? 'Groceries'}${categoryId != null ? "&categoryId=$categoryId" : ""}${subCategoryId != null ? "&subCategoryId=$subCategoryId" : ""}&priceFrom=0&priceTo=0&page=$pageNo&storeId=$location'));
+      print(('$hostUrl/public/products?majorCategoryId=${majorCategory ?? 'Groceries'}${categoryId != null ? "&categoryId=$categoryId" : ""}&priceFrom=0&priceTo=0&page=$pageNo&storeId=$location'));
 
       if (response.statusCode == 200) {
         newsResponse = Products.fromJson(jsonDecode(response.body));

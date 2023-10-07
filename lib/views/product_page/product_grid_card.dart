@@ -60,12 +60,12 @@ class _ProductGridState extends State<ProductGridCard> {
                     children: [
                       Image.network(
                         arvApi.getMediaUri(widget.product.imageUri ?? ""),
-                        height: 70,
+                        height: 100,
                         width: double.infinity,
                         fit: BoxFit.contain,
                         errorBuilder: (context, error, stackTrace) {
                           return Container(
-                            height: 70,
+                            height: 100,
                             padding: const EdgeInsets.all(10),
                             child: Center(
                               child: Text(
@@ -93,18 +93,18 @@ class _ProductGridState extends State<ProductGridCard> {
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      // Padding(
-                      //   padding: const EdgeInsets.only(left: 0, top: 0),
-                      //   // Add padding
-                      //   child: Text(
-                      //     widget.product.productSubCategory.name,
-                      //     style: GoogleFonts.poppins(
-                      //       fontSize: 14.0,
-                      //       fontWeight: FontWeight.w300,
-                      //       color: Colors.black,
-                      //     ),
-                      //   ),
-                      // ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 0, top: 0),
+                        // Add padding
+                        child: Text(
+                          widget.product.productSubCategory.name,
+                          style: GoogleFonts.poppins(
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.w300,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [

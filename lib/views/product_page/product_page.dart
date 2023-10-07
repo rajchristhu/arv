@@ -96,7 +96,7 @@ class _ProductsPageState extends State<ProductsPage> {
       Products articles =
       await Provider.of<NewsProvider>(context, listen: false)
           .fetchNews(pageKey,majorCategory,categoryId,subCategoryId);
-      final isLastPage = articles.list.length < 15;
+      final isLastPage = articles.list.length < 12;
       print("isLastPage");
       print(isLastPage);
       print(articles.list.length );
@@ -105,7 +105,7 @@ class _ProductsPageState extends State<ProductsPage> {
 
         _pagingController.appendLastPage(articles.list );
       } else {
-        // _pagingController.appendPage(articles.list , pageKey + 1);
+        _pagingController.appendPage(articles.list , pageKey + 1);
       }
     } catch (error) {
       _pagingController.error = error;
@@ -178,8 +178,8 @@ class _ProductsPageState extends State<ProductsPage> {
                                       category.id,
                                       widget.subSubCategory,
                                     );
-                                    _pagingController.itemList!.clear();
-
+                                    if(_pagingController.itemList!=null) {
+                                      _pagingController.itemList!.clear();}
                                     fetchApiCall(0,
                                         category.majorCategory,
                                         category.id,
@@ -197,8 +197,8 @@ class _ProductsPageState extends State<ProductsPage> {
                                           category.id,
                                           widget.subSubCategory,
                                         );
-                                        _pagingController.itemList!.clear();
-
+                                        if(_pagingController.itemList!=null) {
+                                          _pagingController.itemList!.clear();}
                                         fetchApiCall(0,
                                             category.majorCategory,
                                             category.id,
@@ -290,7 +290,8 @@ class _ProductsPageState extends State<ProductsPage> {
                                           '${widget.category}',
                                           subCategory.id,
                                         );
-                                        _pagingController.itemList!.clear();
+                                       if(_pagingController.itemList!=null) {
+                                        _pagingController.itemList!.clear();}
 
                                         fetchApiCall(0,
                                             subCategory.majorCategory,
@@ -308,8 +309,8 @@ class _ProductsPageState extends State<ProductsPage> {
                                               '${widget.category}',
                                               subCategory.id,
                                             );
-                                            _pagingController.itemList!.clear();
-
+                                            if(_pagingController.itemList!=null) {
+                                              _pagingController.itemList!.clear();}
                                             fetchApiCall(0,
                                                 subCategory.majorCategory,
                                                 '${widget.category}',
