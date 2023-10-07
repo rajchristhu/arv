@@ -93,10 +93,11 @@ class _ProductsPageState extends State<ProductsPage> {
       String? subCategoryId,) async {
 
     try {
-      Products articles =
+     final Products articles;
+       articles =
       await Provider.of<NewsProvider>(context, listen: false)
           .fetchNews(pageKey,majorCategory,categoryId,subCategoryId);
-      final isLastPage = articles.list.length < 12;
+      final isLastPage = articles.list.length <15;
       print("isLastPage");
       print(isLastPage);
       print(articles.list.length );

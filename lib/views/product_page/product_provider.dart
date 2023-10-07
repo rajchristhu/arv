@@ -26,7 +26,7 @@ var test="";
       String location = await secureStorage.get("location");
 
       var response = await client.get(Uri.parse(
-        "$hostUrl/public/products?majorCategoryId=${majorCategory ?? 'Groceries'}${categoryId != null ? "&categoryId=$categoryId" : ""}${subCategoryId != null ? "&subCategoryId=$subCategoryId" : ""}&priceFrom=0&priceTo=0&page=$pageNo&storeId=$location",
+        "http://34.93.69.101:8090/public/products?majorCategoryId=Groceries&categoryId=65213a974bc1d11370384831&priceFrom=0&priceTo=0&page=$pageNo"
       ));
       print("object");
       print(('$hostUrl/public/products?majorCategoryId=${majorCategory ?? 'Groceries'}${categoryId != null ? "&categoryId=$categoryId" : ""}&priceFrom=0&priceTo=0&page=$pageNo&storeId=$location'));
@@ -34,6 +34,8 @@ var test="";
       if (response.statusCode == 200) {
         newsResponse = Products.fromJson(jsonDecode(response.body));
         notifyListeners();
+        print("objectobject");
+        print(newsResponse!.list.length);
         return getNewsArticles;
       } else {}
     } catch (e) {
