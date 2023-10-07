@@ -44,7 +44,6 @@ class _ProductGridState extends State<ProductGridCard> {
           },
           child: Center(
             child: Container(
-              height: 600,
               decoration: BoxDecoration(
                 border: Border.all(color: lightpink),
                 color: Colors.white,
@@ -79,7 +78,7 @@ class _ProductGridState extends State<ProductGridCard> {
                           );
                         },
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 4),
                       Padding(
                         padding: const EdgeInsets.only(left: 0),
                         // Add padding to text
@@ -95,7 +94,7 @@ class _ProductGridState extends State<ProductGridCard> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 0, top: 4),
+                        padding: const EdgeInsets.only(left: 0, top: 0),
                         // Add padding
                         child: Text(
                           widget.product.productSubCategory.name,
@@ -104,6 +103,8 @@ class _ProductGridState extends State<ProductGridCard> {
                             fontWeight: FontWeight.w300,
                             color: Colors.black,
                           ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                       Row(
@@ -130,7 +131,7 @@ class _ProductGridState extends State<ProductGridCard> {
                       ),
                       Container(
                         width: 1000000,
-                        padding: const EdgeInsets.only(right: 0, top: 10),
+                        padding: const EdgeInsets.only(right: 0, top: 0),
                         child: count == 0
                             ? OutlinedButton(
                                 onPressed: () async {

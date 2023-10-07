@@ -6,11 +6,13 @@ import 'package:arv/responsive.dart';
 import 'package:arv/shared/app_theme.dart';
 import 'package:arv/utils/secure_storage.dart';
 import 'package:arv/views/mobile_screen.dart';
+import 'package:arv/views/product_page/product_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_statusbarcolor_ns/flutter_statusbarcolor_ns.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -53,7 +55,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // changeStatusColor(primaryColor);
-    return GetMaterialApp(
+    return MultiProvider(providers: [
+      ChangeNotifierProvider<NewsProvider>(create: (_) => NewsProvider()),
+    ], child: GetMaterialApp(
         title: 'ARV',
         debugShowCheckedModeBanner: false,
         theme: appPrimaryTheme(),
@@ -62,7 +66,10 @@ class MyApp extends StatelessWidget {
           mobile: MobileScreen(),
           tablet: MobileScreen(),
           desktop: MobileScreen(),
-        ));
+        )))
+
+
+      ;
   }
 }
 
