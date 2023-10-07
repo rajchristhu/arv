@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:arv/main.dart';
 import 'package:arv/models/response_models/categories.dart';
 import 'package:arv/utils/app_colors.dart';
@@ -17,11 +19,13 @@ import 'package:arv/views/widgets/profilepage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:permission_handler/permission_handler.dart';
 
+import 'map/maps_place_picker_page.dart';
 import 'product_page/product_page.dart';
-
 
 class HomeBottomNavigationScreen extends StatefulWidget {
   const HomeBottomNavigationScreen({Key? key}) : super(key: key);
@@ -32,13 +36,47 @@ class HomeBottomNavigationScreen extends StatefulWidget {
 
 var currentTab = 0;
 
-class _HomeBottomNavigationScreenState extends State<HomeBottomNavigationScreen> {
-
+class _HomeBottomNavigationScreenState
+    extends State<HomeBottomNavigationScreen> {
   @override
   void initState() {
     changeStatusColor(primaryColor);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light); // 2
+    _getCurrentLocation();
     super.initState();
+  }
+
+  final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
+  Position? _currentPosition;
+  String? _currentAddress;
+
+  _getCurrentLocation() {
+    geolocator
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
+        .then((Position position) {
+      setState(() {
+        _currentPosition = position;
+      });
+
+      _getAddressFromLatLng();
+    }).catchError((e) {
+      print(e);
+    });
+  }
+
+  _getAddressFromLatLng() async {
+    try {
+      List<Placemark> p = await geolocator.placemarkFromCoordinates(
+          _currentPosition!.latitude, _currentPosition!.longitude);
+
+      Placemark place = p[0];
+      setState(() {
+        _currentAddress =
+            "${place.name != null ? place.name + " ," : ""}${place.subLocality != null ? place.subLocality + " ," : ""}${place.locality} ${place.postalCode}, ${place.country}";
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
@@ -53,7 +91,7 @@ class _HomeBottomNavigationScreenState extends State<HomeBottomNavigationScreen>
     //   statusBarBrightness: Brightness.dark,
     // ));
     final labelTextStyle =
-    Theme.of(context).textTheme.subtitle2!.copyWith(fontSize: 8.0);
+        Theme.of(context).textTheme.subtitle2!.copyWith(fontSize: 8.0);
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: currentTab == 0 || currentTab == 1
@@ -68,56 +106,75 @@ class _HomeBottomNavigationScreenState extends State<HomeBottomNavigationScreen>
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     const SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            // const Icon(
-                            //   Icons.location_on_outlined,
-                            //   size: 30,
-                            //   color: Colors.white,
-                            // ),
-                            SvgPicture.asset(
-                              "assets/images/location.svg",
-                              semanticsLabel: 'Acme Logo',
-                              width: 25,
-                              height: 25,
-                            ),
-                            const SizedBox(width: 8),
-                            Text(
-                              "Address",
-                              style: GoogleFonts.poppins(
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white,
+                    InkWell(
+                      onTap: () async {
+                        if (Platform.isAndroid &&
+                            await Permission
+                                .locationWhenInUse.serviceStatus.isEnabled) {
+                          print("Permission Granted");
+                          Get.to(MapsPlacePicker());
+                        } else if (Platform.isIOS) {
+                          print("IOS Plartform");
+                          Get.to(MapsPlacePicker());
+                        } else {
+                          print("Permission denied");
+                        }
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              // const Icon(
+                              //   Icons.location_on_outlined,
+                              //   size: 30,
+                              //   color: Colors.white,
+                              // ),
+                              SvgPicture.asset(
+                                "assets/images/location.svg",
+                                semanticsLabel: 'Acme Logo',
+                                width: 25,
+                                height: 25,
                               ),
-                            )
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            SvgPicture.asset(
-                              "assets/images/notification.svg",
-                              semanticsLabel: 'Acme Logo',
-                              width: 25,
-                              height: 25,
-                            ),
-                            // Icon(
-                            //   Icons.notifications_none_outlined,
-                            //   size: 30,
-                            //   color: pink,
-                            // ),
-                            const SizedBox(width: 6),
-                            // const Icon(
-                            //   Icons.person_2_outlined,
-                            //   size: 30,
-                            //   color: Colors.white,
-                            // ),
-                          ],
-                        ),
-                      ],
+                              const SizedBox(width: 8),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width - 130,
+                                child: Text(
+                                  _currentAddress ?? "--",
+                                  overflow: TextOverflow.ellipsis,
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              SvgPicture.asset(
+                                "assets/images/notification.svg",
+                                semanticsLabel: 'Acme Logo',
+                                width: 25,
+                                height: 25,
+                              ),
+                              // Icon(
+                              //   Icons.notifications_none_outlined,
+                              //   size: 30,
+                              //   color: pink,
+                              // ),
+                              const SizedBox(width: 6),
+                              // const Icon(
+                              //   Icons.person_2_outlined,
+                              //   size: 30,
+                              //   color: Colors.white,
+                              // ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                     const SizedBox(height: 10),
                     Container(
@@ -177,104 +234,108 @@ class _HomeBottomNavigationScreenState extends State<HomeBottomNavigationScreen>
                     const SizedBox(height: 20),
                   ],
                 ),
-        ),
-      ):currentTab == 2?
-      PreferredSize(
-        preferredSize: const Size.fromHeight(80),
-        child: Container(
-          height: 80,
-          width: MediaQuery.of(context).size.width,
-          padding: const EdgeInsets.only(top: 25, right: 16, left: 16),
-          color: appColor,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              const SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      // const Icon(
-                      //   Icons.location_on_outlined,
-                      //   size: 30,
-                      //   color: Colors.white,
-                      // ),
-
-                      const SizedBox(width: 8),
-                      Text(
-                        "My Order",
-                        style: GoogleFonts.poppins(
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white,
-                        ),
-                      )
-                    ],
-                  ),
-                ],
               ),
-              const SizedBox(height: 10),
+            )
+          : currentTab == 2
+              ? PreferredSize(
+                  preferredSize: const Size.fromHeight(80),
+                  child: Container(
+                    height: 80,
+                    width: MediaQuery.of(context).size.width,
+                    padding:
+                        const EdgeInsets.only(top: 25, right: 16, left: 16),
+                    color: appColor,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        const SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                // const Icon(
+                                //   Icons.location_on_outlined,
+                                //   size: 30,
+                                //   color: Colors.white,
+                                // ),
 
-            ],
-          ),
-        ),
-      ):currentTab == 4?
-      PreferredSize(
-        preferredSize: const Size.fromHeight(80),
-        child: Container(
-          height: 80,
-          width: MediaQuery.of(context).size.width,
-          padding: const EdgeInsets.only(top: 25, right: 16, left: 16),
-          color: appColor,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              const SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      // const Icon(
-                      //   Icons.location_on_outlined,
-                      //   size: 30,
-                      //   color: Colors.white,
-                      // ),
-
-                      const SizedBox(width: 8),
-                      Text(
-                        "Cart Page",
-                        style: GoogleFonts.poppins(
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white,
+                                const SizedBox(width: 8),
+                                Text(
+                                  "My Order",
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.white,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ],
                         ),
-                      )
-                    ],
+                        const SizedBox(height: 10),
+                      ],
+                    ),
                   ),
-                ],
-              ),
-              const SizedBox(height: 10),
+                )
+              : currentTab == 4
+                  ? PreferredSize(
+                      preferredSize: const Size.fromHeight(80),
+                      child: Container(
+                        height: 80,
+                        width: MediaQuery.of(context).size.width,
+                        padding:
+                            const EdgeInsets.only(top: 25, right: 16, left: 16),
+                        color: appColor,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            const SizedBox(height: 10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    // const Icon(
+                                    //   Icons.location_on_outlined,
+                                    //   size: 30,
+                                    //   color: Colors.white,
+                                    // ),
 
-            ],
-          ),
-        ),
-      ):PreferredSize(
-        preferredSize: const Size.fromHeight(80),
-        child: Container(
-          height: 80,
-          width: MediaQuery.of(context).size.width,
-          padding: const EdgeInsets.only(top: 25, right: 16, left: 16),
-          color: appColor,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              const SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    const SizedBox(width: 8),
+                                    Text(
+                                      "Cart Page",
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.white,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 10),
+                          ],
+                        ),
+                      ),
+                    )
+                  : PreferredSize(
+                      preferredSize: const Size.fromHeight(80),
+                      child: Container(
+                        height: 80,
+                        width: MediaQuery.of(context).size.width,
+                        padding:
+                            const EdgeInsets.only(top: 25, right: 16, left: 16),
+                        color: appColor,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            const SizedBox(height: 10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Row(
                                   crossAxisAlignment: CrossAxisAlignment.end,
@@ -326,7 +387,6 @@ class _HomeBottomNavigationScreenState extends State<HomeBottomNavigationScreen>
           height: 28,
         ),
       ),
-
       bottomNavigationBar: buildBottomBar(),
     );
   }
@@ -364,7 +424,6 @@ class _HomeBottomNavigationScreenState extends State<HomeBottomNavigationScreen>
                         width: 28,
                         height: 28,
                       ),
-
 
                       // Text("Home",
                       // style:GoogleFonts.poppins(
@@ -521,21 +580,21 @@ class HomePage extends StatelessWidget {
                     currentTab == 1
                         ? Container()
                         : Padding(
-                      padding: const EdgeInsets.only(
-                          top: 16, right: 16, left: 16),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Your Favourite Picks",
-                            style: GoogleFonts.poppins(
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.black,
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () {
+                            padding: const EdgeInsets.only(
+                                top: 16, right: 16, left: 16),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Your Favourite Picks",
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: () {
                                     Get.to(
                                       () => const ProductsPage(
                                         true,
@@ -595,7 +654,7 @@ class HomePage extends StatelessWidget {
                           InkWell(
                             onTap: () {
                               Get.to(() => const ProductsPage(
-                                true,
+                                    true,
                                     false,
                                     0,
                                     null,
@@ -622,7 +681,7 @@ class HomePage extends StatelessWidget {
                     ),
                     Padding(
                       padding:
-                      const EdgeInsets.only(top: 16, right: 16, left: 16),
+                          const EdgeInsets.only(top: 16, right: 16, left: 16),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -720,14 +779,14 @@ class HomePage extends StatelessWidget {
                     currentTab == 1
                         ? Container()
                         : Padding(
-                      padding: const EdgeInsets.only(
-                        top: 16,
-                        right: 16,
-                        left: 16,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
+                            padding: const EdgeInsets.only(
+                              top: 16,
+                              right: 16,
+                              left: 16,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
                                 Text(
                                   "Your Pleasure Essentials",
                                   style: GoogleFonts.poppins(
@@ -738,12 +797,8 @@ class HomePage extends StatelessWidget {
                                 ),
                                 InkWell(
                                   onTap: () {
-                                    Get.to(() => const ProductsPage(
-                                        true,
-                                        false,
-                                        0,
-                                        '64ff716ec78bc62fc17ef206',
-                                        null));
+                                    Get.to(() => const ProductsPage(true, false,
+                                        0, '64ff716ec78bc62fc17ef206', null));
                                   },
                                   child: Text(
                                     "See All",
