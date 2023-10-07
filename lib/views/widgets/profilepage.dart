@@ -1,8 +1,9 @@
 import 'package:arv/models/response_models/profile.dart';
 import 'package:arv/utils/arv_api.dart';
 import 'package:arv/views/authentication/login_new.dart';
-import 'package:arv/views/authentication/login_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
 // ignore: depend_on_referenced_packages
 import 'package:get/get.dart';
 
@@ -166,8 +167,9 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       InkWell(
                         onTap: () async {
-                          await arvApi.clearUser();
-                          Get.offAll(() => const ContinueWithPhone());
+                          FlutterSecureStorage storage = FlutterSecureStorage();
+                          await storage.deleteAll().then(
+                              (value) => Get.offAll(() => const LoginPage()));
                         },
                         child: Row(
                           children: const [

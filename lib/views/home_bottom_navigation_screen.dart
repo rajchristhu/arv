@@ -1,3 +1,4 @@
+import 'package:arv/main.dart';
 import 'package:arv/models/response_models/categories.dart';
 import 'package:arv/utils/app_colors.dart';
 import 'package:arv/utils/arv_api.dart';
@@ -14,6 +15,7 @@ import 'package:arv/views/widgets/mini_banner.dart';
 import 'package:arv/views/widgets/offer_products.dart';
 import 'package:arv/views/widgets/profilepage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -34,6 +36,8 @@ class _HomeBottomNavigationScreenState extends State<HomeBottomNavigationScreen>
 
   @override
   void initState() {
+    changeStatusColor(primaryColor);
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light); // 2
     super.initState();
   }
 

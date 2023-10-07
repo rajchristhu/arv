@@ -51,6 +51,7 @@ dev_dependencies:
   firebase_auth: ^4.1.3
   get: ^4.6.5
   animated_text_kit: ^4.2.2
+  flutter_otp_text_field: ^1.1.1
   animate_do: ^3.0.2
   firebase_core: ^2.3.0
   flutter_svg: 2.0.5

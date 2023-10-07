@@ -6,6 +6,7 @@ import 'package:arv/utils/app_colors.dart';
 import 'package:arv/utils/arv_api.dart';
 import 'package:arv/utils/secure_storage.dart';
 import 'package:arv/utils/size_helper.dart';
+import 'package:arv/views/authentication/login_new.dart';
 import 'package:arv/views/authentication/login_page.dart';
 import 'package:arv/views/authentication/user_info_form.dart';
 import 'package:arv/views/home_bottom_navigation_screen.dart';
@@ -32,14 +33,15 @@ class _SplashPageState extends State<SplashPage> {
   void _navigate() async {
     Future.delayed(const Duration(seconds: 5), () async {
       if (mounted) {
-        Widget nextScreen = const ContinueWithPhone();
+        Widget nextScreen = const LoginPage();
         bool validUser = await arvApi.validateLogin;
         if (validUser) {
           nextScreen = const HomeBottomNavigationScreen();
         }
         if (validUser && await secureStorage.get("location") == "") {
           // ignore: use_build_context_synchronously
-          _showBottomSheet(context);
+          // _showBottomSheet(context);
+          Get.offAll(() => nextScreen);
         } else {
           Get.offAll(() => nextScreen);
         }

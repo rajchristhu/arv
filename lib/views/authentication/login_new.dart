@@ -1,13 +1,19 @@
 import 'package:arv/utils/app_colors.dart';
+import 'package:arv/utils/custom_progress_bar.dart';
 import 'package:arv/utils/secure_storage.dart';
+import 'package:arv/views/authentication/otp_new.dart';
 import 'package:arv/views/authentication/verify_phone.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../main.dart';
+
 class LoginPage extends StatefulWidget {
+
   const LoginPage({super.key});
 
   @override
@@ -22,12 +28,16 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
+    changeStatusColor(Colors.white);
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark); // 2
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       auth = FirebaseAuth.instance;
     });
   }
 
   login() async {
+    ArvProgressDialog.instance.showProgressDialog(context);
+
     await secureStorage.add("username", phoneController.text);
     String number = "+91 ${phoneController.text}";
 
@@ -39,10 +49,12 @@ class _LoginPageState extends State<LoginPage> {
         if (e.code == 'invalid-phone-number') {}
       },
       codeSent: (String verificationId, int? resendToken) async {
+        ArvProgressDialog.instance.dismissDialog(context);
+
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => VerifyPhone(
+            builder: (context) => OTPNewPage(
               phoneNumber: number,
               verificationId: verificationId,
               resendToken: resendToken,
@@ -57,6 +69,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       // backgroundColor: whiteLightColor,
       body: SafeArea(
         child: SingleChildScrollView(
@@ -171,6 +184,7 @@ class _LoginPageState extends State<LoginPage> {
                                 controller: phoneController,
                                 clearButtonMode: OverlayVisibilityMode.editing,
                                 keyboardType: TextInputType.phone,
+                                maxLength: 10,
                                 maxLines: 1,
                                 placeholder: 'Enter your number',
                               ),

@@ -5,6 +5,7 @@ Color appColor = HexColor("#3B026A");
 Color primaryColor = HexColor("#3B026A");
 Color primaryLightColor = HexColor("#868889");
 Color whiteLightColor = HexColor("#F9F0FB");
+Color pinkColor = HexColor("#FF0067");
 Color white = HexColor("#FFFFFF");
 Color gray = HexColor("#868889");
 Color gray50 = HexColor("#cccecf");
