@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:arv/shared/utils.dart';
 import 'package:arv/utils/app_colors.dart';
 import 'package:arv/utils/secure_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -24,9 +25,8 @@ class _ContinueWithPhoneState extends State<ContinueWithPhone> {
   FirebaseAuth auth = FirebaseAuth.instance;
 
   login() async {
-    print("ajhdf");
+    utils.notify("Sending OTP ...");
     await secureStorage.add("username", phoneNumber);
-    print("ajhdfsdfsd");
     await auth.verifyPhoneNumber(
       phoneNumber: countryCode + phoneNumber,
       timeout: const Duration(seconds: 60),
@@ -34,13 +34,10 @@ class _ContinueWithPhoneState extends State<ContinueWithPhone> {
         print("SMS Code ${credential.smsCode}");
       },
       verificationFailed: (FirebaseAuthException e) {
-        print("e.code");
-        print(e.code);
-        if (e.code == 'invalid-phone-number') {
-          print('The provided phone number is not valid.');
-        }
+        utils.notify(e.code);
       },
       codeSent: (String verificationId, int? resendToken) async {
+        utils.notify("OTP sent to ${countryCode + phoneNumber}");
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -54,7 +51,6 @@ class _ContinueWithPhoneState extends State<ContinueWithPhone> {
       },
       codeAutoRetrievalTimeout: (String verificationId) {},
     );
-    print("sropwpeo");
   }
 
   @override

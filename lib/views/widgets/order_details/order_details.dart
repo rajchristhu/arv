@@ -7,6 +7,7 @@ import 'package:arv/shared/cart_service.dart';
 import 'package:arv/utils/app_colors.dart';
 import 'package:arv/utils/arv_api.dart';
 import 'package:arv/utils/custom_progress_bar.dart';
+import 'package:arv/utils/secure_storage.dart';
 import 'package:arv/views/order_page/input_box.dart';
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
@@ -378,7 +379,7 @@ class _CartValueState extends State<CartValue> {
                       deliveryBoyTip: 0,
                       deliveryCharge: deliveryCharge,
                       couponCode: "",
-                      accessToken: await arvApi.getAccessToken(),
+                      accessToken: await secureStorage.get("access-token"),
                     );
 
                     await arvApi.placeOrder(order);

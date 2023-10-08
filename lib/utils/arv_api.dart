@@ -18,11 +18,12 @@ import 'package:arv/models/response_models/home_banner.dart';
 import 'package:arv/models/response_models/my_orders.dart';
 import 'package:arv/models/response_models/products.dart';
 import 'package:arv/models/response_models/profile.dart';
+import 'package:arv/models/response_models/response_message.dart';
 import 'package:arv/models/response_models/store_locations.dart';
 import 'package:arv/models/response_models/sub_categories.dart';
+import 'package:arv/shared/utils.dart';
 import 'package:arv/utils/secure_storage.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 _ArvApi arvApi = _ArvApi.instance;
 
@@ -54,24 +55,14 @@ class _ArvApi {
 
   Future<bool> get validateLogin async {
     String token = await secureStorage.get("access-token");
-    bool bds = await _isValidCacheData("loginTime");
-    print("token");
-    print(token);
-    print(bds);
     return await _isValidCacheData("loginTime") && token != "";
   }
 
   Future<void> clearUser() async {
-    FlutterSecureStorage storage = FlutterSecureStorage();
-
-    await storage.deleteAll();
-    // await secureStorage.delete("location");
-    // // await secureStorage.delete("loginTime");
-    // // await secureStorage.delete("access-token");
-    // await secureStorage.delete("username");
-    // await secureStorage.add('loginTime', '');
-    // await secureStorage.add('access-token', '');
-
+    await secureStorage.delete("location");
+    await secureStorage.delete("loginTime");
+    await secureStorage.delete("access-token");
+    await secureStorage.delete("username");
   }
 
   Future<String> login(String username, String uid) async {
@@ -91,7 +82,8 @@ class _ArvApi {
       AccessToken accessToken = AccessToken.fromRawJson(response.body);
       await secureStorage.add("access-token", accessToken.token);
       await secureStorage.add('loginTime', DateTime.now().toIso8601String());
-      return accessToken.token;
+      log("Login Token = ${secureStorage.get("access-token")}");
+      return secureStorage.get("access-token");
     } catch (e) {
       log("Login Exception : $e");
     }
@@ -357,9 +349,8 @@ class _ArvApi {
       headers: headers,
       body: cart.toRawJson(),
     );
-    log("Cart Response : ${response.statusCode}");
     if (response.statusCode == 200) {
-      log("Add to cart : ${response.body}");
+      utils.notify(ResponseMessage.fromRawJson(response.body).message);
     }
   }
 
@@ -450,10 +441,8 @@ class _ArvApi {
       headers: headers,
     );
 
-    log(response.body);
-
     if (response.statusCode == 200) {
-      log("Cart removed : ${response.body}");
+      utils.notify(ResponseMessage.fromRawJson(response.body).message);
     }
   }
 
@@ -533,7 +522,7 @@ class _ArvApi {
       );
 
       if (response.statusCode == 200) {
-        //
+        utils.notify(ResponseMessage.fromRawJson(response.body).message);
       }
     } catch (e) {
       log("Exception : $e");
@@ -608,6 +597,7 @@ class _ArvApi {
         deliveryCharge = store.minDeliveryPrice;
       }
     } catch (e) {
+      deliveryCharge = 0.0;
       log("Location Exception : $e");
     }
 

@@ -45,7 +45,7 @@ class Order {
         paymentMode: json["paymentMode"],
         addressId: json["addressId"],
         accessToken: json["accessToken"],
-        deliveryCharge: json["deliveryCharge"],
+        deliveryCharge: json["deliveryCharge"] ?? 0,
         discountedPrice: json["discountedPrice"],
         returnStatus: json["returnStatus"],
         deliveryBoyTip: json["deliveryBoyTip"],

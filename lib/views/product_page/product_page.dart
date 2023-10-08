@@ -5,7 +5,10 @@ import 'package:arv/utils/app_colors.dart';
 import 'package:arv/utils/arv_api.dart';
 import 'package:arv/utils/custom_progress_bar.dart';
 import 'package:arv/views/product_page/product_grid_card.dart';
+import 'package:arv/views/product_page/product_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:provider/provider.dart';
 
 class ProductsPage extends StatefulWidget {
   final bool isExploreAll;
@@ -27,7 +30,7 @@ class ProductsPage extends StatefulWidget {
   State createState() => _ProductsPageState();
 }
 
-var currentTab = 0;
+int count = 0;
 
 class _ProductsPageState extends State<ProductsPage> {
   bool isDisposed = false;
@@ -95,12 +98,7 @@ class _ProductsPageState extends State<ProductsPage> {
       await Provider.of<NewsProvider>(context, listen: false)
           .fetchNews(pageKey,majorCategory,categoryId,subCategoryId);
       final isLastPage = articles.list.length <15;
-      print("isLastPage");
-      print(isLastPage);
-      print(articles.list.length );
-      // articles.list.clear();
       if (isLastPage) {
-
         _pagingController.appendLastPage(articles.list );
       } else {
         _pagingController.appendPage(articles.list , pageKey + 1);
@@ -120,7 +118,7 @@ class _ProductsPageState extends State<ProductsPage> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    coung = (widget.isCategoryPage || widget.isExploreAll) ? 2 : 3;
+    count = (widget.isCategoryPage || widget.isExploreAll) ? 2 : 3;
     final double itemHeight = (size.height - kToolbarHeight) / 3;
     final double itemWidth = size.width / 2.5;
     return SafeArea(
@@ -393,23 +391,24 @@ class _ProductsPageState extends State<ProductsPage> {
               width: !(widget.isCategoryPage || widget.isExploreAll)
                   ? MediaQuery.of(context).size.width
                   : MediaQuery.of(context).size.width - 120,
-              padding:  EdgeInsets.only(top: 10),
-              child:PagedGridView<int, ProductDto>(
+              padding: const EdgeInsets.only(top: 10),
+              child: PagedGridView<int, ProductDto>(
                 showNewPageProgressIndicatorAsGridChild: false,
                 showNewPageErrorIndicatorAsGridChild: false,
                 showNoMoreItemsIndicatorAsGridChild: false,
                 pagingController: _pagingController,
-                gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   childAspectRatio: (itemWidth / itemHeight),
                   crossAxisSpacing: 10,
                   mainAxisSpacing: 10,
-                  crossAxisCount: coung,
+                  crossAxisCount: count,
                 ),
-    builderDelegate: PagedChildBuilderDelegate<ProductDto>(
-    itemBuilder: (context, value, index) =>ProductGridCard(product: value),
-    ),
-    )
-
+                builderDelegate: PagedChildBuilderDelegate<ProductDto>(
+                  itemBuilder: (context, value, index) => ProductGridCard(
+                    product: value,
+                  ),
+                ),
+              ),
             ),
           ],
         ),

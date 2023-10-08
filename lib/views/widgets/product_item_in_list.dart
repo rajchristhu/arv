@@ -78,7 +78,7 @@ class _ProductItemInListState extends State<ProductItemInList> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Image.network(
-                      arvApi.getMediaUri(widget.product.imageUri ?? ""),
+                      arvApi.getMediaUri(widget.product.id),
                       height: 90,
                       width: double.infinity,
                       fit: BoxFit.contain,

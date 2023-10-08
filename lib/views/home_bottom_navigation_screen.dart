@@ -1,6 +1,10 @@
+import 'package:arv/main.dart';
 import 'package:arv/models/response_models/categories.dart';
+import 'package:arv/shared/cart_service.dart';
+import 'package:arv/shared/navigation_service.dart';
 import 'package:arv/utils/app_colors.dart';
 import 'package:arv/utils/arv_api.dart';
+import 'package:arv/utils/distance-calculator.dart';
 import 'package:arv/views/order_page/cart.dart';
 import 'package:arv/views/order_page/order_page.dart';
 import 'package:arv/views/widgets/banner_carousel_section.dart';
@@ -13,15 +17,14 @@ import 'package:arv/views/widgets/fixed_dashboard_banner.dart';
 import 'package:arv/views/widgets/mini_banner.dart';
 import 'package:arv/views/widgets/offer_products.dart';
 import 'package:arv/views/widgets/profilepage.dart';
+import 'package:arv/views/widgets/single_scroll_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:permission_handler/permission_handler.dart';
 
-import 'map/maps_place_picker_page.dart';
 import 'product_page/product_page.dart';
 
 class HomeBottomNavigationScreen extends StatefulWidget {
@@ -42,12 +45,12 @@ class _HomeBottomNavigationScreenState extends State<HomeBottomNavigationScreen>
     Get.lazyPut(() => CartService());
   }
 
-  final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
+  final Geolocator geoLocator = Geolocator()..forceAndroidLocationManager;
   Position? _currentPosition;
   String? _currentAddress;
 
   _getCurrentLocation() {
-    geolocator
+    geoLocator
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
         .then((Position position) {
       setState(() {
@@ -56,22 +59,27 @@ class _HomeBottomNavigationScreenState extends State<HomeBottomNavigationScreen>
 
       _getAddressFromLatLng();
     }).catchError((e) {
-      print(e);
+      //
     });
   }
 
   _getAddressFromLatLng() async {
     try {
-      List<Placemark> p = await geolocator.placemarkFromCoordinates(
-          _currentPosition!.latitude, _currentPosition!.longitude);
+      List<Placemark> p = await geoLocator.placemarkFromCoordinates(
+        _currentPosition!.latitude,
+        _currentPosition!.longitude,
+      );
 
       Placemark place = p[0];
+      distanceCalculator.setLatitude(_currentPosition!.latitude);
+      distanceCalculator.setLongitude(_currentPosition!.longitude);
+      distanceCalculator.findNearByStore();
       setState(() {
         _currentAddress =
-            "${place.name != null ? place.name + " ," : ""}${place.subLocality != null ? place.subLocality + " ," : ""}${place.locality} ${place.postalCode}, ${place.country}";
+            "${place.name != null ? "${place.name} ," : ""}${place.subLocality != null ? "${place.subLocality} ," : ""}${place.locality} ${place.postalCode}, ${place.country}";
       });
     } catch (e) {
-      print(e);
+      //
     }
   }
 
@@ -91,7 +99,7 @@ class _HomeBottomNavigationScreenState extends State<HomeBottomNavigationScreen>
               ? PreferredSize(
                   preferredSize: const Size.fromHeight(160),
                   child: Container(
-                    height: 160,
+                    height: 170,
                     width: MediaQuery.of(context).size.width,
                     padding:
                         const EdgeInsets.only(top: 25, right: 16, left: 16),
@@ -104,26 +112,35 @@ class _HomeBottomNavigationScreenState extends State<HomeBottomNavigationScreen>
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 // const Icon(
                                 //   Icons.location_on_outlined,
                                 //   size: 30,
                                 //   color: Colors.white,
                                 // ),
-                                SvgPicture.asset(
-                                  "assets/images/location.svg",
-                                  semanticsLabel: 'Acme Logo',
-                                  width: 25,
-                                  height: 25,
+                                Center(
+                                  child: SvgPicture.asset(
+                                    "assets/images/location.svg",
+                                    semanticsLabel: 'Acme Logo',
+                                    width: 25,
+                                    height: 25,
+                                    fit: BoxFit.contain,
+                                  ),
                                 ),
                                 const SizedBox(width: 8),
-                                Text(
-                                  "Address",
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 18.0,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.white,
+                                SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.75,
+                                  child: Text(
+                                    _currentAddress.toString(),
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.white,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2,
                                   ),
                                 )
                               ],
@@ -370,7 +387,9 @@ class _HomeBottomNavigationScreenState extends State<HomeBottomNavigationScreen>
                               child: GetBuilder<CartService>(
                                 init: Get.find<CartService>(),
                                 builder: (controller) {
-                                  if(controller.items.length == 0) return Container();
+                                  if (controller.items.length == 0) {
+                                    return Container();
+                                  }
                                   return Container(
                                     decoration: BoxDecoration(
                                       color: appColor,
@@ -630,51 +649,13 @@ class HomePage extends StatelessWidget {
                             : const CarouselSectionOne(),
                         currentTab == 1
                             ? Container()
-                            : Padding(
-                                padding: const EdgeInsets.only(
-                                    top: 16, right: 16, left: 16),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "Your Favourite Picks",
-                                      style: GoogleFonts.poppins(
-                                        fontSize: 18.0,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        Get.to(
-                                          () => const ProductsPage(
-                                            true,
-                                            false,
-                                            0,
-                                            null,
-                                            null,
-                                          ),
-                                        );
-                                      },
-                                      child: Text("See All",
-                                          style: GoogleFonts.poppins(
-                                            fontSize: 18.0,
-                                            fontWeight: FontWeight.w400,
-                                            color: pink,
-                                          )),
-                                    )
-                                  ],
-                                ),
+                            : const SingleScrollList(
+                                title: "Your Favourite Picks",
+                                majorCategory: "Groceries",
+                                isViewAll: true,
+                                myCollection: false,
+                                isRecentViews: false,
                               ),
-                        currentTab == 1
-                            ? Container()
-                            : const SizedBox(
-                                height: 12,
-                              ),
-                        currentTab == 1
-                            ? Container()
-                            : const FavouritePicks(pageNumber: 0),
                         currentTab == 1
                             ? Container()
                             : const SizedBox(
@@ -836,57 +817,58 @@ class HomePage extends StatelessWidget {
                             : const BannerCarouselSection(),
                         currentTab == 1
                             ? Container()
-                            : Padding(
-                                padding: const EdgeInsets.only(
-                                  top: 16,
-                                  right: 16,
-                                  left: 16,
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "Your Pleasure Essentials",
-                                      style: GoogleFonts.poppins(
-                                        fontSize: 18.0,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        Get.to(() => const ProductsPage(
-                                            true,
-                                            false,
-                                            0,
-                                            '64ff716ec78bc62fc17ef206',
-                                            null));
-                                      },
-                                      child: Text(
-                                        "See All",
-                                        style: GoogleFonts.poppins(
-                                          fontSize: 18.0,
-                                          fontWeight: FontWeight.w400,
-                                          color: pink,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                            : const SingleScrollList(
+                                title: "Your Pleasure Essentials",
+                                majorCategory: "Groceries",
+                                isViewAll: true,
+                                myCollection: false,
+                                isRecentViews: false,
                               ),
                         currentTab == 1
                             ? Container()
-                            : const SizedBox(height: 12),
+                            : const SingleScrollList(
+                                title: "Fashion",
+                                majorCategory: "Fashion",
+                                isViewAll: false,
+                                myCollection: false,
+                                isRecentViews: false,
+                              ),
                         currentTab == 1
                             ? Container()
-                            : const FavouritePicks(pageNumber: 1),
+                            : const SingleScrollList(
+                                title: "Fruits & Veg",
+                                majorCategory: 'Vegetables',
+                                isViewAll: false,
+                                myCollection: false,
+                                isRecentViews: false,
+                              ),
                         currentTab == 1
                             ? Container()
-                            : const UserFavourites(isRecentViews: true),
+                            : const SingleScrollList(
+                                title: "Accessories",
+                                majorCategory: "Fancy",
+                                isViewAll: false,
+                                myCollection: false,
+                                isRecentViews: false,
+                              ),
                         currentTab == 1
                             ? Container()
-                            : const UserFavourites(isRecentViews: false),
+                            : const SingleScrollList(
+                          title: "Recent Views",
+                          majorCategory: "Fancy",
+                          isViewAll: false,
+                          myCollection: true,
+                          isRecentViews: true,
+                        ),
+                        currentTab == 1
+                            ? Container()
+                            : const SingleScrollList(
+                          title: "Wishlist",
+                          majorCategory: "Fancy",
+                          isViewAll: false,
+                          myCollection: true,
+                          isRecentViews: false,
+                        ),
                       ],
                     )
                   ],

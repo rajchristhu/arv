@@ -1,59 +1,39 @@
 import 'package:arv/models/response_models/products.dart';
+import 'package:arv/utils/app_colors.dart';
 import 'package:arv/utils/arv_api.dart';
+import 'package:arv/views/product_page/product_page.dart';
 import 'package:arv/views/widgets/product_item_in_list.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class FavouritePicks extends StatelessWidget {
-  const FavouritePicks({
+class SingleScrollList extends StatelessWidget {
+  const SingleScrollList({
     super.key,
-    required this.pageNumber,
-    this.majorCategory,
-  });
-
-  final int pageNumber;
-  final String? majorCategory;
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<Products>(
-      future: arvApi.getAllProducts(pageNumber, majorCategory, null, null),
-      builder: (context, snapshot) {
-        List<ProductDto> productList = snapshot.data?.list ?? [];
-        if (productList.isEmpty) return Container();
-        return SizedBox(
-          height: 200,
-          width: MediaQuery.of(context).size.width,
-          child: ListView.builder(
-            itemCount: productList.length,
-            primary: false,
-            scrollDirection: Axis.horizontal,
-            shrinkWrap: true,
-            itemBuilder: (context, index) {
-              return ProductItemInList(
-                product: productList[index],
-                index: index,
-              );
-            },
-          ),
-        );
-      },
-    );
-  }
-}
-
-class UserFavourites extends StatelessWidget {
-  const UserFavourites({
-    super.key,
+    required this.title,
+    required this.majorCategory,
+    required this.isViewAll,
+    required this.myCollection,
     required this.isRecentViews,
   });
 
+  final String title;
+  final String? majorCategory;
+  final bool isViewAll;
+  final bool myCollection;
   final bool isRecentViews;
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Products>(
-      future: arvApi.getRecentViews(isRecentViews),
+      future: myCollection
+          ? arvApi.getRecentViews(isRecentViews)
+          : arvApi.getAllProducts(
+              0,
+              majorCategory,
+              null,
+              null,
+            ),
       builder: (context, snapshot) {
         List<ProductDto> productList = snapshot.data?.list ?? [];
         if (productList.isEmpty) return Container();
@@ -69,19 +49,40 @@ class UserFavourites extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    isRecentViews ? "Recent Views" : "Favourites",
+                    title,
                     style: GoogleFonts.poppins(
                       fontSize: 18.0,
                       fontWeight: FontWeight.w600,
                       color: Colors.black,
                     ),
                   ),
+                  isViewAll
+                      ? InkWell(
+                          onTap: () {
+                            Get.to(
+                              () => const ProductsPage(
+                                true,
+                                false,
+                                0,
+                                null,
+                                null,
+                              ),
+                            );
+                          },
+                          child: Text(
+                            "See All",
+                            style: GoogleFonts.poppins(
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.w400,
+                              color: pink,
+                            ),
+                          ),
+                        )
+                      : Container(),
                 ],
               ),
             ),
-            const SizedBox(
-              height: 20,
-            ),
+            const SizedBox(height: 12),
             SizedBox(
               height: 200,
               width: MediaQuery.of(context).size.width,
@@ -97,7 +98,7 @@ class UserFavourites extends StatelessWidget {
                   );
                 },
               ),
-            ),
+            )
           ],
         );
       },

@@ -1,12 +1,14 @@
 import 'package:arv/models/request/user.dart';
+import 'package:arv/shared/utils.dart';
 import 'package:arv/utils/app_colors.dart';
 import 'package:arv/utils/arv_api.dart';
 import 'package:arv/utils/secure_storage.dart';
 import 'package:arv/views/authentication/numeric_pad.dart';
-import 'package:arv/views/authentication/user_info_form.dart';
+import 'package:arv/views/home_bottom_navigation_screen.dart';
 // ignore: depend_on_referenced_packages
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class VerifyPhone extends StatefulWidget {
   final String phoneNumber;
@@ -35,13 +37,13 @@ class _VerifyPhoneState extends State<VerifyPhone> {
           onTap: () {
             Navigator.pop(context);
           },
-          child: Icon(
+          child: const Icon(
             Icons.arrow_back,
             size: 30,
             color: Colors.black,
           ),
         ),
-        title: Text(
+        title: const Text(
           "Verify phone",
           style: TextStyle(
             fontSize: 18,
@@ -64,10 +66,10 @@ class _VerifyPhoneState extends State<VerifyPhone> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Padding(
-                    padding: EdgeInsets.symmetric(vertical: 14),
+                    padding: const EdgeInsets.symmetric(vertical: 14),
                     child: Text(
-                      "We have sent an OTP to " + widget.phoneNumber,
-                      style: TextStyle(
+                      "We have sent an OTP to ${widget.phoneNumber}",
+                      style: const TextStyle(
                         fontSize: 16,
                         color: Color(0xFF818181),
                       ),
@@ -94,25 +96,23 @@ class _VerifyPhoneState extends State<VerifyPhone> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(vertical: 14),
+                    padding: const EdgeInsets.symmetric(vertical: 14),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Text(
-                          "Didn't recieve code? ",
+                        const Text(
+                          "Didn't receive code? ",
                           style: TextStyle(
                             fontSize: 18,
                             color: Color(0xFF818181),
                           ),
                         ),
-                        SizedBox(
-                          width: 8,
-                        ),
+                        const SizedBox(width: 8),
                         GestureDetector(
                           onTap: () {
                             print("Resend the code to the user");
                           },
-                          child: Text(
+                          child: const Text(
                             "Request again",
                             style: TextStyle(
                               fontSize: 18,
@@ -128,19 +128,23 @@ class _VerifyPhoneState extends State<VerifyPhone> {
           ),
           Container(
             height: MediaQuery.of(context).size.height * 0.11,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.all(
                 Radius.circular(60),
               ),
             ),
             child: Padding(
-              padding: EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16),
               child: Row(
                 children: <Widget>[
                   Expanded(
                     child: GestureDetector(
                       onTap: () async {
+                        await secureStorage.add(
+                          "location",
+                          "651a665ede43800aa3bff961",
+                        );
                         PhoneAuthCredential credential =
                             PhoneAuthProvider.credential(
                           verificationId: widget.verificationId,
@@ -149,14 +153,14 @@ class _VerifyPhoneState extends State<VerifyPhone> {
                         UserCredential userCredential = await FirebaseAuth
                             .instance
                             .signInWithCredential(credential);
-                        String phone = await secureStorage.get("username");
                         String uid = userCredential.user?.uid ?? "";
                         await secureStorage.add("uid", uid);
-                        String token = await arvApi.login(phone, uid);
+                        String token =
+                            await arvApi.login(widget.phoneNumber, uid);
                         bool isNewUser = token == "";
                         if (isNewUser) {
                           ArvUser user = ArvUser(
-                            phone: phone,
+                            phone: widget.phoneNumber,
                             email: "",
                             uid: uid,
                             username: '',
@@ -165,8 +169,9 @@ class _VerifyPhoneState extends State<VerifyPhone> {
 
                           await arvApi.register(user);
                         }
-                        // ignore: use_build_context_synchronously
-                        _showBottomSheet(context);
+                        utils.notify("Verification completed !");
+                        await Future.delayed(const Duration(seconds: 2));
+                        Get.offAll(() => const HomeBottomNavigationScreen());
                       },
                       child: Container(
                         decoration: BoxDecoration(
@@ -240,26 +245,6 @@ class _VerifyPhoneState extends State<VerifyPhone> {
           ),
         ),
       ),
-    );
-  }
-
-  void _showBottomSheet(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: false,
-      isDismissible: false,
-      enableDrag: false,
-      useSafeArea: true,
-      backgroundColor: Colors.white,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(30.0),
-          topRight: Radius.circular(30.0),
-        ),
-      ),
-      builder: (BuildContext context) {
-        return const UserInfoForm();
-      },
     );
   }
 }
