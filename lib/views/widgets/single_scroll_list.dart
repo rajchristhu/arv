@@ -15,6 +15,7 @@ class SingleScrollList extends StatelessWidget {
     required this.isViewAll,
     required this.myCollection,
     required this.isRecentViews,
+    required this.pageNumber,
   });
 
   final String title;
@@ -22,6 +23,7 @@ class SingleScrollList extends StatelessWidget {
   final bool isViewAll;
   final bool myCollection;
   final bool isRecentViews;
+  final int pageNumber;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +31,7 @@ class SingleScrollList extends StatelessWidget {
       future: myCollection
           ? arvApi.getRecentViews(isRecentViews)
           : arvApi.getAllProducts(
-              0,
+              pageNumber,
               majorCategory,
               null,
               null,
@@ -60,10 +62,10 @@ class SingleScrollList extends StatelessWidget {
                       ? InkWell(
                           onTap: () {
                             Get.to(
-                              () => const ProductsPage(
+                              () => ProductsPage(
                                 true,
                                 false,
-                                0,
+                                pageNumber,
                                 null,
                                 null,
                               ),

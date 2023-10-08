@@ -12,7 +12,6 @@ import 'package:arv/views/widgets/carousel_one/carousel_section_one.dart';
 import 'package:arv/views/widgets/category/fixed_category_section.dart';
 import 'package:arv/views/widgets/category_collections.dart';
 import 'package:arv/views/widgets/dual_card_section.dart';
-import 'package:arv/views/widgets/favourite_picks.dart';
 import 'package:arv/views/widgets/fixed_dashboard_banner.dart';
 import 'package:arv/views/widgets/mini_banner.dart';
 import 'package:arv/views/widgets/offer_products.dart';
@@ -34,8 +33,8 @@ class HomeBottomNavigationScreen extends StatefulWidget {
   State createState() => _HomeBottomNavigationScreenState();
 }
 
-class _HomeBottomNavigationScreenState extends State<HomeBottomNavigationScreen> {
-
+class _HomeBottomNavigationScreenState
+    extends State<HomeBottomNavigationScreen> {
   @override
   void initState() {
     changeStatusColor(primaryColor);
@@ -73,7 +72,7 @@ class _HomeBottomNavigationScreenState extends State<HomeBottomNavigationScreen>
       Placemark place = p[0];
       distanceCalculator.setLatitude(_currentPosition!.latitude);
       distanceCalculator.setLongitude(_currentPosition!.longitude);
-      distanceCalculator.findNearByStore();
+      await distanceCalculator.findNearByStore();
       setState(() {
         _currentAddress =
             "${place.name != null ? "${place.name} ," : ""}${place.subLocality != null ? "${place.subLocality} ," : ""}${place.locality} ${place.postalCode}, ${place.country}";
@@ -655,6 +654,7 @@ class HomePage extends StatelessWidget {
                                 isViewAll: true,
                                 myCollection: false,
                                 isRecentViews: false,
+                                pageNumber: 1,
                               ),
                         currentTab == 1
                             ? Container()
@@ -823,6 +823,7 @@ class HomePage extends StatelessWidget {
                                 isViewAll: true,
                                 myCollection: false,
                                 isRecentViews: false,
+                                pageNumber: 2,
                               ),
                         currentTab == 1
                             ? Container()
@@ -832,6 +833,7 @@ class HomePage extends StatelessWidget {
                                 isViewAll: false,
                                 myCollection: false,
                                 isRecentViews: false,
+                                pageNumber: 0,
                               ),
                         currentTab == 1
                             ? Container()
@@ -841,6 +843,7 @@ class HomePage extends StatelessWidget {
                                 isViewAll: false,
                                 myCollection: false,
                                 isRecentViews: false,
+                                pageNumber: 0,
                               ),
                         currentTab == 1
                             ? Container()
@@ -850,25 +853,28 @@ class HomePage extends StatelessWidget {
                                 isViewAll: false,
                                 myCollection: false,
                                 isRecentViews: false,
+                                pageNumber: 0,
                               ),
                         currentTab == 1
                             ? Container()
                             : const SingleScrollList(
-                          title: "Recent Views",
-                          majorCategory: "Fancy",
-                          isViewAll: false,
-                          myCollection: true,
-                          isRecentViews: true,
-                        ),
+                                title: "Recent Views",
+                                majorCategory: "Fancy",
+                                isViewAll: false,
+                                myCollection: true,
+                                isRecentViews: true,
+                                pageNumber: 0,
+                              ),
                         currentTab == 1
                             ? Container()
                             : const SingleScrollList(
-                          title: "Wishlist",
-                          majorCategory: "Fancy",
-                          isViewAll: false,
-                          myCollection: true,
-                          isRecentViews: false,
-                        ),
+                                title: "Wishlist",
+                                majorCategory: "Fancy",
+                                isViewAll: false,
+                                myCollection: true,
+                                isRecentViews: false,
+                                pageNumber: 0,
+                              ),
                       ],
                     )
                   ],

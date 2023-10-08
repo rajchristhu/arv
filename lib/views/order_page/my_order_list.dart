@@ -165,6 +165,7 @@ class _OrderProgressState extends State<OrderProgress> {
                                           horizontal: 20, vertical: 30),
                                       child: OrderTrackerZen(
                                         success_color: pink,
+                                        background_color: gray,
                                         tracker_data: [
                                           TrackerData(
                                             title: "Order Placed",

@@ -12,7 +12,6 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../main.dart';
 
 class LoginPage extends StatefulWidget {
-
   const LoginPage({super.key});
 
   @override
@@ -50,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
       },
       codeSent: (String verificationId, int? resendToken) async {
         ArvProgressDialog.instance.dismissDialog(context);
-        utils.notify("OTP sent to number");
+        utils.notify("OTP sent to number $number");
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -69,17 +68,16 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       // backgroundColor: whiteLightColor,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
             decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [Colors.white, whiteLightColor],
-                )),
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Colors.white, whiteLightColor],
+            )),
             height: MediaQuery.of(context).size.height,
             child: Column(
               children: <Widget>[
@@ -93,21 +91,18 @@ class _LoginPageState extends State<LoginPage> {
                           Center(
                             child: Container(
                               height: 0,
-                              constraints:
-                              const BoxConstraints(maxWidth: 500),
+                              constraints: const BoxConstraints(maxWidth: 500),
                               margin: const EdgeInsets.only(top: 100),
                               decoration: const BoxDecoration(
                                   color: Color(0xFFE1E0F5),
                                   borderRadius:
-                                  BorderRadius.all(Radius.circular(30))),
+                                      BorderRadius.all(Radius.circular(30))),
                             ),
                           ),
                           Center(
                             child: Container(
-                              constraints:
-                              const BoxConstraints(maxHeight: 340),
-                              margin:
-                              const EdgeInsets.symmetric(horizontal: 8),
+                              constraints: const BoxConstraints(maxHeight: 340),
+                              margin: const EdgeInsets.symmetric(horizontal: 8),
                               child: SvgPicture.asset(
                                 "assets/images/charactor.svg",
                                 semanticsLabel: 'Acme Logo',
@@ -121,7 +116,9 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ],
                 ),
-                SizedBox(height: 40,),
+                SizedBox(
+                  height: 40,
+                ),
                 Padding(
                     padding: const EdgeInsets.all(20),
                     child: Column(
@@ -157,7 +154,7 @@ class _LoginPageState extends State<LoginPage> {
                               decoration: const BoxDecoration(
                                   color: Colors.white,
                                   borderRadius:
-                                  BorderRadius.all(Radius.circular(0))),
+                                      BorderRadius.all(Radius.circular(0))),
                               child: Text(
                                 '+91',
                                 style: GoogleFonts.poppins(
@@ -172,18 +169,18 @@ class _LoginPageState extends State<LoginPage> {
                               constraints: const BoxConstraints(maxWidth: 300),
                               child: CupertinoTextField(
                                 padding:
-                                const EdgeInsets.symmetric(horizontal: 16),
+                                    const EdgeInsets.symmetric(horizontal: 16),
                                 autofocus: true,
                                 focusNode: myfocus,
                                 onChanged: (content) {
-                                  if(content.length==10){
+                                  if (content.length == 10) {
                                     myfocus.unfocus();
                                   }
                                 },
                                 decoration: const BoxDecoration(
                                     color: Colors.white,
                                     borderRadius:
-                                    BorderRadius.all(Radius.circular(0))),
+                                        BorderRadius.all(Radius.circular(0))),
                                 controller: phoneController,
                                 clearButtonMode: OverlayVisibilityMode.editing,
                                 keyboardType: TextInputType.phone,
@@ -207,7 +204,7 @@ class _LoginPageState extends State<LoginPage> {
                             },
                             style: ButtonStyle(
                               backgroundColor:
-                              MaterialStateProperty.all(primaryColorLight),
+                                  MaterialStateProperty.all(primaryColorLight),
                               shape: MaterialStateProperty.all<
                                   RoundedRectangleBorder>(
                                 const RoundedRectangleBorder(
@@ -237,8 +234,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         )
                       ],
-                    )
-                )
+                    ))
               ],
             ),
           ),

@@ -82,7 +82,6 @@ class _ArvApi {
       AccessToken accessToken = AccessToken.fromRawJson(response.body);
       await secureStorage.add("access-token", accessToken.token);
       await secureStorage.add('loginTime', DateTime.now().toIso8601String());
-      log("Login Token = ${secureStorage.get("access-token")}");
       return secureStorage.get("access-token");
     } catch (e) {
       log("Login Exception : $e");
@@ -254,13 +253,15 @@ class _ArvApi {
   }
 
   Future<Products> getRecentViews(bool isRecentViews) async {
-    var url = Uri.parse(
-        "$hostUrl/features/recent?isRecentViews=$isRecentViews"
-    );
+    var url =
+        Uri.parse("$hostUrl/features/recent?isRecentViews=$isRecentViews");
 
-    var response = await http.get(url, headers: await _getHeaders(),);
+    var response = await http.get(
+      url,
+      headers: await _getHeaders(),
+    );
     Products products =
-    Products(currentPage: 0, list: [], totalCount: 0, totalPages: 0);
+        Products(currentPage: 0, list: [], totalCount: 0, totalPages: 0);
     if (response.statusCode == 200) {
       try {
         products = Products.fromRawJson(response.body);
@@ -272,25 +273,27 @@ class _ArvApi {
   }
 
   Future<void> addFavourite(String productId) async {
-    var url = Uri.parse(
-        "$hostUrl/wishlist"
-    );
+    var url = Uri.parse("$hostUrl/wishlist");
 
     Favourite favourite = Favourite(productId: productId);
 
     await http.post(
-      url, headers: await _getHeaders(), body: favourite.toRawJson(),);
+      url,
+      headers: await _getHeaders(),
+      body: favourite.toRawJson(),
+    );
   }
 
   Future<void> checkFavourite(String productId) async {
-    var url = Uri.parse(
-        "$hostUrl/wishlist/$productId"
-    );
+    var url = Uri.parse("$hostUrl/wishlist/$productId");
 
     Favourite favourite = Favourite(productId: productId);
 
     await http.post(
-      url, headers: await _getHeaders(), body: favourite.toRawJson(),);
+      url,
+      headers: await _getHeaders(),
+      body: favourite.toRawJson(),
+    );
   }
 
   Future<ProductDto?> getProductById(String? productId) async {

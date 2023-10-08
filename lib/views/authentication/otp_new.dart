@@ -82,12 +82,6 @@ class _OTPNewPageState extends State<OTPNewPage> {
                         height: 15,
                       ),
                     ),
-                    SvgPicture.asset(
-                      "assets/images/back.svg",
-                      semanticsLabel: 'ARV Logo',
-                      width: 10,
-                      height: 15,
-                    ),
                     SizedBox(
                       width: (MediaQuery.of(context).size.width) / 5,
                     ),
@@ -320,5 +314,4 @@ class _OTPNewPageState extends State<OTPNewPage> {
       },
     );
   }
-
 }
