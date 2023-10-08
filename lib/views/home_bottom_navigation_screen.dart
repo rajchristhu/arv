@@ -379,7 +379,7 @@ class _HomeBottomNavigationScreenState
                             ),
                             Positioned(
                               top: MediaQuery.of(context).size.height -
-                                  (MediaQuery.of(context).size.height * 0.35),
+                                  (MediaQuery.of(context).size.height * 0.40),
                               bottom: 35,
                               left: 10,
                               right: 10,

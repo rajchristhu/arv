@@ -50,6 +50,7 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
         child: FutureBuilder(
           future: arvApi.getProductById(productId),
           builder: (context, snapshot) {
+
             ProductDto? productDto = snapshot.data!;
             quantity = ((productDto.stock != null &&
                     (productDto.stock?.length ?? 0) > 0)
