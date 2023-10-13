@@ -147,7 +147,10 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
         Positioned(
           top: 10,
           right: 20,
-          child: FloatingActionButton(
+          child:SizedBox(
+              width: 30,
+              height: 30,
+              child:  FloatingActionButton(
             backgroundColor: Colors.white,
             onPressed: () {
               setState(() {
@@ -159,10 +162,10 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
               isFavourite
                   ? "images/heart_icon.png"
                   : "images/heart_icon_disabled.png",
-              height: 34,
-              width: 34,
+              height: 20,
+              width: 20,
             ),
-          ),
+          )),
         ),
       ],
     );
@@ -345,6 +348,7 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
           const SizedBox(height: 20),
           SizedBox(
             width: MediaQuery.of(context).size.width,
+
             child: Column(
               children: [
                 Row(

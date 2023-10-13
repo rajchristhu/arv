@@ -192,7 +192,10 @@ class _CartValueState extends State<CartValue> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    margin: const EdgeInsets.only(bottom: 30,top: 10),
+                    padding: const EdgeInsets.only(right: 20,left: 20),
+                    width: MediaQuery.of(context).size.width,
+                    height: 50,
                     child: ElevatedButton(
                       onPressed: () async {
                         if (deliveryCharge == null || deliveryCharge == 0) {

@@ -63,7 +63,6 @@ class _CartListItemsState extends State<CartListItems> {
           height: 15,
         ),
         SizedBox(
-          height: MediaQuery.of(context).size.height * 0.5,
           child: FutureBuilder<CartList>(
             future: arvApi.getCartItems(0),
             builder: (context, snapshot) {
@@ -76,7 +75,7 @@ class _CartListItemsState extends State<CartListItems> {
               }
 
               return ListView.builder(
-                physics: const AlwaysScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 scrollDirection: Axis.vertical,
                 itemCount: cartList.list.length,
@@ -143,7 +142,6 @@ class _CartListItemsState extends State<CartListItems> {
                                       Row(
                                         children: [
                                           SizedBox(
-                                            height: 20,
                                             width: MediaQuery.of(context)
                                                     .size
                                                     .width *

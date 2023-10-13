@@ -80,7 +80,7 @@ class _ProductItemInListState extends State<ProductItemInList> {
                   children: [
                     Image.network(
                       arvApi.getMediaUri(widget.product.id),
-                      height: 90,
+                      height: 80,
                       width: double.infinity,
                       fit: BoxFit.contain,
                       errorBuilder: (BuildContext context, Object exception,

@@ -96,9 +96,9 @@ class _HomeBottomNavigationScreenState
           resizeToAvoidBottomInset: true,
           appBar: currentTab == 0 || currentTab == 1
               ? PreferredSize(
-                  preferredSize: const Size.fromHeight(160),
+                  preferredSize: const Size.fromHeight(170),
                   child: Container(
-                    height: 170,
+                    height: 180,
                     width: MediaQuery.of(context).size.width,
                     padding:
                         const EdgeInsets.only(top: 25, right: 16, left: 16),
@@ -144,6 +144,7 @@ class _HomeBottomNavigationScreenState
                                 )
                               ],
                             ),
+                            SizedBox(height: 10,),
                             Row(
                               children: [
                                 SvgPicture.asset(
@@ -377,77 +378,13 @@ class _HomeBottomNavigationScreenState
                                 itemHeight: itemHeight,
                               ),
                             ),
-                            Positioned(
-                              top: MediaQuery.of(context).size.height -
-                                  (MediaQuery.of(context).size.height * 0.40),
-                              bottom: 35,
-                              left: 10,
-                              right: 10,
-                              child: GetBuilder<CartService>(
-                                init: Get.find<CartService>(),
-                                builder: (controller) {
-                                  if (controller.items.length == 0) {
-                                    return Container();
-                                  }
-                                  return Container(
-                                    decoration: BoxDecoration(
-                                      color: appColor,
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(5)),
-                                    ),
-                                    padding: const EdgeInsets.all(10),
-                                    margin: const EdgeInsets.all(5),
-                                    height: 20,
-                                    width: 600,
-                                    child: Center(
-                                      child: SizedBox(
-                                        height: 20,
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                              "Item ${controller.items.length} | ₹ ${controller.cartTotal.orderValue}",
-                                              style: TextStyle(
-                                                fontSize: 18,
-                                                color: white,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            const Spacer(),
-                                            InkWell(
-                                              onTap: () => navigationService
-                                                  .setNavigation = 4,
-                                              child: const Text(
-                                                "View cart",
-                                                style: TextStyle(
-                                                  fontSize: 18,
-                                                  color: Colors.pinkAccent,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ),
-                                            const SizedBox(width: 20),
-                                            InkWell(
-                                              onTap: () => navigationService
-                                                  .setNavigation = 4,
-                                              child: const Icon(
-                                                Icons.shopping_bag,
-                                                color: Colors.pinkAccent,
-                                              ),
-                                            ),
-                                            const SizedBox(width: 10),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
                           ],
                         ),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
-          floatingActionButton: FloatingActionButton(
+          floatingActionButton:Stack(
+            children: [
+          FloatingActionButton(
             backgroundColor: pink,
             onPressed: () => navigationService.setNavigation = 4,
             child: SvgPicture.asset(
@@ -458,6 +395,46 @@ class _HomeBottomNavigationScreenState
               height: 28,
             ),
           ),
+              Positioned(
+
+                top: 0,
+                left: 30,
+                child: GetBuilder<CartService>(
+                  init: Get.find<CartService>(),
+                  builder: (controller) {
+                    if (controller.items.length == 0) {
+                      return Container();
+                    }
+                    return   Container(
+                      width: 28,
+                      height: 28,
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.25), // border color
+                        shape: BoxShape.circle,
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(2), // border width
+                        child: Container( // or ClipRRect if you need to clip the content
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: primaryColor, // inner circle color
+                          ),
+                          child:
+                          Center(child: Text(
+                            "${controller.items.length}",
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),), // inner content
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ]),
           bottomNavigationBar: buildBottomBar(),
         );
       },
@@ -475,7 +452,7 @@ class _HomeBottomNavigationScreenState
           notchMargin: 12,
           child: Container(
             height: 65,
-            padding: const EdgeInsets.only(top: 20),
+            padding: const EdgeInsets.only(top: 5),
             child: Row(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceAround,

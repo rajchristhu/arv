@@ -61,12 +61,12 @@ class _ProductGridState extends State<ProductGridCard> {
                     children: [
                       Image.network(
                         arvApi.getMediaUri(widget.product.imageUri ?? ""),
-                        height: 100,
+                        height: 80,
                         width: double.infinity,
                         fit: BoxFit.contain,
                         errorBuilder: (context, error, stackTrace) {
                           return Container(
-                            height: 100,
+                            height: 80,
                             padding: const EdgeInsets.all(10),
                             child: Center(
                               child: Text(
@@ -79,7 +79,7 @@ class _ProductGridState extends State<ProductGridCard> {
                           );
                         },
                       ),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: 0),
                       Padding(
                         padding: const EdgeInsets.only(left: 0),
                         // Add padding to text
@@ -90,7 +90,7 @@ class _ProductGridState extends State<ProductGridCard> {
                             fontWeight: FontWeight.w600,
                             color: Colors.black,
                           ),
-                          maxLines: 3,
+                          maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
@@ -100,7 +100,7 @@ class _ProductGridState extends State<ProductGridCard> {
                         child: Text(
                           widget.product.productSubCategory.name,
                           style: GoogleFonts.poppins(
-                            fontSize: 14.0,
+                            fontSize: 8.0,
                             fontWeight: FontWeight.w300,
                             color: Colors.black,
                           ),
@@ -132,7 +132,8 @@ class _ProductGridState extends State<ProductGridCard> {
                       ),
                       Container(
                         width: 1000000,
-                        padding: const EdgeInsets.only(right: 0, top: 0),
+                        height: 32,
+                        padding: const EdgeInsets.only(right: 0, top: 5),
                         child: count == 0
                             ? OutlinedButton(
                                 onPressed: () async {
@@ -158,9 +159,9 @@ class _ProductGridState extends State<ProductGridCard> {
                               )
                             : Container(
                                 width: 10000,
-                                height: 35,
+                                height: 32,
                                 margin:
-                                    const EdgeInsets.only(right: 0, top: 10),
+                                    const EdgeInsets.only(right: 0, top: 5),
                                 decoration: BoxDecoration(
                                   border: Border.all(
                                     width: 1.0,

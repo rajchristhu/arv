@@ -41,7 +41,20 @@ class _SplashPageState extends State<SplashPage> {
         if (validUser) {
           nextScreen = const HomeBottomNavigationScreen();
         }
-        Get.offAll(() => nextScreen);
+        secureStorage.get("isFirst").then((value) async => {
+          if (value != "1")
+            {
+              secureStorage.add("isFirst", "1"),
+              Get.offAll(OnboardingScreen())}
+          else if (validUser && await secureStorage.get("location") == "")
+            {
+              // ignore: use_build_context_synchronously
+              // _showBottomSheet(context);
+              Get.offAll(() => nextScreen)
+            }
+          else
+            {Get.offAll(() => nextScreen)}
+        });
       }
     });
   }
