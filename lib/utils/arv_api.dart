@@ -251,6 +251,32 @@ class _ArvApi {
     return products;
   }
 
+  Future<Products> searchProducts(
+    int pageNumber,
+    String keyword,
+  ) async {
+    String location = await secureStorage.get("location");
+    var url = Uri.parse(
+      "$hostUrl/public/products?page=$pageNumber&storeId=$location&keyword=$keyword",
+    );
+
+    var headers = {
+      'Content-Type': 'application/json;charset=UTF-8',
+    };
+
+    var response = await http.get(url, headers: headers);
+    Products products =
+        Products(currentPage: 0, list: [], totalCount: 0, totalPages: 0);
+    if (response.statusCode == 200) {
+      try {
+        products = Products.fromRawJson(response.body);
+      } catch (e) {
+        log("Exception : $e");
+      }
+    }
+    return products;
+  }
+
   Future<Products> getRecentViews(bool isRecentViews) async {
     var url =
         Uri.parse("$hostUrl/features/recent?isRecentViews=$isRecentViews");
@@ -610,7 +636,6 @@ class _ArvApi {
   }
 
   Future<Map<String, String>> _getHeaders() async {
-    // log("Access Token : ${await secureStorage.get('access-token')}");
     return {
       "content-type": "application/json",
       "Authorization": "Bearer ${await secureStorage.get('access-token')}"

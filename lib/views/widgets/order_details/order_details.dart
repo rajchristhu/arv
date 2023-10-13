@@ -61,6 +61,7 @@ class _CartValueState extends State<CartValue> {
       Address? address;
       try {
         address = addresses.addresses.first;
+        log("Address there");
       } catch (e) {
         log("No Address there");
       }
@@ -149,7 +150,7 @@ class _CartValueState extends State<CartValue> {
                     ),
                     const Spacer(),
                     Text(
-                      "₹ ${deliveryCharge == null ? 0.0 : deliveryCharge}",
+                      "₹ ${deliveryCharge ?? 0.0}",
                       style: TextStyle(
                         color: black,
                         fontSize: 18,
@@ -192,8 +193,8 @@ class _CartValueState extends State<CartValue> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Container(
-                    margin: const EdgeInsets.only(bottom: 30,top: 10),
-                    padding: const EdgeInsets.only(right: 20,left: 20),
+                    margin: const EdgeInsets.only(bottom: 30, top: 10),
+                    padding: const EdgeInsets.only(right: 20, left: 20),
                     width: MediaQuery.of(context).size.width,
                     height: 50,
                     child: ElevatedButton(
@@ -367,10 +368,11 @@ class _CartValueState extends State<CartValue> {
                       landMark: landmark.text,
                       isDeliveryAddress: true,
                     );
-                    if (addressId == null) {
-                      await arvApi.addAddresses(address);
-                      await getAddress();
-                    }
+                    log("$addressId, ${name.text}, ${phone.text}, ${addressLine1.text}");
+                    await arvApi.addAddresses(address);
+                    await Future.delayed(const Duration(seconds: 2));
+                    await getAddress();
+                    await Future.delayed(const Duration(seconds: 2));
                     CartList cartList = await arvApi.getCartItems(0);
                     List<OrderItem> orderItems = cartList.list
                         .map(

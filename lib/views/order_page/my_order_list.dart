@@ -2,6 +2,7 @@ import 'package:arv/models/response_models/my_orders.dart';
 import 'package:arv/shared/cart_service.dart';
 import 'package:arv/shared/utils.dart';
 import 'package:arv/utils/app_colors.dart';
+import 'package:arv/utils/arv_api.dart';
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:get/get.dart';
@@ -104,9 +105,34 @@ class _OrderProgressState extends State<OrderProgress> {
                               fontSize: 17,
                               fontWeight: FontWeight.w600),
                         ),
-                        const SizedBox(
-                          height: 3,
+                        const SizedBox(height: 10),
+                        SizedBox(
+                          height: order.orderItems.length * 40,
+                          child: ListView.builder(
+                            itemCount: order.orderItems.length,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              return Row(
+                                children: [
+                                  Image.network(
+                                    arvApi.getMediaUri(
+                                        order.orderItems[index].productId),
+                                    height: 40,
+                                    width: 40,
+                                  ),
+                                  Text(
+                                    "${order.orderItems[index].itemName}",
+                                  ),
+                                  const SizedBox(width: 5),
+                                  Text(
+                                    " ( ${order.orderItems[index].qty} x ${order.orderItems[index].itemPrice} )",
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
                         ),
+                        const SizedBox(height: 3),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -155,8 +181,8 @@ class _OrderProgressState extends State<OrderProgress> {
                               fontWeight: FontWeight.w500),
                         ),
                         const SizedBox(height: 12),
-                        order.orderStatus ==
-                            orderStatusList[2]?   Center(
+                        order.orderStatus == orderStatusList[2]
+                            ? Center(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
@@ -215,147 +241,154 @@ class _OrderProgressState extends State<OrderProgress> {
                                                   tracker_details: [],
                                                 ),
                                           // yet another TrackerData object
-
                                         ],
                                       ),
                                     ),
                                   ],
                                 ),
-                              ):order.orderStatus ==
-                            orderStatusList[3]?Center(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 30),
-                                child: OrderTrackerZen(
-                                  success_color: pink,
-                                  background_color: gray,
-                                  tracker_data: [
-                                    TrackerData(
-                                      title: "Order Placed",
-                                      date: utils.getDateString(
-                                          order.orderedDate),
-                                      tracker_details: [
-                                        TrackerDetails(
-                                          title: "Your order was placed ",
-                                          datetime: utils.getDateString(
-                                              order.orderedDate),
-                                        ),
-                                        order.orderStatus ==
-                                            orderStatusList[1]
-                                            ? TrackerDetails(
-                                          title:
-                                          "ARV accepts your order",
-                                          datetime:
-                                          utils.getDateString(
-                                              order.placedDate),
-                                        )
-                                            : TrackerDetails(
-                                          title: "",
-                                          datetime: '',
-                                        ),
-                                      ],
-                                    ),
-                                    // yet another TrackerData object
-                                    order.orderStatus ==
-                                        orderStatusList[2]
-                                        ? TrackerData(
-                                      title: "Order On the way",
-                                      date: utils.getDateString(order
-                                          .expectedDeliveryDate),
-                                      tracker_details: [
-                                        TrackerDetails(
-                                          title:
-                                          "Your delivery partner on the way with you order",
-                                          datetime: utils
-                                              .getDateString(order
-                                              .expectedDeliveryDate),
-                                        ),
-                                      ],
-                                    )
-                                        : TrackerData(
-                                      title: '',
-                                      date: '',
-                                      tracker_details: [],
-                                    ),
-                                    // yet another TrackerData object
-                                    order.orderStatus ==
-                                        orderStatusList[3]
-                                        ? TrackerData(
-                                      title: "Order Delivered",
-                                      date: utils.getDateString(
-                                          order.deliveredDate),
-                                      tracker_details: [
-                                        TrackerDetails(
-                                          title:
-                                          "You received your order",
-                                          datetime: utils
-                                              .getDateString(order
-                                              .expectedDeliveryDate),
-                                        ),
-                                      ],
-                                    )
-                                        : TrackerData(
-                                      title: '',
-                                      date: '',
-                                      tracker_details: [],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ):Center(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 30),
-                                child: OrderTrackerZen(
-                                  success_color: pink,
-                                  background_color: gray,
-                                  tracker_data: [
-                                    TrackerData(
-                                      title: "Order Placed",
-                                      date: utils.getDateString(
-                                          order.orderedDate),
-                                      tracker_details: [
-                                        TrackerDetails(
-                                          title: "Your order was placed ",
-                                          datetime: utils.getDateString(
-                                              order.orderedDate),
-                                        ),
-                                        order.orderStatus ==
-                                            orderStatusList[1]
-                                            ? TrackerDetails(
-                                          title:
-                                          "ARV accepts your order",
-                                          datetime:
-                                          utils.getDateString(
-                                              order.placedDate),
-                                        )
-                                            : TrackerDetails(
-                                          title: "",
-                                          datetime: '',
+                              )
+                            : order.orderStatus == orderStatusList[3]
+                                ? Center(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 20, vertical: 30),
+                                          child: OrderTrackerZen(
+                                            success_color: pink,
+                                            background_color: gray,
+                                            tracker_data: [
+                                              TrackerData(
+                                                title: "Order Placed",
+                                                date: utils.getDateString(
+                                                    order.orderedDate),
+                                                tracker_details: [
+                                                  TrackerDetails(
+                                                    title:
+                                                        "Your order was placed ",
+                                                    datetime:
+                                                        utils.getDateString(
+                                                            order.orderedDate),
+                                                  ),
+                                                  order.orderStatus ==
+                                                          orderStatusList[1]
+                                                      ? TrackerDetails(
+                                                          title:
+                                                              "ARV accepts your order",
+                                                          datetime: utils
+                                                              .getDateString(order
+                                                                  .placedDate),
+                                                        )
+                                                      : TrackerDetails(
+                                                          title: "",
+                                                          datetime: '',
+                                                        ),
+                                                ],
+                                              ),
+                                              // yet another TrackerData object
+                                              order.orderStatus ==
+                                                      orderStatusList[2]
+                                                  ? TrackerData(
+                                                      title: "Order On the way",
+                                                      date: utils.getDateString(
+                                                          order
+                                                              .expectedDeliveryDate),
+                                                      tracker_details: [
+                                                        TrackerDetails(
+                                                          title:
+                                                              "Your delivery partner on the way with you order",
+                                                          datetime: utils
+                                                              .getDateString(order
+                                                                  .expectedDeliveryDate),
+                                                        ),
+                                                      ],
+                                                    )
+                                                  : TrackerData(
+                                                      title: '',
+                                                      date: '',
+                                                      tracker_details: [],
+                                                    ),
+                                              // yet another TrackerData object
+                                              order.orderStatus ==
+                                                      orderStatusList[3]
+                                                  ? TrackerData(
+                                                      title: "Order Delivered",
+                                                      date: utils.getDateString(
+                                                          order.deliveredDate),
+                                                      tracker_details: [
+                                                        TrackerDetails(
+                                                          title:
+                                                              "You received your order",
+                                                          datetime: utils
+                                                              .getDateString(order
+                                                                  .expectedDeliveryDate),
+                                                        ),
+                                                      ],
+                                                    )
+                                                  : TrackerData(
+                                                      title: '',
+                                                      date: '',
+                                                      tracker_details: [],
+                                                    ),
+                                            ],
+                                          ),
                                         ),
                                       ],
                                     ),
-                                    TrackerData(
-                                      title: '',
-                                      date: '',
-                                      tracker_details: [],
-                                    )
-                                    // yet another TrackerData object
-
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ) ,
+                                  )
+                                : Center(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 20, vertical: 30),
+                                          child: OrderTrackerZen(
+                                            success_color: pink,
+                                            background_color: gray,
+                                            tracker_data: [
+                                              TrackerData(
+                                                title: "Order Placed",
+                                                date: utils.getDateString(
+                                                    order.orderedDate),
+                                                tracker_details: [
+                                                  TrackerDetails(
+                                                    title:
+                                                        "Your order was placed ",
+                                                    datetime:
+                                                        utils.getDateString(
+                                                            order.orderedDate),
+                                                  ),
+                                                  order.orderStatus ==
+                                                          orderStatusList[1]
+                                                      ? TrackerDetails(
+                                                          title:
+                                                              "ARV accepts your order",
+                                                          datetime: utils
+                                                              .getDateString(order
+                                                                  .placedDate),
+                                                        )
+                                                      : TrackerDetails(
+                                                          title: "",
+                                                          datetime: '',
+                                                        ),
+                                                ],
+                                              ),
+                                              TrackerData(
+                                                title: '',
+                                                date: '',
+                                                tracker_details: [],
+                                              )
+                                              // yet another TrackerData object
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                         Container(
                           height: 1.6,
                           color: gray50,

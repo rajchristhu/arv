@@ -216,13 +216,19 @@ class DeliveryAddress {
 
 class OrderItem {
   String productId;
-  String variant;
+  String? variant;
+  String? itemName;
   int qty;
+  double itemTotalPrice;
+  double itemPrice;
 
   OrderItem({
     required this.productId,
     required this.variant,
+    required this.itemName,
     required this.qty,
+    this.itemPrice = 0.0,
+    required this.itemTotalPrice,
   });
 
   factory OrderItem.fromRawJson(String str) =>
@@ -232,13 +238,19 @@ class OrderItem {
 
   factory OrderItem.fromJson(Map<String, dynamic> json) => OrderItem(
         productId: json["productId"],
-        variant: json["variant"] ?? "",
+        variant: json["variant"],
+        itemName: json["itemName"],
         qty: json["qty"],
+        itemTotalPrice: json["itemTotalPrice"],
+        itemPrice: json["itemPrice"] ?? 0.0,
       );
 
   Map<String, dynamic> toJson() => {
         "productId": productId,
         "variant": variant,
+        "itemName": itemName,
         "qty": qty,
+        "itemPrice": itemPrice,
+        "itemTotalPrice": itemTotalPrice,
       };
 }

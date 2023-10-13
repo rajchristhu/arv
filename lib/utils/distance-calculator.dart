@@ -29,7 +29,7 @@ class _DistanceCalculator {
 
   String googleAPiKey = "AIzaSyCRW-f7wM1mFtMvsrX8oNZ7_yhUv5Apkh8";
 
-  Map<PolylineId, Polyline> polylines = {};
+  Map<PolylineId, Polyline> polyLines = {};
 
   Future<void> findNearByStore() async {
     double? minDistance;
@@ -64,6 +64,7 @@ class _DistanceCalculator {
           distanceBetweenUserAndStore < 17) {
         minDistance = distanceBetweenUserAndStore;
         secureStorage.add("location", store.id);
+        secureStorage.add("storeName", store.name);
       }
     });
   }
