@@ -29,6 +29,6 @@ class _Utils {
 
     final DateFormat dateFormat = DateFormat("E, d MMM ''yy , h:mm a");
 
-    return dateFormat.format(dateTime);
+    return dateFormat.format(dateTime)??"";
   }
 }
