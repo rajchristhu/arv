@@ -5,6 +5,7 @@ import 'package:arv/models/response_models/addresses.dart';
 import 'package:arv/models/response_models/cart_list.dart';
 import 'package:arv/shared/cart_service.dart';
 import 'package:arv/shared/navigation_service.dart';
+import 'package:arv/shared/utils.dart';
 import 'package:arv/utils/app_colors.dart';
 import 'package:arv/utils/arv_api.dart';
 import 'package:arv/utils/custom_progress_bar.dart';
@@ -37,7 +38,7 @@ class _CartValueState extends State<CartValue> {
       TextEditingController(text: "Cash On Delivery ( COD )");
 
   String defaultPaymentMode = "COD";
-  double deliveryCharge = 0.0;
+  double? deliveryCharge = 0.0;
 
   String? addressId;
 
@@ -148,7 +149,7 @@ class _CartValueState extends State<CartValue> {
                     ),
                     const Spacer(),
                     Text(
-                      "₹ ${deliveryCharge ?? 0}",
+                      "₹ ${deliveryCharge == null ? 0.0 : deliveryCharge}",
                       style: TextStyle(
                         color: black,
                         fontSize: 18,
@@ -175,7 +176,7 @@ class _CartValueState extends State<CartValue> {
                     ),
                     const Spacer(),
                     Text(
-                      "₹ ${totalAmount == 0 ? 0.0 : totalAmount + (deliveryCharge == null ? 0.0 : deliveryCharge.toDouble())}",
+                      "₹ ${totalAmount == 0 ? 0.0 : totalAmount + (deliveryCharge == null ? 0.0 : deliveryCharge!.toDouble())}",
                       style: TextStyle(
                         color: black,
                         fontSize: 18,
@@ -194,17 +195,13 @@ class _CartValueState extends State<CartValue> {
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: ElevatedButton(
                       onPressed: () async {
-                        // if (deliveryCharge == null || deliveryCharge == 0) {
-                        //   utils.notify("Service not available in this area");
-                        // } else {
-                        //   await getAddress();
-                        //   // ignore: use_build_context_synchronously
-                        //   _showBottomSheet(context, controller);
-                        // }
-
-                        await getAddress();
-                        // ignore: use_build_context_synchronously
-                        _showBottomSheet(context, controller);
+                        if (deliveryCharge == null || deliveryCharge == 0) {
+                          utils.notify("Service not available in this area");
+                        } else {
+                          await getAddress();
+                          // ignore: use_build_context_synchronously
+                          _showBottomSheet(context, controller);
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                         elevation: 0,
@@ -387,7 +384,7 @@ class _CartValueState extends State<CartValue> {
                       paymentMode: defaultPaymentMode,
                       addressId: addressId ?? "",
                       deliveryBoyTip: 0,
-                      deliveryCharge: deliveryCharge,
+                      deliveryCharge: deliveryCharge!,
                       couponCode: "",
                       accessToken: await secureStorage.get("access-token"),
                     );
