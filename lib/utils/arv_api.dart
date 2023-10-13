@@ -192,7 +192,6 @@ class _ArvApi {
   Future<Categories> getAllCategoriesList() async {
     Categories categories =
         Categories(currentPage: 0, list: [], totalCount: 0, totalPages: 0);
-    ;
     var url = Uri.parse("$hostUrl/productCategories/all");
 
     var headers = {
@@ -352,6 +351,7 @@ class _ArvApi {
       headers: headers,
       body: cart.toRawJson(),
     );
+    log("response.statusCode = ${response.statusCode} - ${response.body} $headers");
     if (response.statusCode == 200) {
       utils.notify(ResponseMessage.fromRawJson(response.body).message);
     }
@@ -416,10 +416,11 @@ class _ArvApi {
     return items;
   }
 
-  Future<int> getCartCountById(String? id) async {
+  Future<int> getCartCountById(String? id, String variant) async {
     CartCount items = CartCount(count: 0);
 
-    var url = Uri.parse("$hostUrl/cart/cartCount?productId=$id");
+    var url =
+        Uri.parse("$hostUrl/cart/cartCount?productId=$id&variant=$variant");
 
     var headers = await _getHeaders();
 
@@ -434,8 +435,8 @@ class _ArvApi {
     return items.count;
   }
 
-  Future<void> deleteCartItem(String? productId) async {
-    var url = Uri.parse("$hostUrl/cart?id=$productId");
+  Future<void> deleteCartItem(String? productId, String? variant) async {
+    var url = Uri.parse("$hostUrl/cart?id=$productId&variant=$variant");
 
     var headers = await _getHeaders();
 
@@ -526,6 +527,7 @@ class _ArvApi {
 
       if (response.statusCode == 200) {
         utils.notify(ResponseMessage.fromRawJson(response.body).message);
+        deleteAllCartItems();
       }
     } catch (e) {
       log("Exception : $e");

@@ -30,7 +30,8 @@ class _ProductGridState extends State<ProductGridCard> {
   Widget build(BuildContext context) {
     return FutureBuilder<int>(
       initialData: 0,
-      future: arvApi.getCartCountById(widget.product.id),
+      future: arvApi.getCartCountById(
+          widget.product.id, widget.product.productVariation![0]),
       builder: (context, snapshot) {
         int count = snapshot.data ?? 0;
         int quantity =
@@ -89,7 +90,7 @@ class _ProductGridState extends State<ProductGridCard> {
                             fontWeight: FontWeight.w600,
                             color: Colors.black,
                           ),
-                          maxLines: 1,
+                          maxLines: 3,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
@@ -244,7 +245,7 @@ class _ProductGridState extends State<ProductGridCard> {
     }
     count = (count < quantity && isInc) ? count + 1 : count - 1;
     if (count == 0) {
-      arvApi.deleteCartItem(productId);
+      arvApi.deleteCartItem(productId, productVariant);
     } else {
       await arvApi.addToCart(
         Cart(

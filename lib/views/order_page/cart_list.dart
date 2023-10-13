@@ -1,8 +1,11 @@
 import 'package:arv/models/response_models/cart_list.dart';
+import 'package:arv/shared/cart_service.dart';
 import 'package:arv/utils/app_colors.dart';
 import 'package:arv/utils/arv_api.dart';
 import 'package:arv/utils/custom_progress_bar.dart';
 import 'package:flutter/material.dart';
+// ignore: depend_on_referenced_packages
+import 'package:get/get.dart';
 
 class CartListItems extends StatefulWidget {
   const CartListItems({Key? key}) : super(key: key);
@@ -80,7 +83,7 @@ class _CartListItemsState extends State<CartListItems> {
                 itemBuilder: (BuildContext context, int index) {
                   Product product = cartList.list[index];
                   int currentVariantIndex = product.productVariation
-                      ?.indexOf(product.orderProductVariation!) ??
+                          ?.indexOf(product.orderProductVariation!) ??
                       0;
                   double price = -1;
                   try {
@@ -108,7 +111,7 @@ class _CartListItemsState extends State<CartListItems> {
                                       bottomLeft: Radius.circular(2.0),
                                       bottomRight: Radius.circular(12.0)),
                                   child: Image.network(
-                                    arvApi.getMediaUri(product.imageUri==null?"":product.imageUri!),
+                                    arvApi.getMediaUri(product.id),
                                     fit: BoxFit.cover,
                                     width: 50,
                                     height: 50,
@@ -135,23 +138,51 @@ class _CartListItemsState extends State<CartListItems> {
                                 child: SizedBox(
                                   child: Column(
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      Text(
-                                        product.productName,
-                                        style: TextStyle(
-                                            color: black,
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.w600),
+                                      Row(
+                                        children: [
+                                          SizedBox(
+                                            height: 20,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.675,
+                                            child: Text(
+                                              product.productName,
+                                              style: TextStyle(
+                                                color: black,
+                                                fontSize: 17,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                              maxLines: 2,
+                                            ),
+                                          ),
+                                          const Spacer(),
+                                          InkWell(
+                                            onTap: () async {
+                                              await arvApi.deleteCartItem(
+                                                product.id,
+                                                product.orderProductVariation,
+                                              );
+                                              await Get.find<CartService>()
+                                                  .updateList();
+                                              setState(() {});
+                                            },
+                                            child: const Icon(
+                                              Icons.delete,
+                                              color: Colors.grey,
+                                              size: 26,
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                      const SizedBox(
-                                        height: 3,
-                                      ),
+                                      const SizedBox(height: 10),
                                       Row(
                                         crossAxisAlignment:
-                                        CrossAxisAlignment.center,
+                                            CrossAxisAlignment.center,
                                         mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
                                             "${product.orderProductVariation} x ${product.orderQty}",
@@ -229,7 +260,5 @@ class _CartListItemsState extends State<CartListItems> {
         ),
       ],
     );
-
-
   }
 }

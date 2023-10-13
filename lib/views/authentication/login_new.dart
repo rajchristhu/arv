@@ -46,6 +46,7 @@ class _LoginPageState extends State<LoginPage> {
       verificationCompleted: (PhoneAuthCredential credential) {},
       verificationFailed: (FirebaseAuthException e) {
         utils.notify(e.code);
+        ArvProgressDialog.instance.dismissDialog(context);
       },
       codeSent: (String verificationId, int? resendToken) async {
         ArvProgressDialog.instance.dismissDialog(context);

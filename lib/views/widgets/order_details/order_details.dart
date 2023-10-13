@@ -4,6 +4,7 @@ import 'package:arv/models/request/order.dart';
 import 'package:arv/models/response_models/addresses.dart';
 import 'package:arv/models/response_models/cart_list.dart';
 import 'package:arv/shared/cart_service.dart';
+import 'package:arv/shared/navigation_service.dart';
 import 'package:arv/utils/app_colors.dart';
 import 'package:arv/utils/arv_api.dart';
 import 'package:arv/utils/custom_progress_bar.dart';
@@ -147,7 +148,7 @@ class _CartValueState extends State<CartValue> {
                     ),
                     const Spacer(),
                     Text(
-                      "₹ $deliveryCharge",
+                      "₹ ${deliveryCharge ?? 0}",
                       style: TextStyle(
                         color: black,
                         fontSize: 18,
@@ -174,7 +175,7 @@ class _CartValueState extends State<CartValue> {
                     ),
                     const Spacer(),
                     Text(
-                      "₹ ${totalAmount == 0 ? 0.0 : totalAmount +(deliveryCharge==null?0.0: deliveryCharge.toDouble())}",
+                      "₹ ${totalAmount == 0 ? 0.0 : totalAmount + (deliveryCharge == null ? 0.0 : deliveryCharge.toDouble())}",
                       style: TextStyle(
                         color: black,
                         fontSize: 18,
@@ -192,8 +193,17 @@ class _CartValueState extends State<CartValue> {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: ElevatedButton(
-                      onPressed: () {
-                        getAddress();
+                      onPressed: () async {
+                        // if (deliveryCharge == null || deliveryCharge == 0) {
+                        //   utils.notify("Service not available in this area");
+                        // } else {
+                        //   await getAddress();
+                        //   // ignore: use_build_context_synchronously
+                        //   _showBottomSheet(context, controller);
+                        // }
+
+                        await getAddress();
+                        // ignore: use_build_context_synchronously
                         _showBottomSheet(context, controller);
                       },
                       style: ElevatedButton.styleFrom(
@@ -383,8 +393,8 @@ class _CartValueState extends State<CartValue> {
                     );
 
                     await arvApi.placeOrder(order);
-                    await arvApi.deleteAllCartItems();
                     await controller.updateList();
+                    navigationService.setNavigation = 2;
                     controller.update();
 
                     try {
@@ -393,7 +403,7 @@ class _CartValueState extends State<CartValue> {
                       // ignore: use_build_context_synchronously
                       Navigator.of(context).pop();
                     } catch (e) {
-                    //
+                      //
                     }
                   },
                   style: ElevatedButton.styleFrom(

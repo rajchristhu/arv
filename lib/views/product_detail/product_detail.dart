@@ -8,7 +8,6 @@ import 'package:arv/views/widgets/favourite_picks.dart';
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class ProductDetailPageView extends StatefulWidget {
   const ProductDetailPageView({super.key, this.productId});
@@ -99,20 +98,19 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children:  [
+          children: [
             InkWell(
-              onTap: (){
+              onTap: () {
                 Navigator.pop(context);
               },
-              child: Icon(
+              child: const Icon(
                 Icons.arrow_back_ios,
                 size: 25,
                 color: Colors.white,
               ),
-            )
-            ,
+            ),
             const Text(
-             "Product Details",
+              "Product Details",
               style: TextStyle(
                 fontSize: 18.0,
                 fontWeight: FontWeight.w600,
@@ -126,7 +124,7 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
             //   size: 30,
             //   color: Colors.white,
             // ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
           ],
         ),
       ),
@@ -265,7 +263,8 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
               ),
               const Spacer(),
               FutureBuilder(
-                future: arvApi.getCartCountById(productDto.id),
+                future: arvApi.getCartCountById(
+                    productDto.id, variantList[variantIndex].productVariant),
                 initialData: 0,
                 builder: (context, snapshot) {
                   count = snapshot.data ?? 0;
@@ -344,6 +343,40 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
           ),
           const SizedBox(height: 20),
           SizedBox(
+            width: MediaQuery.of(context).size.width,
+            child: Column(
+              children: [
+                Row(
+                  children: const [
+                    Text(
+                      "Product Description",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 5),
+                Row(
+                  children: [
+                    Text(
+                      "${productDto.description}",
+                      style: const TextStyle(
+                        color: Colors.grey,
+                        fontSize: 16,
+                        fontWeight: FontWeight.normal,
+                      ),
+                      maxLines: 5,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 20),
+          SizedBox(
             height: 50,
             width: MediaQuery.of(context).size.width,
             child: ListView.builder(
@@ -366,7 +399,7 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
                     ),
                     child: Center(
                       child: Text(
-                        variantList[index].productVariant,
+                        variantList[0].productVariant,
                         style: TextStyle(
                           fontSize: 16,
                           color: selectedIndex ? Colors.white : appColor,
@@ -406,13 +439,13 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
             Row(
               children: List.generate(
                   4,
-                      (index) => GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        selectedColor = colors[index];
-                      });
-                    },
-                    child: Container(
+                  (index) => GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            selectedColor = colors[index];
+                          });
+                        },
+                        child: Container(
                           padding: const EdgeInsets.all(8),
                           margin: const EdgeInsets.only(right: 10),
                           height: 34,
@@ -424,7 +457,7 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
                               ? Image.asset("images/checker.png")
                               : const SizedBox(),
                         ),
-                  )),
+                      )),
             )
           ],
         ),
@@ -462,7 +495,8 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
     }
     count = (count < quantity && isInc) ? count + 1 : count - 1;
     if (count == 0) {
-      arvApi.deleteCartItem(productId);
+      arvApi.deleteCartItem(
+          productId, variantList[variantIndex].productVariant);
     } else {
       await arvApi.addToCart(
         Cart(

@@ -46,7 +46,7 @@ class _ProductsPageState extends State<ProductsPage> {
   );
 
   final PagingController<int, ProductDto> _pagingController =
-  PagingController(firstPageKey: 0);
+      PagingController(firstPageKey: 0);
   ValueNotifier<Products> productsNotifier = ValueNotifier(Products(
     list: [],
     currentPage: 0,
@@ -80,33 +80,38 @@ class _ProductsPageState extends State<ProductsPage> {
 
     page = widget.currentPage;
     _pagingController.addPageRequestListener((pageKey) {
-      fetchApiCall(pageKey,
+      fetchApiCall(
+        pageKey,
         widget.category,
         "",
-        widget.subSubCategory,);
+        widget.subSubCategory,
+      );
     });
   }
+
   static const _pageSize = 100;
 
-  Future<void> fetchApiCall(int pageKey, String? majorCategory,
-      String? categoryId,
-      String? subCategoryId,) async {
-
+  Future<void> fetchApiCall(
+    int pageKey,
+    String? majorCategory,
+    String? categoryId,
+    String? subCategoryId,
+  ) async {
     try {
-     final Products articles;
-       articles =
-      await Provider.of<NewsProvider>(context, listen: false)
-          .fetchNews(pageKey,majorCategory,categoryId,subCategoryId);
-      final isLastPage = articles.list.length <15;
+      final Products articles;
+      articles = await Provider.of<NewsProvider>(context, listen: false)
+          .fetchNews(pageKey, majorCategory, categoryId, subCategoryId);
+      final isLastPage = articles.list.length < 15;
       if (isLastPage) {
-        _pagingController.appendLastPage(articles.list );
+        _pagingController.appendLastPage(articles.list);
       } else {
-        _pagingController.appendPage(articles.list , pageKey + 1);
+        _pagingController.appendPage(articles.list, pageKey + 1);
       }
     } catch (error) {
       _pagingController.error = error;
     }
   }
+
   @override
   void dispose() {
     isDisposed = true;
@@ -174,13 +179,15 @@ class _ProductsPageState extends State<ProductsPage> {
                                       category.id,
                                       widget.subSubCategory,
                                     );
-                                    if(_pagingController.itemList!=null) {
-                                      _pagingController.itemList!.clear();}
-                                    fetchApiCall(0,
-                                        category.majorCategory,
-                                        category.id,
-                                        widget.subSubCategory,);
-
+                                    if (_pagingController.itemList != null) {
+                                      _pagingController.itemList!.clear();
+                                    }
+                                    fetchApiCall(
+                                      0,
+                                      category.majorCategory,
+                                      category.id,
+                                      widget.subSubCategory,
+                                    );
                                   }
                                   return InkWell(
                                     onTap: () {
@@ -193,12 +200,16 @@ class _ProductsPageState extends State<ProductsPage> {
                                           category.id,
                                           widget.subSubCategory,
                                         );
-                                        if(_pagingController.itemList!=null) {
-                                          _pagingController.itemList!.clear();}
-                                        fetchApiCall(0,
-                                            category.majorCategory,
-                                            category.id,
-                                            widget.subSubCategory,);
+                                        if (_pagingController.itemList !=
+                                            null) {
+                                          _pagingController.itemList!.clear();
+                                        }
+                                        fetchApiCall(
+                                          0,
+                                          category.majorCategory,
+                                          category.id,
+                                          widget.subSubCategory,
+                                        );
                                       });
                                     },
                                     child: Container(
@@ -286,13 +297,17 @@ class _ProductsPageState extends State<ProductsPage> {
                                           '${widget.category}',
                                           subCategory.id,
                                         );
-                                       if(_pagingController.itemList!=null) {
-                                        _pagingController.itemList!.clear();}
+                                        if (_pagingController.itemList !=
+                                            null) {
+                                          _pagingController.itemList!.clear();
+                                        }
 
-                                        fetchApiCall(0,
-                                            subCategory.majorCategory,
-                                            '${widget.category}',
-                                            subCategory.id,);
+                                        fetchApiCall(
+                                          0,
+                                          subCategory.majorCategory,
+                                          '${widget.category}',
+                                          subCategory.id,
+                                        );
                                       }
                                       return InkWell(
                                         onTap: () {
@@ -305,12 +320,17 @@ class _ProductsPageState extends State<ProductsPage> {
                                               '${widget.category}',
                                               subCategory.id,
                                             );
-                                            if(_pagingController.itemList!=null) {
-                                              _pagingController.itemList!.clear();}
-                                            fetchApiCall(0,
-                                                subCategory.majorCategory,
-                                                '${widget.category}',
-                                                subCategory.id,);
+                                            if (_pagingController.itemList !=
+                                                null) {
+                                              _pagingController.itemList!
+                                                  .clear();
+                                            }
+                                            fetchApiCall(
+                                              0,
+                                              subCategory.majorCategory,
+                                              '${widget.category}',
+                                              subCategory.id,
+                                            );
                                           });
                                         },
                                         child: Container(

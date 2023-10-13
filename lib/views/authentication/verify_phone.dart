@@ -155,6 +155,7 @@ class _VerifyPhoneState extends State<VerifyPhone> {
                             .signInWithCredential(credential);
                         String uid = userCredential.user?.uid ?? "";
                         await secureStorage.add("uid", uid);
+                        debugPrint("Uid = $uid");
                         String token =
                             await arvApi.login(widget.phoneNumber, uid);
                         bool isNewUser = token == "";

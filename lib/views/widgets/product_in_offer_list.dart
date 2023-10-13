@@ -53,7 +53,8 @@ class _ProductInOfferListState extends State<ProductInOfferList> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<int>(
-      future: arvApi.getCartCountById(widget.product.id),
+      future: arvApi.getCartCountById(widget.product.id,
+          widget.product.productVariants.first.productVariant!),
       initialData: 0,
       builder: (context, snapshot) {
         count = snapshot.data ?? 0;
@@ -208,7 +209,7 @@ class _ProductInOfferListState extends State<ProductInOfferList> {
     }
     count = (count < quantity && isInc) ? count + 1 : count - 1;
     if (count == 0) {
-      arvApi.deleteCartItem(productId);
+      arvApi.deleteCartItem(productId, productVariant);
     } else {
       await arvApi.addToCart(
         Cart(
