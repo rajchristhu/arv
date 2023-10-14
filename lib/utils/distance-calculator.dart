@@ -32,6 +32,9 @@ class _DistanceCalculator {
   Map<PolylineId, Polyline> polyLines = {};
 
   Future<void> findNearByStore() async {
+    print("fdf");
+    print(_currentLatitude);
+    print(_currentLongitude);
     double? minDistance;
     List<Store> stores = await arvApi.getAvailableLocations();
     stores.forEach((store) async {
@@ -60,12 +63,16 @@ class _DistanceCalculator {
             polylineCoordinates[i + 1].longitude);
       }
       minDistance ??= distanceBetweenUserAndStore;
+
       if (minDistance! >= distanceBetweenUserAndStore &&
           distanceBetweenUserAndStore < 17) {
         minDistance = distanceBetweenUserAndStore;
         secureStorage.add("location", store.id);
         secureStorage.add("storeName", store.name);
       }
+      print("fdfjdbfjbd f");
+      print(minDistance);
+      print(distanceBetweenUserAndStore);
     });
   }
 

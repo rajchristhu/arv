@@ -357,7 +357,7 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
                       "Product Description",
                       style: TextStyle(
                         color: Colors.black,
-                        fontSize: 20,
+                        fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -406,7 +406,7 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
                       child: Text(
                         variantList[index].productVariant,
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 12,
                           color: selectedIndex ? Colors.white : appColor,
                           fontWeight: FontWeight.bold,
                         ),
