@@ -49,7 +49,6 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
         child: FutureBuilder(
           future: arvApi.getProductById(productId),
           builder: (context, snapshot) {
-
             ProductDto? productDto = snapshot.data!;
             quantity = ((productDto.stock != null &&
                     (productDto.stock?.length ?? 0) > 0)
@@ -147,25 +146,25 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
         Positioned(
           top: 10,
           right: 20,
-          child:SizedBox(
+          child: SizedBox(
               width: 30,
               height: 30,
-              child:  FloatingActionButton(
-            backgroundColor: Colors.white,
-            onPressed: () {
-              setState(() {
-                isFavourite = !isFavourite;
-                arvApi.addFavourite('${widget.productId}');
-              });
-            },
-            child: Image.asset(
-              isFavourite
-                  ? "images/heart_icon.png"
-                  : "images/heart_icon_disabled.png",
-              height: 20,
-              width: 20,
-            ),
-          )),
+              child: FloatingActionButton(
+                backgroundColor: Colors.white,
+                onPressed: () {
+                  setState(() {
+                    isFavourite = !isFavourite;
+                    arvApi.addFavourite('${widget.productId}');
+                  });
+                },
+                child: Image.asset(
+                  isFavourite
+                      ? "images/heart_icon.png"
+                      : "images/heart_icon_disabled.png",
+                  height: 20,
+                  width: 20,
+                ),
+              )),
         ),
       ],
     );
@@ -348,7 +347,6 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
           const SizedBox(height: 20),
           SizedBox(
             width: MediaQuery.of(context).size.width,
-
             child: Column(
               children: [
                 Row(
@@ -404,7 +402,7 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
                     ),
                     child: Center(
                       child: Text(
-                        variantList[0].productVariant,
+                        variantList[index].productVariant,
                         style: TextStyle(
                           fontSize: 16,
                           color: selectedIndex ? Colors.white : appColor,
