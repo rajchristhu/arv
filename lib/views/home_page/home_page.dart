@@ -170,7 +170,8 @@ class HomePage extends StatelessWidget {
                                           children: <Widget>[
                                             Image(
                                               image: NetworkImage(
-                                                '${newCategories[index].image}',
+                                                arvApi.getMediaUri(
+                                                    newCategories[index].id),
                                               ),
                                               fit: BoxFit.fill,
                                               width: 110,

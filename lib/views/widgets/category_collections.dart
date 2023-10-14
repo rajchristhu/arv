@@ -55,7 +55,7 @@ class CategoryCollections extends StatelessWidget {
                     child: Stack(
                       children: <Widget>[
                         Image.network(
-                          arvApi.getMediaUri('${categories[index].image}'),
+                          arvApi.getMediaUri(categories[index].id),
                           fit: BoxFit.fill,
                           width: 110,
                           height: 150,
