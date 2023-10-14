@@ -34,6 +34,7 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
   int variantIndex = 0;
   List<ProductVariant> variantList = [];
   List<double> mrpPrices = [];
+  List<double> sellingPrices = [];
 
   @override
   void initState() {
@@ -56,6 +57,7 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
                 : 0);
 
             mrpPrices = productDto.mrpPrice ?? [];
+            sellingPrices = productDto.sellingPrice ?? [];
             variantList = productDto.productVariants;
             return Column(
               children: [
@@ -236,7 +238,7 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
           Row(
             children: [
               Text(
-                '₹ ${variantList[variantIndex].price}',
+                '₹ ${sellingPrices[variantIndex]}',
                 textAlign: TextAlign.justify,
                 style: const TextStyle(
                   color: Colors.black,
