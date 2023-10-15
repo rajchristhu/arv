@@ -20,7 +20,6 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../shared/app_const.dart';
-import '../utils/secure_storage.dart';
 
 class HomeBottomNavigationScreen extends StatefulWidget {
   const HomeBottomNavigationScreen({Key? key}) : super(key: key);
@@ -31,7 +30,8 @@ class HomeBottomNavigationScreen extends StatefulWidget {
 
 class _HomeBottomNavigationScreenState
     extends State<HomeBottomNavigationScreen> {
-  String nae="";
+  String nae = "";
+
   @override
   void initState() {
     changeStatusColor(primaryColor);
@@ -39,8 +39,7 @@ class _HomeBottomNavigationScreenState
     super.initState();
     Get.lazyPut(() => CartService());
     Get.lazyPut(() => MainScreenController());
-    nae=AppConstantsUtils.loc;
-
+    nae = AppConstantsUtils.loc;
   }
 
   final TextEditingController searchController = TextEditingController();
@@ -96,9 +95,9 @@ class _HomeBottomNavigationScreenState
                                     const SizedBox(width: 8),
                                     InkWell(
                                       onTap: () {
-                                        AppConstantsUtils.loc="";
-                                        AppConstantsUtils.lat=0;
-                                        AppConstantsUtils.long= 0;
+                                        AppConstantsUtils.loc = "";
+                                        AppConstantsUtils.lat = 0;
+                                        AppConstantsUtils.long = 0;
 
                                         Navigator.push(
                                           context,
@@ -115,8 +114,7 @@ class _HomeBottomNavigationScreenState
                                         child: Text(
                                           nae == ""
                                               ? controller.currentAddress
-                                              : nae
-                                                  .toString(),
+                                              : nae.toString(),
                                           style: GoogleFonts.poppins(
                                             fontSize: 18.0,
                                             fontWeight: FontWeight.w500,
