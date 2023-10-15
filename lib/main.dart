@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:arv/controller/init_binding.dart';
 import 'package:arv/firebase_options.dart';
 import 'package:arv/responsive.dart';
+import 'package:arv/shared/app_const.dart';
 import 'package:arv/shared/app_theme.dart';
 import 'package:arv/utils/secure_storage.dart';
 import 'package:arv/views/mobile_screen.dart';
@@ -55,6 +56,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // changeStatusColor(primaryColor);
+    AppConstantsUtils.loc="";
+    AppConstantsUtils.lat= 0;
+    AppConstantsUtils.long= 0;
+
     return MultiProvider(providers: [
       ChangeNotifierProvider<NewsProvider>(create: (_) => NewsProvider()),
     ], child: GetMaterialApp(

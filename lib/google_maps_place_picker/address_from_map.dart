@@ -5,7 +5,11 @@ import 'package:arv/views/order_page/resources.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../shared/app_const.dart';
+import '../utils/secure_storage.dart';
+import '../views/home_bottom_navigation_screen.dart';
 import '../views/widget/custom_buttom.dart';
+import 'package:get/get.dart';
 
 
 
@@ -107,7 +111,11 @@ class _AddressSelectState extends State<AddressSelect> {
                 child: ElevatedButton(
                   onPressed: () {
                     SelectedLocation.instance.locationInfo = widget.location;
-                    Navigator.maybePop(context);
+                    AppConstantsUtils.loc=widget.location?.formattedAddress??"";
+
+
+                    Get.offAll(() => const HomeBottomNavigationScreen());
+
                   },
                   style: ButtonStyle(
                     backgroundColor:

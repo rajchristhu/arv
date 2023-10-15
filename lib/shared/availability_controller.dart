@@ -5,6 +5,8 @@ import 'package:arv/utils/secure_storage.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 
+import 'app_const.dart';
+
 // ignore: library_private_types_in_public_api
 
 class MainScreenController extends GetxController {
@@ -19,30 +21,48 @@ class MainScreenController extends GetxController {
   String get storeName => _storeName;
 
   bool get isLocationAvailable => _isLocationAvailable;
+  String nae = '';
 
   @override
-  void onInit() {
+  Future<void> onInit() async {
     super.onInit();
-    _getCurrentLocation();
+    nae=AppConstantsUtils.loc;
+    print("nae");
+    print(nae);
+    if (nae == "") {
+      _getCurrentLocation();
+    } else {
+      print("dfdfd");
+      print(AppConstantsUtils.lat);
+      print(AppConstantsUtils.long);
+      distanceCalculator.setLatitude(AppConstantsUtils.lat);
+      distanceCalculator.setLongitude(AppConstantsUtils.long);
+      await distanceCalculator.findNearByStore();
+
+      _currentAddress = nae;
+    }
   }
 
   _getCurrentLocation() async {
     _currentPosition = await geoLocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.best,
     );
-    _getAddressFromLatLng();
+    _getAddressFromLatLng(
+      _currentPosition!.latitude,
+      _currentPosition!.longitude,
+    );
   }
 
-  _getAddressFromLatLng() async {
+  _getAddressFromLatLng(double latitude, double longitude) async {
     try {
       List<Placemark> p = await geoLocator.placemarkFromCoordinates(
-        _currentPosition!.latitude,
-        _currentPosition!.longitude,
+        latitude,
+        longitude,
       );
 
       Placemark place = p[0];
-      distanceCalculator.setLatitude(_currentPosition!.latitude);
-      distanceCalculator.setLongitude(_currentPosition!.longitude);
+      distanceCalculator.setLatitude(latitude);
+      distanceCalculator.setLongitude(longitude);
       await distanceCalculator.findNearByStore();
       _isLocationAvailable = await secureStorage.get("location") != "";
       _storeName = await secureStorage.get("storeName");

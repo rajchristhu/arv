@@ -13,6 +13,7 @@ import 'package:google_maps_webservice/places.dart';
 import 'package:provider/provider.dart';
 import 'package:tuple/tuple.dart';
 
+import '../../shared/app_const.dart';
 import '../address_from_map.dart';
 import '../providers/place_provider.dart';
 import 'components/animated_pin.dart';
@@ -129,6 +130,8 @@ class GoogleMapPlacePicker extends StatelessWidget {
           lng: provider.cameraPosition!.target.longitude),
       language: language,
     );
+    AppConstantsUtils.lat= provider.cameraPosition!.target.latitude;
+    AppConstantsUtils.long= provider.cameraPosition!.target.longitude;
 
     if (response.errorMessage?.isNotEmpty == true ||
         response.status == "REQUEST_DENIED") {

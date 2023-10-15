@@ -8,6 +8,7 @@ import 'package:arv/shared/navigation_service.dart';
 import 'package:arv/utils/app_colors.dart';
 import 'package:arv/utils/arv_api.dart';
 import 'package:arv/views/home_page/home_page.dart';
+import 'package:arv/views/map/maps_place_picker_page.dart';
 import 'package:arv/views/order_page/cart.dart';
 import 'package:arv/views/order_page/order_page.dart';
 import 'package:arv/views/product_detail/product_detail.dart';
@@ -18,6 +19,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../shared/app_const.dart';
+import '../utils/secure_storage.dart';
+
 class HomeBottomNavigationScreen extends StatefulWidget {
   const HomeBottomNavigationScreen({Key? key}) : super(key: key);
 
@@ -27,12 +31,16 @@ class HomeBottomNavigationScreen extends StatefulWidget {
 
 class _HomeBottomNavigationScreenState
     extends State<HomeBottomNavigationScreen> {
+  String nae="";
   @override
   void initState() {
     changeStatusColor(primaryColor);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
     super.initState();
     Get.lazyPut(() => CartService());
+    Get.lazyPut(() => MainScreenController());
+    nae=AppConstantsUtils.loc;
+
   }
 
   final TextEditingController searchController = TextEditingController();
@@ -56,7 +64,7 @@ class _HomeBottomNavigationScreenState
                   ? PreferredSize(
                       preferredSize: const Size.fromHeight(170),
                       child: Container(
-                        height: 190,
+                        height: 180,
                         width: MediaQuery.of(context).size.width,
                         padding:
                             const EdgeInsets.only(top: 25, right: 16, left: 16),
@@ -86,18 +94,37 @@ class _HomeBottomNavigationScreenState
                                       ),
                                     ),
                                     const SizedBox(width: 8),
-                                    SizedBox(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.75,
-                                      child: Text(
-                                        controller.currentAddress,
-                                        style: GoogleFonts.poppins(
-                                          fontSize: 18.0,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.white,
+                                    InkWell(
+                                      onTap: () {
+                                        AppConstantsUtils.loc="";
+                                        AppConstantsUtils.lat=0;
+                                        AppConstantsUtils.long= 0;
+
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                MapsPlacePicker(),
+                                          ),
+                                        );
+                                      },
+                                      child: SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.75,
+                                        child: Text(
+                                          nae == ""
+                                              ? controller.currentAddress
+                                              : nae
+                                                  .toString(),
+                                          style: GoogleFonts.poppins(
+                                            fontSize: 18.0,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.white,
+                                          ),
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
                                         ),
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 2,
                                       ),
                                     ),
                                   ],
