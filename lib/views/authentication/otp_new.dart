@@ -131,6 +131,7 @@ class _OTPNewPageState extends State<OTPNewPage> {
                           showFieldAsBox: true,
                           borderWidth: 2.0,
                           fieldWidth: 50,
+
                           borderRadius:
                               const BorderRadius.all(Radius.circular(15.0)),
                           focusedBorderColor: pinkColor,

@@ -10,6 +10,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../shared/app_const.dart';
+
 class VerifyPhone extends StatefulWidget {
   final String phoneNumber;
   final String verificationId;
@@ -141,10 +143,11 @@ class _VerifyPhoneState extends State<VerifyPhone> {
                   Expanded(
                     child: GestureDetector(
                       onTap: () async {
-                        await secureStorage.add(
-                          "location",
-                          "651a665ede43800aa3bff961",
-                        );
+                        // await secureStorage.add(
+                        //   "location",
+                        //   "651a665ede43800aa3bff961",
+                        // );
+                        AppConstantsUtils.location="651a665ede43800aa3bff961";
                         PhoneAuthCredential credential =
                             PhoneAuthProvider.credential(
                           verificationId: widget.verificationId,

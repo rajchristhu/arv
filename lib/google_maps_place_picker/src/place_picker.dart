@@ -12,6 +12,7 @@ import 'dart:io' show Platform;
 
 import 'package:uuid/uuid.dart';
 
+import '../../shared/app_const.dart';
 import '../providers/place_provider.dart';
 import 'autocomplete_search.dart';
 import 'controllers/autocomplete_search_controller.dart';
@@ -427,6 +428,10 @@ class _PlacePickerState extends State<PlacePicker> {
 
     await _moveTo(provider!.selectedPlace!.geometry!.location.lat,
         provider!.selectedPlace!.geometry!.location.lng);
+    AppConstantsUtils.lat= provider!.selectedPlace!.geometry!.location.lat;
+    AppConstantsUtils.long= provider!.selectedPlace!.geometry!.location.lng;
+    print("Camera Location Search Error: " +provider!.selectedPlace!.geometry!.location.lng.toString());
+    print("Camera Location Search Error: " +provider!.selectedPlace!.geometry!.location.lng.toString());
 
     provider!.placeSearchingState = SearchingState.Idle;
   }

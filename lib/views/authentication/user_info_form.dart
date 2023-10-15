@@ -7,6 +7,8 @@ import 'package:arv/views/order_page/input_box.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../shared/app_const.dart';
+
 class UserInfoForm extends StatefulWidget {
   const UserInfoForm({
     super.key,
@@ -130,7 +132,7 @@ class _UserInfoFormState extends State<UserInfoForm> {
               onPressed: () async {
                 if (location != null && name.text.isNotEmpty) {
                   await arvApi.updateProfile(name.text);
-                  await secureStorage.add("location", '$location');
+                  AppConstantsUtils.location=location!;
                   Get.offAll(() => const HomeBottomNavigationScreen());
                 } else {}
               },

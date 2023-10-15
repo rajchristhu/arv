@@ -142,18 +142,16 @@ class _CartListItemsState extends State<CartListItems> {
                                       Row(
                                         children: [
                                           SizedBox(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.675,
+                                            width: 200,
                                             child: Text(
                                               product.productName,
                                               style: TextStyle(
                                                 color: black,
-                                                fontSize: 17,
+                                                fontSize: 14,
                                                 fontWeight: FontWeight.w600,
                                               ),
                                               maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
                                             ),
                                           ),
                                           const Spacer(),

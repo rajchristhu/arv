@@ -8,7 +8,6 @@ import 'package:arv/shared/navigation_service.dart';
 import 'package:arv/utils/app_colors.dart';
 import 'package:arv/utils/arv_api.dart';
 import 'package:arv/views/home_page/home_page.dart';
-import 'package:arv/views/map/maps_place_picker_page.dart';
 import 'package:arv/views/order_page/cart.dart';
 import 'package:arv/views/order_page/order_page.dart';
 import 'package:arv/views/product_detail/product_detail.dart';
@@ -20,6 +19,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../shared/app_const.dart';
+import 'map/maps_place_picker_page.dart';
 
 class HomeBottomNavigationScreen extends StatefulWidget {
   const HomeBottomNavigationScreen({Key? key}) : super(key: key);
@@ -47,6 +47,7 @@ class _HomeBottomNavigationScreenState
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+    bool keyboardIsOpened = MediaQuery.of(context).viewInsets.bottom != 0.0;
 
     final double itemHeight = (size.height - kToolbarHeight) / 3;
     final double itemWidth = size.width / 2;
@@ -466,86 +467,69 @@ class _HomeBottomNavigationScreenState
                                                   0) {
                                                 return Container();
                                               }
-                                              return Container(
-                                                decoration: BoxDecoration(
-                                                  color: appColor,
-                                                  borderRadius:
-                                                      const BorderRadius.all(
-                                                          Radius.circular(5)),
-                                                ),
-                                                padding:
-                                                    const EdgeInsets.all(10),
-                                                margin: const EdgeInsets.all(5),
-                                                height: 20,
-                                                width: 600,
-                                                child: Center(
-                                                  child: SizedBox(
-                                                    height: 20,
-                                                    child: Row(
-                                                      children: [
-                                                        Text(
-                                                          "Item ${controller.items.length} | ₹ ${controller.cartTotal.orderValue}",
-                                                          style: TextStyle(
-                                                            fontSize: 18,
-                                                            color: white,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                          ),
-                                                        ),
-                                                        const Spacer(),
-                                                        InkWell(
-                                                          onTap: () =>
-                                                              navigationService
-                                                                  .setNavigation = 4,
-                                                          child: const Text(
-                                                            "View cart",
-                                                            style: TextStyle(
-                                                              fontSize: 18,
-                                                              color: Colors
-                                                                  .pinkAccent,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        const SizedBox(
-                                                            width: 20),
-                                                        InkWell(
-                                                          onTap: () =>
-                                                              navigationService
-                                                                  .setNavigation = 4,
-                                                          child: const Icon(
-                                                            Icons.shopping_bag,
-                                                            color: Colors
-                                                                .pinkAccent,
-                                                          ),
-                                                        ),
-                                                        const SizedBox(
-                                                            width: 10),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                              );
+                                              return Container();
                                             },
                                           ),
                                         ),
                                       ],
                                     ),
               floatingActionButtonLocation:
-                  FloatingActionButtonLocation.centerDocked,
-              floatingActionButton: FloatingActionButton(
-                backgroundColor: pink,
-                onPressed: () => navigationService.setNavigation = 4,
-                child: SvgPicture.asset(
-                  "assets/images/bag.svg",
-                  semanticsLabel: 'Acme Logo',
-                  color: Colors.white,
-                  width: 28,
-                  height: 28,
-                ),
-              ),
+              FloatingActionButtonLocation.centerDocked,
+
+              floatingActionButton: keyboardIsOpened ?
+              null :Stack(
+                  children: [
+                    FloatingActionButton(
+                      backgroundColor: pink,
+                      onPressed: () => navigationService.setNavigation = 4,
+                      child: SvgPicture.asset(
+                        "assets/images/bag.svg",
+                        semanticsLabel: 'Acme Logo',
+                        color: Colors.white,
+                        width: 28,
+                        height: 28,
+                      ),
+                    ),
+                    Positioned(
+
+                      top: 0,
+                      left: 30,
+                      child: GetBuilder<CartService>(
+                        init: Get.find<CartService>(),
+                        builder: (controller) {
+                          if (controller.items.length == 0) {
+                            return Container();
+                          }
+                          return   Container(
+                            width: 28,
+                            height: 28,
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.25), // border color
+                              shape: BoxShape.circle,
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.all(2), // border width
+                              child: Container( // or ClipRRect if you need to clip the content
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: primaryColor, // inner circle color
+                                ),
+                                child:
+                                Center(child: Text(
+                                  "${controller.items.length}",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),), // inner content
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ]),
               bottomNavigationBar: buildBottomBar(),
             );
           },

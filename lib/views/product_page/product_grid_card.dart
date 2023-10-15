@@ -50,7 +50,7 @@ class _ProductGridState extends State<ProductGridCard> {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(12.0),
               ),
-              padding: const EdgeInsets.only(left: 16, right: 12),
+              padding: const EdgeInsets.only(left: 12, right: 12),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12.0),
                 child: Container(
@@ -61,17 +61,18 @@ class _ProductGridState extends State<ProductGridCard> {
                     children: [
                       Image.network(
                         arvApi.getMediaUri(widget.product.imageUri ?? ""),
-                        height: 80,
+                        height: 50,
                         width: double.infinity,
                         fit: BoxFit.contain,
                         errorBuilder: (context, error, stackTrace) {
                           return Container(
-                            height: 80,
+                            height: 50,
                             padding: const EdgeInsets.all(10),
                             child: Center(
                               child: Text(
                                 "No image",
                                 style: TextStyle(
+                                  fontSize: 8,
                                   color: gray,
                                 ),
                               ),

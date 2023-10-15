@@ -150,7 +150,7 @@ class _ProductItemInListState extends State<ProductItemInList> {
                           ],
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(right: 10),
+                          padding: const EdgeInsets.only(right: 0),
                           child: count == 0
                               ? OutlinedButton(
                                   onPressed: () async =>

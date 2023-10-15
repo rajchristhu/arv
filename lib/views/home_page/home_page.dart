@@ -301,7 +301,7 @@ ValueListenableBuilder<int> buildBottomBar() {
         notchMargin: 12,
         child: Container(
           height: 65,
-          padding: const EdgeInsets.only(top: 20),
+          padding: const EdgeInsets.only(top: 0),
           child: Row(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceAround,

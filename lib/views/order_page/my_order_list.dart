@@ -17,14 +17,14 @@ class MyOrderList extends StatefulWidget {
   @override
   State<MyOrderList> createState() => _MyOrderListState();
 }
-
+late MyOrders myOrders;
 class _MyOrderListState extends State<MyOrderList> {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<CartService>(
       init: Get.find<CartService>(),
       builder: (controller) {
-        MyOrders myOrders = controller.myOrders;
+         myOrders = controller.myOrders;
         if (myOrders.list.isEmpty) {
           return const Center(
             child: Text("No orders to show"),
@@ -38,7 +38,7 @@ class _MyOrderListState extends State<MyOrderList> {
           itemCount: myOrders.list.length,
           itemBuilder: (BuildContext context, int index) {
             OrderDetails order = myOrders.list[index];
-            return OrderProgress(order);
+            return OrderProgress(order,index);
           },
         );
       },
@@ -47,9 +47,10 @@ class _MyOrderListState extends State<MyOrderList> {
 }
 
 class OrderProgress extends StatefulWidget {
-  const OrderProgress(this.order, {super.key});
+  const OrderProgress(this.order, this.ind, {super.key});
 
   final OrderDetails order;
+  final int ind;
 
   @override
   State<StatefulWidget> createState() => _OrderProgressState();
@@ -397,9 +398,9 @@ class _OrderProgressState extends State<OrderProgress> {
                             left: 6,
                           ),
                         ),
-                        const SizedBox(
-                          height: 6,
-                        ),
+                        myOrders.list.length-1==widget.ind?SizedBox(height: 200,):Container()
+
+
                       ],
                     ),
                   ),

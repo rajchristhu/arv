@@ -132,6 +132,7 @@ class GoogleMapPlacePicker extends StatelessWidget {
     );
     AppConstantsUtils.lat= provider.cameraPosition!.target.latitude;
     AppConstantsUtils.long= provider.cameraPosition!.target.longitude;
+    print("Camera Location Search Error: " +provider.cameraPosition!.target.latitude.toString());
 
     if (response.errorMessage?.isNotEmpty == true ||
         response.status == "REQUEST_DENIED") {

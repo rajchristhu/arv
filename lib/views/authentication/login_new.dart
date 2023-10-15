@@ -107,8 +107,8 @@ class _LoginPageState extends State<LoginPage> {
                               child: SvgPicture.asset(
                                 "assets/images/charactor.svg",
                                 semanticsLabel: 'Acme Logo',
-                                width: 340,
-                                height: 340,
+                                width: 280,
+                                height: 280,
                               ),
                             ),
                           ),
@@ -192,7 +192,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 10),
                         Container(
                           margin: const EdgeInsets.symmetric(
                               horizontal: 0, vertical: 10),

@@ -25,6 +25,8 @@ import 'package:arv/shared/utils.dart';
 import 'package:arv/utils/secure_storage.dart';
 import 'package:http/http.dart' as http;
 
+import '../shared/app_const.dart';
+
 _ArvApi arvApi = _ArvApi.instance;
 
 class _ArvApi {
@@ -229,7 +231,7 @@ class _ArvApi {
     String? categoryId,
     String? subCategoryId,
   ) async {
-    String location = await secureStorage.get("location");
+    String location = AppConstantsUtils.location;
     var url = Uri.parse(
       "$hostUrl/public/products?majorCategoryId=${majorCategory ?? 'Groceries'}${categoryId != null ? "&categoryId=$categoryId" : ""}${subCategoryId != null ? "&subCategoryId=$subCategoryId" : ""}&priceFrom=0&priceTo=0&page=$pageNumber&storeId=$location",
     );
@@ -255,7 +257,7 @@ class _ArvApi {
     int pageNumber,
     String keyword,
   ) async {
-    String location = await secureStorage.get("location");
+    String location = AppConstantsUtils.location;
     var url = Uri.parse(
       "$hostUrl/public/products?page=$pageNumber&storeId=$location&keyword=$keyword",
     );
@@ -613,7 +615,7 @@ class _ArvApi {
   }
 
   Future<double> getDeliveryCharge() async {
-    String id = await secureStorage.get("location");
+    String id = AppConstantsUtils.location;
     double deliveryCharge = 0.0;
     var url = Uri.parse("$hostUrl/store/$id");
     var headers = await _getHeaders();

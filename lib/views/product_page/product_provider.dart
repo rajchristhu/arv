@@ -4,6 +4,7 @@ import 'package:arv/models/response_models/products.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import '../../shared/app_const.dart';
 import '../../utils/secure_storage.dart';
 
 class NewsProvider with ChangeNotifier {
@@ -23,7 +24,7 @@ class NewsProvider with ChangeNotifier {
 print('afsfsfsaf');
 var test="";
     try {
-      String location = await secureStorage.get("location");
+      String location = AppConstantsUtils.location;
 
       var response = await client.get(Uri.parse(
         "$hostUrl/public/products?majorCategoryId=${majorCategory ?? 'Groceries'}${categoryId != null ? "&categoryId=$categoryId" : ""}${subCategoryId != null ? "&subCategoryId=$subCategoryId" : ""}&priceFrom=0&priceTo=0&page=$pageNo&storeId=$location",

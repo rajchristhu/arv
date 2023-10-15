@@ -7,6 +7,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 // ignore: depend_on_referenced_packages
 import 'package:get/get.dart';
 
+import '../../utils/secure_storage.dart';
+
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
 
@@ -168,6 +170,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       InkWell(
                         onTap: () async {
                           FlutterSecureStorage storage = FlutterSecureStorage();
+                          secureStorage.add("access-token","");
                           await storage.deleteAll().then(
                               (value) => Get.offAll(() => const LoginPage()));
                         },
