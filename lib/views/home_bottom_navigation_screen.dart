@@ -1,13 +1,16 @@
 // ignore_for_file: depend_on_referenced_packages, deprecated_member_use
 
 import 'package:arv/main.dart';
+import 'package:arv/models/response_models/products.dart';
 import 'package:arv/shared/availability_controller.dart';
 import 'package:arv/shared/cart_service.dart';
 import 'package:arv/shared/navigation_service.dart';
 import 'package:arv/utils/app_colors.dart';
+import 'package:arv/utils/arv_api.dart';
 import 'package:arv/views/home_page/home_page.dart';
 import 'package:arv/views/order_page/cart.dart';
 import 'package:arv/views/order_page/order_page.dart';
+import 'package:arv/views/product_detail/product_detail.dart';
 import 'package:arv/views/widgets/profilepage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -53,7 +56,7 @@ class _HomeBottomNavigationScreenState
                   ? PreferredSize(
                       preferredSize: const Size.fromHeight(170),
                       child: Container(
-                        height: 180,
+                        height: 190,
                         width: MediaQuery.of(context).size.width,
                         padding:
                             const EdgeInsets.only(top: 25, right: 16, left: 16),
@@ -340,100 +343,171 @@ class _HomeBottomNavigationScreenState
                         ),
                       ],
                     )
-                  : currentTab == 4
-                      ? const CartPage()
-                      : currentTab == 2
-                          ? const MyOrders()
-                          : currentTab == 3
-                              ? const ProfilePage()
-                              : Stack(
-                                  children: [
-                                    Positioned(
-                                      top: 0,
-                                      bottom: 0,
-                                      left: 0,
-                                      right: 0,
-                                      child: HomePage(
-                                        itemWidth: itemWidth,
-                                        itemHeight: itemHeight,
-                                      ),
-                                    ),
-                                    Positioned(
-                                      top: MediaQuery.of(context).size.height -
-                                          (MediaQuery.of(context).size.height *
-                                              0.40),
-                                      bottom: 35,
-                                      left: 10,
-                                      right: 10,
-                                      child: GetBuilder<CartService>(
-                                        init: Get.find<CartService>(),
-                                        builder: (controller) {
-                                          if (controller.items.length == 0) {
-                                            return Container();
-                                          }
-                                          return Container(
-                                            decoration: BoxDecoration(
-                                              color: appColor,
-                                              borderRadius:
-                                                  const BorderRadius.all(
-                                                      Radius.circular(5)),
-                                            ),
-                                            padding: const EdgeInsets.all(10),
-                                            margin: const EdgeInsets.all(5),
-                                            height: 20,
-                                            width: 600,
-                                            child: Center(
-                                              child: SizedBox(
-                                                height: 20,
-                                                child: Row(
-                                                  children: [
-                                                    Text(
-                                                      "Item ${controller.items.length} | ₹ ${controller.cartTotal.orderValue}",
-                                                      style: TextStyle(
-                                                        fontSize: 18,
-                                                        color: white,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
-                                                    ),
-                                                    const Spacer(),
-                                                    InkWell(
-                                                      onTap: () =>
-                                                          navigationService
-                                                              .setNavigation = 4,
-                                                      child: const Text(
-                                                        "View cart",
-                                                        style: TextStyle(
-                                                          fontSize: 18,
-                                                          color:
-                                                              Colors.pinkAccent,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    const SizedBox(width: 20),
-                                                    InkWell(
-                                                      onTap: () =>
-                                                          navigationService
-                                                              .setNavigation = 4,
-                                                      child: const Icon(
-                                                        Icons.shopping_bag,
-                                                        color:
-                                                            Colors.pinkAccent,
-                                                      ),
-                                                    ),
-                                                    const SizedBox(width: 10),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    ),
-                                  ],
+                  : searchController.text.isNotEmpty
+                      ? WillPopScope(
+                          child: FutureBuilder<Products>(
+                            future:
+                                arvApi.searchProducts(0, searchController.text),
+                            builder: (context, snapshot) {
+                              Products products = snapshot.data!;
+                              return Container(
+                                padding: EdgeInsets.all(
+                                  MediaQuery.of(context).size.width * 0.025,
                                 ),
+                                child: ListView.builder(
+                                  itemCount: products.list.length,
+                                  itemBuilder: (context, index) {
+                                    ProductDto productDto =
+                                        products.list[index];
+                                    return InkWell(
+                                      onTap: () {
+                                        Get.to(() => ProductDetailPageView(
+                                              productId: productDto.id,
+                                            ));
+                                      },
+                                      child: Row(
+                                        children: [
+                                          Image.network(
+                                            arvApi.getMediaUri(
+                                                productDto.imageUri),
+                                            width: 100,
+                                            height: 100,
+                                            fit: BoxFit.contain,
+                                          ),
+                                          Column(
+                                            children: [
+                                              SizedBox(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.7,
+                                                child: Text(
+                                                  productDto.productName!,
+                                                  style: TextStyle(
+                                                    color: black,
+                                                    fontSize: 14,
+                                                  ),
+                                                ),
+                                              )
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                ),
+                              );
+                            },
+                          ),
+                          onWillPop: () async {
+                            searchController.clear();
+                            setState(() {});
+                            return false;
+                          },
+                        )
+                      : currentTab == 4
+                          ? const CartPage()
+                          : currentTab == 2
+                              ? const MyOrders()
+                              : currentTab == 3
+                                  ? const ProfilePage()
+                                  : Stack(
+                                      children: [
+                                        Positioned(
+                                          top: 0,
+                                          bottom: 0,
+                                          left: 0,
+                                          right: 0,
+                                          child: HomePage(
+                                            itemWidth: itemWidth,
+                                            itemHeight: itemHeight,
+                                          ),
+                                        ),
+                                        Positioned(
+                                          top: MediaQuery.of(context)
+                                                  .size
+                                                  .height -
+                                              (MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.40),
+                                          bottom: 35,
+                                          left: 10,
+                                          right: 10,
+                                          child: GetBuilder<CartService>(
+                                            init: Get.find<CartService>(),
+                                            builder: (controller) {
+                                              if (controller.items.length ==
+                                                  0) {
+                                                return Container();
+                                              }
+                                              return Container(
+                                                decoration: BoxDecoration(
+                                                  color: appColor,
+                                                  borderRadius:
+                                                      const BorderRadius.all(
+                                                          Radius.circular(5)),
+                                                ),
+                                                padding:
+                                                    const EdgeInsets.all(10),
+                                                margin: const EdgeInsets.all(5),
+                                                height: 20,
+                                                width: 600,
+                                                child: Center(
+                                                  child: SizedBox(
+                                                    height: 20,
+                                                    child: Row(
+                                                      children: [
+                                                        Text(
+                                                          "Item ${controller.items.length} | ₹ ${controller.cartTotal.orderValue}",
+                                                          style: TextStyle(
+                                                            fontSize: 18,
+                                                            color: white,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                        const Spacer(),
+                                                        InkWell(
+                                                          onTap: () =>
+                                                              navigationService
+                                                                  .setNavigation = 4,
+                                                          child: const Text(
+                                                            "View cart",
+                                                            style: TextStyle(
+                                                              fontSize: 18,
+                                                              color: Colors
+                                                                  .pinkAccent,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        const SizedBox(
+                                                            width: 20),
+                                                        InkWell(
+                                                          onTap: () =>
+                                                              navigationService
+                                                                  .setNavigation = 4,
+                                                          child: const Icon(
+                                                            Icons.shopping_bag,
+                                                            color: Colors
+                                                                .pinkAccent,
+                                                          ),
+                                                        ),
+                                                        const SizedBox(
+                                                            width: 10),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    ),
               floatingActionButtonLocation:
                   FloatingActionButtonLocation.centerDocked,
               floatingActionButton: FloatingActionButton(
