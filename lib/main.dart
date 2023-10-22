@@ -5,6 +5,7 @@ import 'package:arv/firebase_options.dart';
 import 'package:arv/responsive.dart';
 import 'package:arv/shared/app_const.dart';
 import 'package:arv/shared/app_theme.dart';
+import 'package:arv/shared/notification_service.dart';
 import 'package:arv/utils/secure_storage.dart';
 import 'package:arv/views/mobile_screen.dart';
 import 'package:arv/views/product_page/product_provider.dart';
@@ -32,8 +33,10 @@ void main() async {
     statusBarColor: Colors.black54,
     statusBarBrightness: Brightness.dark,
   ));
+  await notificationService.init();
   runApp(const MyApp());
 }
+
 changeStatusColor(Color color) async {
   try {
     await FlutterStatusbarcolor.setStatusBarColor(color, animate: true);
@@ -56,26 +59,23 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // changeStatusColor(primaryColor);
-    AppConstantsUtils.loc="";
-    AppConstantsUtils.lat= 0;
-    AppConstantsUtils.long= 0;
+    AppConstantsUtils.loc = "";
+    AppConstantsUtils.lat = 0;
+    AppConstantsUtils.long = 0;
 
-    return MultiProvider(providers: [
-      ChangeNotifierProvider<NewsProvider>(create: (_) => NewsProvider()),
-    ], child: GetMaterialApp(
-        title: 'ARV',
-        debugShowCheckedModeBanner: false,
-        theme: appPrimaryTheme(),
-        initialBinding: InitBindings(),
-        home: const Responsive(
-          mobile: MobileScreen(),
-          tablet: MobileScreen(),
-          desktop: MobileScreen(),
-        )))
-
-
-      ;
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider<NewsProvider>(create: (_) => NewsProvider()),
+        ],
+        child: GetMaterialApp(
+            title: 'ARV',
+            debugShowCheckedModeBanner: false,
+            theme: appPrimaryTheme(),
+            initialBinding: InitBindings(),
+            home: const Responsive(
+              mobile: MobileScreen(),
+              tablet: MobileScreen(),
+              desktop: MobileScreen(),
+            )));
   }
 }
-
-

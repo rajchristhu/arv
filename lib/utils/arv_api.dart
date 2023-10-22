@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:arv/models/request/cart.dart';
+import 'package:arv/models/request/device-token.dart';
 import 'package:arv/models/request/favourite.dart';
 import 'package:arv/models/request/order.dart';
 import 'package:arv/models/request/user.dart';
@@ -82,6 +83,7 @@ class _ArvApi {
       );
 
       AccessToken accessToken = AccessToken.fromRawJson(response.body);
+      await secureStorage.add("username", username);
       await secureStorage.add("access-token", accessToken.token);
       await secureStorage.add('loginTime', DateTime.now().toIso8601String());
       return secureStorage.get("access-token");
@@ -611,6 +613,19 @@ class _ArvApi {
       await http.post(url, headers: headers);
     } catch (e) {
       log("Location Exception : $e");
+    }
+  }
+
+  Future<void> subscribeNotification() async {
+    DeviceToken token = DeviceToken(
+        username: await secureStorage.get("username"),
+        deviceToken: await secureStorage.get("device-token"));
+    var url = Uri.parse("$hostUrl/auth/device-token");
+    var headers = await _getHeaders();
+    try {
+      await http.post(url, headers: headers, body: token.toRawJson());
+    } catch (e) {
+      log("Token Exception : $e");
     }
   }
 

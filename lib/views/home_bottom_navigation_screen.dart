@@ -40,6 +40,11 @@ class _HomeBottomNavigationScreenState
     Get.lazyPut(() => CartService());
     Get.lazyPut(() => MainScreenController());
     nae = AppConstantsUtils.loc;
+    subscribeNotification();
+  }
+
+  subscribeNotification() async {
+    await arvApi.subscribeNotification();
   }
 
   final TextEditingController searchController = TextEditingController();
@@ -474,62 +479,64 @@ class _HomeBottomNavigationScreenState
                                       ],
                                     ),
               floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
-
-              floatingActionButton: keyboardIsOpened ?
-              null :Stack(
-                  children: [
-                    FloatingActionButton(
-                      backgroundColor: pink,
-                      onPressed: () => navigationService.setNavigation = 4,
-                      child: SvgPicture.asset(
-                        "assets/images/bag.svg",
-                        semanticsLabel: 'Acme Logo',
-                        color: Colors.white,
-                        width: 28,
-                        height: 28,
+                  FloatingActionButtonLocation.centerDocked,
+              floatingActionButton: keyboardIsOpened
+                  ? null
+                  : Stack(children: [
+                      FloatingActionButton(
+                        backgroundColor: pink,
+                        onPressed: () => navigationService.setNavigation = 4,
+                        child: SvgPicture.asset(
+                          "assets/images/bag.svg",
+                          semanticsLabel: 'Acme Logo',
+                          color: Colors.white,
+                          width: 28,
+                          height: 28,
+                        ),
                       ),
-                    ),
-                    Positioned(
-
-                      top: 0,
-                      left: 30,
-                      child: GetBuilder<CartService>(
-                        init: Get.find<CartService>(),
-                        builder: (controller) {
-                          if (controller.items.length == 0) {
-                            return Container();
-                          }
-                          return   Container(
-                            width: 28,
-                            height: 28,
-                            decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.25), // border color
-                              shape: BoxShape.circle,
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.all(2), // border width
-                              child: Container( // or ClipRRect if you need to clip the content
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: primaryColor, // inner circle color
-                                ),
-                                child:
-                                Center(child: Text(
-                                  "${controller.items.length}",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),), // inner content
+                      Positioned(
+                        top: 0,
+                        left: 30,
+                        child: GetBuilder<CartService>(
+                          init: Get.find<CartService>(),
+                          builder: (controller) {
+                            if (controller.items.length == 0) {
+                              return Container();
+                            }
+                            return Container(
+                              width: 28,
+                              height: 28,
+                              decoration: BoxDecoration(
+                                color: Colors.white
+                                    .withOpacity(0.25), // border color
+                                shape: BoxShape.circle,
                               ),
-                            ),
-                          );
-                        },
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.all(2), // border width
+                                child: Container(
+                                  // or ClipRRect if you need to clip the content
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: primaryColor, // inner circle color
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      "${controller.items.length}",
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ), // inner content
+                                ),
+                              ),
+                            );
+                          },
+                        ),
                       ),
-                    ),
-                  ]),
+                    ]),
               bottomNavigationBar: buildBottomBar(),
             );
           },
