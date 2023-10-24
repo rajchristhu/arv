@@ -14,14 +14,6 @@
       },
       "oauth_client": [
         {
-          "client_id": "202920770583-ld3ppabhbeehb2qki2b31enkicgsfnc7.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.arv.app.arv",
-            "certificate_hash": "4662e43ff2be04fe3317662dddaf987621c0329e"
-          }
-        },
-        {
           "client_id": "202920770583-8oa27degj5tdfc95qamltrqt64nqb6cg.apps.googleusercontent.com",
           "client_type": 3
         }

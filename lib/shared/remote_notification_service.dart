@@ -3,6 +3,21 @@ import 'package:arv/utils/secure_storage.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  debugPrint('Handling a background message ${message.messageId}');
+  debugPrint('Message data: ${message.data}');
+  if (message.notification != null) {
+    debugPrint(
+        'Message also contained a notification: ${message.notification?.title}');
+    debugPrint(
+        'Message also contained a notification: ${message.notification?.body}');
+  }
+  notificationService.showForegroundNotifications(
+    message.notification?.title,
+    message.notification?.body,
+  );
+}
+
 class RemoteNotificationService {
   RemoteNotificationService() {
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
@@ -38,10 +53,5 @@ class RemoteNotificationService {
         message.notification?.body,
       );
     });
-  }
-
-  Future<void> _firebaseMessagingBackgroundHandler(
-      RemoteMessage message) async {
-    debugPrint('Handling a background message ${message.messageId}');
   }
 }

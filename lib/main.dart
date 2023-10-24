@@ -22,7 +22,6 @@ void main() async {
   try {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
-      name: "ARV Exclusive cloud console",
     );
   } catch (e) {
     log("Firebase init error");
