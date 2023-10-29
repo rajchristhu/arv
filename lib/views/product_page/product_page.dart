@@ -102,6 +102,8 @@ class _ProductsPageState extends State<ProductsPage> {
       articles = await Provider.of<NewsProvider>(context, listen: false)
           .fetchNews(pageKey, majorCategory, categoryId, subCategoryId);
       final isLastPage = articles.list.length < 15;
+      print("fdfdf");
+      print(articles.list.length);
       if (isLastPage) {
         _pagingController.appendLastPage(articles.list);
       } else {
