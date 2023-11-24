@@ -197,7 +197,7 @@ class _HomeBottomNavigationScreenState
                                       },
                                       decoration: InputDecoration(
                                         hintText:
-                                            'Search for Products and food',
+                                            'Search for Products ',
                                         hintStyle: Theme.of(context)
                                             .textTheme
                                             .titleSmall!
@@ -210,13 +210,13 @@ class _HomeBottomNavigationScreenState
                                       ),
                                     ),
                                   ),
-                                  IconButton(
-                                    icon: Icon(
-                                      Icons.filter_list,
-                                      color: gray,
-                                    ),
-                                    onPressed: () {},
-                                  ),
+                                  // IconButton(
+                                  //   icon: Icon(
+                                  //     Icons.filter_list,
+                                  //     color: gray,
+                                  //   ),
+                                  //   onPressed: () {},
+                                  // ),
                                   // UIHelper.horizontalSpaceMedium(),
                                 ],
                               ),

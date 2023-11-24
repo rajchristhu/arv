@@ -35,6 +35,7 @@ int count = 0;
 class _ProductsPageState extends State<ProductsPage> {
   bool isDisposed = false;
   int page = 0;
+  Category? category;
   int selectedIndex = 0;
   int indexVal = 0;
   String selectedCategory = "";
@@ -82,8 +83,8 @@ class _ProductsPageState extends State<ProductsPage> {
     _pagingController.addPageRequestListener((pageKey) {
       fetchApiCall(
         pageKey,
-        widget.category,
         "",
+        widget.category,
         widget.subSubCategory,
       );
     });
@@ -172,13 +173,13 @@ class _ProductsPageState extends State<ProductsPage> {
                                 scrollDirection: Axis.vertical,
                                 shrinkWrap: true,
                                 itemBuilder: (context, index) {
-                                  Category category = categories.list[index];
+                                   category = categories.list[index];
 
                                   if (selectedCategory == "") {
-                                    selectedCategory = category.id;
+                                    selectedCategory = category!.id;
                                     getProductsByCategory(
-                                      category.majorCategory,
-                                      category.id,
+                                      category!.majorCategory,
+                                      category!.id,
                                       widget.subSubCategory,
                                     );
                                     if (_pagingController.itemList != null) {
@@ -186,8 +187,8 @@ class _ProductsPageState extends State<ProductsPage> {
                                     }
                                     fetchApiCall(
                                       0,
-                                      category.majorCategory,
-                                      category.id,
+                                      category!.majorCategory,
+                                      category!.id,
                                       widget.subSubCategory,
                                     );
                                   }
@@ -196,10 +197,10 @@ class _ProductsPageState extends State<ProductsPage> {
                                       isDisposed = false;
                                       setState(() {
                                         indexVal = index;
-                                        selectedCategory = category.id;
+                                        selectedCategory = category!.id;
                                         getProductsByCategory(
-                                          category.majorCategory,
-                                          category.id,
+                                          category!.majorCategory,
+                                          category!.id,
                                           widget.subSubCategory,
                                         );
                                         if (_pagingController.itemList !=
@@ -208,8 +209,8 @@ class _ProductsPageState extends State<ProductsPage> {
                                         }
                                         fetchApiCall(
                                           0,
-                                          category.majorCategory,
-                                          category.id,
+                                          category!.majorCategory,
+                                          category!.id,
                                           widget.subSubCategory,
                                         );
                                       });
@@ -225,7 +226,7 @@ class _ProductsPageState extends State<ProductsPage> {
                                       width: 50,
                                       child: Image.network(
                                         arvApi
-                                            .getMediaUri(category.image ?? ""),
+                                            .getMediaUri(category!.image ?? ""),
                                         width: 50,
                                         height: 50,
                                         errorBuilder:
@@ -241,7 +242,7 @@ class _ProductsPageState extends State<ProductsPage> {
                                             ),
                                             child: Center(
                                               child: Text(
-                                                category.name,
+                                                category!.name,
                                                 style: TextStyle(
                                                   color: indexVal == index
                                                       ? white

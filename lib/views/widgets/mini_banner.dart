@@ -18,7 +18,7 @@ class MiniBanner extends StatelessWidget {
             ? Image.network(
                 arvApi.getMediaUri(imageUri),
                 fit: BoxFit.fill,
-                height: MediaQuery.of(context).size.height * 0.05,
+                height: 70,
                 width: MediaQuery.of(context).size.width,
               )
             : Image.asset("assets/images/rect1.jpg");

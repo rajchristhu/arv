@@ -12,9 +12,10 @@ import 'package:arv/utils/custom_progress_bar.dart';
 import 'package:arv/utils/secure_storage.dart';
 import 'package:arv/views/order_page/input_box.dart';
 import 'package:flutter/material.dart';
+
 // ignore: depend_on_referenced_packages
 import 'package:get/get.dart';
-
+import 'package:fluttertoast/fluttertoast.dart';
 class CartValue extends StatefulWidget {
   const CartValue({
     super.key,
@@ -354,58 +355,73 @@ class _CartValueState extends State<CartValue> {
                     const EdgeInsets.symmetric(vertical: 25, horizontal: 10),
                 child: ElevatedButton(
                   onPressed: () async {
-                    ArvProgressDialog.instance.showProgressDialog(context);
-                    Address address = Address(
-                      id: addressId,
-                      name: name.text,
-                      phone: phone.text,
-                      addressLine1: addressLine1.text,
-                      addressLine2: addressLine2.text,
-                      area: city.text,
-                      pinCode: pinCode.text,
-                      state: stateOrRegion.text,
-                      nation: country.text,
-                      landMark: landmark.text,
-                      isDeliveryAddress: true,
-                    );
-                    log("$addressId, ${name.text}, ${phone.text}, ${addressLine1.text}");
-                    await arvApi.addAddresses(address);
-                    await Future.delayed(const Duration(seconds: 2));
-                    await getAddress();
-                    await Future.delayed(const Duration(seconds: 2));
-                    CartList cartList = await arvApi.getCartItems(0);
-                    List<OrderItem> orderItems = cartList.list
-                        .map(
-                          (e) => OrderItem(
-                            productId: e.id!,
-                            variant: e.orderProductVariation!,
-                            qty: e.orderQty!,
-                            itemTotalPrice: e.orderPrice ?? 0.0,
-                          ),
-                        )
-                        .toList();
-                    Order order = Order(
-                      orderItems: orderItems,
-                      paymentMode: defaultPaymentMode,
-                      addressId: addressId ?? "",
-                      deliveryBoyTip: 0,
-                      deliveryCharge: deliveryCharge!,
-                      couponCode: "",
-                      accessToken: await secureStorage.get("access-token"),
-                    );
+                    if (name.text != "" &&
+                        phone.text != "" &&
+                        addressLine1.text != "") {
+                      ArvProgressDialog.instance.showProgressDialog(context);
+                      Address address = Address(
+                        id: addressId,
+                        name: name.text,
+                        phone: phone.text,
+                        addressLine1: addressLine1.text,
+                        addressLine2: addressLine2.text,
+                        area: city.text,
+                        pinCode: pinCode.text,
+                        state: stateOrRegion.text,
+                        nation: country.text,
+                        landMark: landmark.text,
+                        isDeliveryAddress: true,
+                      );
+                      print("$addressId, ${name.text}, ${phone.text}, ${addressLine1.text}");
+                      await arvApi.addAddresses(address);
+                      await Future.delayed(const Duration(seconds: 2));
+                      await getAddress();
+                      await Future.delayed(const Duration(seconds: 2));
+                      CartList cartList = await arvApi.getCartItems(0);
+                      List<OrderItem> orderItems = cartList.list
+                          .map(
+                            (e) => OrderItem(
+                              productId: e.id!,
+                              variant: e.orderProductVariation!,
+                              qty: e.orderQty!,
+                              itemTotalPrice: e.orderPrice ?? 0.0,
+                            ),
+                          )
+                          .toList();
+                      Order order = Order(
+                        orderItems: orderItems,
+                        paymentMode: defaultPaymentMode,
+                        addressId: addressId ?? "",
+                        deliveryBoyTip: 0,
+                        deliveryCharge: deliveryCharge!,
+                        couponCode: "",
+                        accessToken: await secureStorage.get("access-token"),
+                      );
 
-                    await arvApi.placeOrder(order);
-                    await controller.updateList();
-                    navigationService.setNavigation = 2;
-                    controller.update();
+                      await arvApi.placeOrder(order);
+                      await controller.updateList();
+                      navigationService.setNavigation = 2;
+                      controller.update();
 
-                    try {
-                      // ignore: use_build_context_synchronously
-                      ArvProgressDialog.instance.dismissDialog(context);
-                      // ignore: use_build_context_synchronously
-                      Navigator.of(context).pop();
-                    } catch (e) {
-                      //
+                      try {
+                        // ignore: use_build_context_synchronously
+                        ArvProgressDialog.instance.dismissDialog(context);
+                        // ignore: use_build_context_synchronously
+                        Navigator.of(context).pop();
+                      } catch (e) {
+                        //
+                      }
+                    }
+                    else{
+                      Fluttertoast.showToast(
+                        msg: "Please enter the details",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.SNACKBAR,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Colors.grey.shade700,
+                        textColor: Colors.white,
+                        fontSize: 16.0,
+                      );
                     }
                   },
                   style: ElevatedButton.styleFrom(
