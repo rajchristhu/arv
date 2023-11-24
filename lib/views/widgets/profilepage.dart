@@ -8,6 +8,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 
 import '../../utils/secure_storage.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -157,6 +158,49 @@ class _ProfilePageState extends State<ProfilePage> {
                                 color: Colors.black),
                           )
                         ],
+                      ),
+                      const SizedBox(
+                        height: 6,
+                      ),
+                      const Divider(
+                        color: Colors.grey,
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      InkWell(
+                        onTap: () async {
+                          Fluttertoast.showToast(
+                            msg: "Coming soon",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.SNACKBAR,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.grey.shade700,
+                            textColor: Colors.white,
+                            fontSize: 16.0,
+                          );
+
+                        },
+                        child: Row(
+                          children: const [
+                            Icon(
+                              Icons.wallet,
+                              color: Colors.grey,
+                              size: 28.0,
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              "Wallet",
+                              textAlign: TextAlign.start,
+                              style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black),
+                            )
+                          ],
+                        ),
                       ),
                       const SizedBox(
                         height: 6,
