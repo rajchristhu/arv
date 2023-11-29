@@ -196,8 +196,7 @@ class _HomeBottomNavigationScreenState
                                         setState(() {});
                                       },
                                       decoration: InputDecoration(
-                                        hintText:
-                                            'Search for Products ',
+                                        hintText: 'Search for Products ',
                                         hintStyle: Theme.of(context)
                                             .textTheme
                                             .titleSmall!
@@ -348,7 +347,7 @@ class _HomeBottomNavigationScreenState
                                 ),
                               ),
                             ),
-              body: !controller.isLocationAvailable
+              body: controller.isLocationAvailable
                   ? Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,

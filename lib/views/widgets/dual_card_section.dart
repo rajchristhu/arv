@@ -30,75 +30,69 @@ class DualCardSection extends StatelessWidget {
           padding: const EdgeInsets.only(right: 16, left: 16),
           child: Row(
             children: [
-              Expanded(
-                child: InkWell(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => ProductsPage(
-                          true,
-                          false,
-                          0,
-                          category1,
-                          null,
-                        ),
-                      ),
-                    );
-                  },
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8.0),
-                    child: SizedBox(
-                      height: 110,
-                      width: MediaQuery.of(context).size.width,
-                      child: imageUri1 != null
-                          ? Image.network(
+              imageUri1 != null
+                  ? Expanded(
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => ProductsPage(
+                                true,
+                                false,
+                                0,
+                                category1,
+                                null,
+                              ),
+                            ),
+                          );
+                        },
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8.0),
+                          child: SizedBox(
+                            height: 110,
+                            width: MediaQuery.of(context).size.width,
+                            child: Image.network(
                               arvApi.getMediaUri(imageUri1),
                               fit: BoxFit.fill,
-                            )
-                          : Image.asset(
-                              "assets/images/rect3.png",
-                              fit: BoxFit.fill,
                             ),
-                    ),
-                  ),
-                ),
-              ),
+                          ),
+                        ),
+                      ),
+                    )
+                  : Container(),
               const SizedBox(
                 width: 10,
               ),
-              Expanded(
-                child: InkWell(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => ProductsPage(
-                          true,
-                          false,
-                          0,
-                          category2,
-                          null,
-                        ),
-                      ),
-                    );
-                  },
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8.0),
-                    child: SizedBox(
-                      height: 110,
-                      width: MediaQuery.of(context).size.width,
-                      child: imageUri2 != null
-                          ? Image.network(
+              imageUri2 != null
+                  ? Expanded(
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => ProductsPage(
+                                true,
+                                false,
+                                0,
+                                category2,
+                                null,
+                              ),
+                            ),
+                          );
+                        },
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8.0),
+                          child: SizedBox(
+                            height: 110,
+                            width: MediaQuery.of(context).size.width,
+                            child: Image.network(
                               arvApi.getMediaUri(imageUri2),
                               fit: BoxFit.fill,
-                            )
-                          : Image.asset(
-                              "assets/images/rect3.png",
-                              fit: BoxFit.fill,
                             ),
-                    ),
-                  ),
-                ),
-              ),
+                          ),
+                        ),
+                      ),
+                    )
+                  : Container(),
             ],
           ),
         );

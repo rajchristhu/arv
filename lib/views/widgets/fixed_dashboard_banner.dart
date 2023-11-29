@@ -16,37 +16,37 @@ class FixedDashboardBanner extends StatelessWidget {
       builder: (context, snapshot) {
         int length = snapshot.data?.list.length ?? 0;
         String? imageUri = length == 0 ? null : snapshot.data?.list[0].imageUri;
-        return InkWell(
-          onTap: () {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => const ProductsPage(
-                      false,
-                      true,
-                      1,
-                      '64ff716ec78bc62fc17ef206',
-                      null,
-                    )));
-          },
-          child: Padding(
-            padding: const EdgeInsets.only(right: 16, left: 16),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(8.0),
-              child: SizedBox(
-                height: 180,
-                width: MediaQuery.of(context).size.width,
-                child: imageUri != null
-                    ? Image.network(
+        return imageUri != null
+            ? InkWell(
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const ProductsPage(
+                        false,
+                        true,
+                        1,
+                        '64ff716ec78bc62fc17ef206',
+                        null,
+                      ),
+                    ),
+                  );
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 16, left: 16),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8.0),
+                    child: SizedBox(
+                      height: 180,
+                      width: MediaQuery.of(context).size.width,
+                      child: Image.network(
                         arvApi.getMediaUri(imageUri),
                         fit: BoxFit.fill,
-                      )
-                    : const Image(
-                        image: AssetImage("assets/images/rect2.png"),
-                        fit: BoxFit.fill,
                       ),
-              ),
-            ),
-          ),
-        );
+                    ),
+                  ),
+                ),
+              )
+            : Container();
       },
     );
   }

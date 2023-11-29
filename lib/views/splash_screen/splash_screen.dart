@@ -1,7 +1,5 @@
 // ignore_for_file: depend_on_referenced_packages
 
-import 'dart:developer';
-
 import 'package:animate_do/animate_do.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:arv/utils/app_colors.dart';
@@ -42,19 +40,20 @@ class _SplashPageState extends State<SplashPage> {
           nextScreen = const HomeBottomNavigationScreen();
         }
         secureStorage.get("isFirst").then((value) async => {
-          if (value != "1")
-            {
-              secureStorage.add("isFirst", "1"),
-              Get.offAll(OnboardingScreen())}
-          else if (validUser && await secureStorage.get("location") == "")
-            {
-              // ignore: use_build_context_synchronously
-              // _showBottomSheet(context);
-              Get.offAll(() => nextScreen)
-            }
-          else
-            {Get.offAll(() => nextScreen)}
-        });
+              if (value != "1")
+                {
+                  secureStorage.add("isFirst", "1"),
+                  Get.offAll(const OnboardingScreen())
+                }
+              else if (validUser && await secureStorage.get("location") == "")
+                {
+                  // ignore: use_build_context_synchronously
+                  // _showBottomSheet(context);
+                  Get.offAll(() => nextScreen)
+                }
+              else
+                {Get.offAll(() => nextScreen)}
+            });
       }
     });
   }

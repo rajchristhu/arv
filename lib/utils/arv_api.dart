@@ -158,6 +158,7 @@ class _ArvApi {
   }
 
   Future<HomeBanners> getAllHomeBanners(String section) async {
+    await Future.delayed(const Duration(seconds: 1, milliseconds: 500));
     var url =
         Uri.parse("$hostUrl/api/homeBanners?page=0&homeBannerSection=$section");
 
