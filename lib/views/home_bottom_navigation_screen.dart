@@ -347,7 +347,7 @@ class _HomeBottomNavigationScreenState
                                 ),
                               ),
                             ),
-              body: controller.isLocationAvailable
+              body: !controller.isLocationAvailable
                   ? Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
