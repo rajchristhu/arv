@@ -238,7 +238,7 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
           Row(
             children: [
               Text(
-                '₹ ${sellingPrices[variantIndex]}',
+                'Rs. ${sellingPrices[variantIndex]}',
                 textAlign: TextAlign.justify,
                 style: const TextStyle(
                   color: Colors.black,
@@ -253,7 +253,7 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
                   Container(
                     padding: const EdgeInsets.all(20),
                     child: Text(
-                      '₹ ${mrpPrices[variantIndex]}',
+                      'Rs. ${mrpPrices[variantIndex]}',
                       textAlign: TextAlign.justify,
                       style: TextStyle(
                         color: gray,
@@ -366,14 +366,17 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
                 const SizedBox(height: 5),
                 Row(
                   children: [
-                    Text(
-                      "${productDto.description}",
-                      style: const TextStyle(
-                        color: Colors.grey,
-                        fontSize: 16,
-                        fontWeight: FontWeight.normal,
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: Text(
+                        "${productDto.description}",
+                        style: const TextStyle(
+                          color: Colors.grey,
+                          fontSize: 16,
+                          fontWeight: FontWeight.normal,
+                        ),
+                        maxLines: 5,
                       ),
-                      maxLines: 5,
                     ),
                   ],
                 ),
