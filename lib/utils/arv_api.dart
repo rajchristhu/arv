@@ -42,7 +42,7 @@ class _ArvApi {
 
   String getMediaUri(String? mediaId) {
     if (mediaId == null) return "";
-    return "$hostUrl/public/products/image/${Uri.encodeComponent(mediaId)}";
+    return "https://arv-exclusive-bucket.s3.ap-south-1.amazonaws.com/${Uri.encodeComponent(mediaId)}";
   }
 
   Future<bool> _isValidCacheData(String cacheKey) async {
