@@ -367,7 +367,7 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
                 Row(
                   children: [
                     SizedBox(
-                      width: MediaQuery.of(context).size.width,
+                      width: MediaQuery.of(context).size.width * 0.9,
                       child: Text(
                         "${productDto.description}",
                         style: const TextStyle(
