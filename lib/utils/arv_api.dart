@@ -41,8 +41,8 @@ class _ArvApi {
   // Image Uri : /public/products/image
 
   String getMediaUri(String? mediaId) {
-    if (mediaId == null) return "";
-    return "https://arv-exclusive-bucket.s3.ap-south-1.amazonaws.com/${Uri.encodeComponent(mediaId)}";
+    if ([null, ""].contains(mediaId)) return "";
+    return "https://arv-exclusive-bucket.s3.ap-south-1.amazonaws.com/${Uri.encodeComponent(mediaId!)}";
   }
 
   Future<bool> _isValidCacheData(String cacheKey) async {
