@@ -22,7 +22,7 @@ class _CartListItemsState extends State<CartListItems> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          padding: const EdgeInsets.only(right: 16, left: 16),
+          padding: const EdgeInsets.only(right: 16, left: 16,top: 30),
           child: SingleChildScrollView(
             physics: const ClampingScrollPhysics(),
             child: Column(

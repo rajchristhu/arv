@@ -483,6 +483,7 @@ class _HomeBottomNavigationScreenState
                   ? null
                   : Stack(children: [
                       FloatingActionButton(
+                        heroTag: null,
                         backgroundColor: pink,
                         onPressed: () => navigationService.setNavigation = 4,
                         child: SvgPicture.asset(

@@ -1,6 +1,7 @@
 import 'package:arv/models/response_models/categories.dart';
 import 'package:arv/models/response_models/products.dart';
 import 'package:arv/models/response_models/sub_categories.dart';
+import 'package:arv/shared/cart_service.dart';
 import 'package:arv/utils/app_colors.dart';
 import 'package:arv/utils/arv_api.dart';
 import 'package:arv/utils/custom_progress_bar.dart';
@@ -9,6 +10,10 @@ import 'package:arv/views/product_page/product_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
+
+import '../../shared/navigation_service.dart';
 
 class ProductsPage extends StatefulWidget {
   final bool isExploreAll;
@@ -435,6 +440,64 @@ class _ProductsPageState extends State<ProductsPage> {
             ),
           ],
         ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+        floatingActionButton: Stack(children: [
+          FloatingActionButton(
+            heroTag: null,
+            backgroundColor: pink,
+            onPressed: () => {
+              Navigator.pop(context),
+              navigationService.setNavigation = 4,
+            },
+            child: SvgPicture.asset(
+              "assets/images/bag.svg",
+              semanticsLabel: 'Acme Logo',
+              color: Colors.white,
+              width: 28,
+              height: 28,
+            ),
+          ),
+          Positioned(
+            top: 0,
+            left: 30,
+            child: GetBuilder<CartService>(
+              init: Get.find<CartService>(),
+              builder: (controller) {
+                if (controller.items.length == 0) {
+                  return Container();
+                }
+                return Container(
+                  width: 28,
+                  height: 28,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.25), // border color
+                    shape: BoxShape.circle,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(2), // border width
+                    child: Container(
+                      // or ClipRRect if you need to clip the content
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: primaryColor, // inner circle color
+                      ),
+                      child: Center(
+                        child: Text(
+                          "${controller.items.length}",
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ), // inner content
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ]),
       ),
     );
   }

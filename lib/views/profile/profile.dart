@@ -1,85 +1,122 @@
-import 'package:arv/views/profile/profilemenuwidget.dart';
+import 'package:arv/models/response_models/profile.dart';
+import 'package:arv/utils/arv_api.dart';
+import 'package:arv/views/authentication/login_new.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+// ignore: depend_on_referenced_packages
+import 'package:get/get.dart';
+
+import '../../utils/secure_storage.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:babstrap_settings_screen/babstrap_settings_screen.dart';
+
+class ProfilePage extends StatefulWidget {
+  const ProfilePage({Key? key}) : super(key: key);
+
+  @override
+  State createState() {
+    return _ProfilePageState();
+  }
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  TextEditingController nameController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    var isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
     return Scaffold(
-      appBar: AppBar(
-        // leading: IconButton(onPressed: () => Navi, icon: const Icon(Icons.co_present)),
-        title: Text("tProfile", style: Theme.of(context).textTheme.headline4),
-        // actions: [IconButton(onPressed: () {}, icon: Icon(isDark ? LineAwesomeIcons.sun : LineAwesomeIcons.moon))],
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          padding:  EdgeInsets.all(10),
-          child: Column(
-            children: [
-
-              /// -- IMAGE
-              Stack(
-                children: [
-                  // SizedBox(
-                  //   width: 120,
-                  //   height: 120,
-                  //   child: ClipRRect(
-                  //       borderRadius: BorderRadius.circular(100), child:  Image(image: AssetImage(tProfileImage))),
-                  // ),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: Container(
-                      width: 35,
-                      height: 35,
-                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(100), color: Colors.black),
-                      child: const Icon(
-                        Icons.ac_unit_sharp,
-                        color: Colors.black,
-                        size: 20,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              Text("tProfileHeading", style: Theme.of(context).textTheme.headline4),
-              Text("tProfileSubHeading", style: Theme.of(context).textTheme.bodyText2),
-              const SizedBox(height: 20),
-
-              /// -- BUTTON
-              SizedBox(
-                width: 200,
-                child: ElevatedButton(
-                  onPressed: () =>null,
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.black, side: BorderSide.none, shape: const StadiumBorder()),
-                  child: const Text("tEditProfile", style: TextStyle(color: Colors.black)),
+      backgroundColor: Colors.white,
+      body: Padding(
+        padding: const EdgeInsets.all(10),
+        child: ListView(
+          children: [
+            // User card
+            // BigUserCard(
+            //   userName: "Babacar Ndong",
+            //   userProfilePic: AssetImage("assets/logo.png"),
+            //   cardActionWidget: SettingsItem(
+            //     icons: Icons.edit,
+            //     iconStyle: IconStyle(
+            //       withBackground: true,
+            //       borderRadius: 50,
+            //       backgroundColor: Colors.yellow[600],
+            //     ),
+            //     title: "Modify",
+            //     subtitle: "Tap to change your data",
+            //     onTap: () {
+            //       print("OK");
+            //     },
+            //   ),
+            // ),
+            SettingsGroup(
+              items: [
+                SettingsItem(
+                  onTap: () {},
+                  icons: CupertinoIcons.folder_fill,
+                  iconStyle: IconStyle(),
+                  title: 'Wallet',
+                  subtitle: "Make Ziar'App yours",
                 ),
-              ),
-              const SizedBox(height: 30),
-              const Divider(),
-              const SizedBox(height: 10),
+                // SettingsItem(
+                //   onTap: () {},
+                //   icons: Icons.dark_mode_rounded,
+                //   iconStyle: IconStyle(
+                //     iconsColor: Colors.white,
+                //     withBackground: true,
+                //     backgroundColor: Colors.red,
+                //   ),
+                //   title: 'Dark mode',
+                //   subtitle: "Automatic",
+                //   trailing: Switch.adaptive(
+                //     value: false,
+                //     onChanged: (value) {},
+                //   ),
+                // ),
+              ],
+            ),
+            SettingsGroup(
+              items: [
+                SettingsItem(
+                  onTap: () {},
+                  icons: Icons.info_rounded,
+                  iconStyle: IconStyle(
+                    backgroundColor: Colors.purple,
+                  ),
+                  title: 'About',
+                  subtitle: "Learn more about Ziar'App",
+                ),
+              ],
+            ),
+            // You can add a settings title
+            SettingsGroup(
+              settingsGroupTitle: "Account",
+              items: [
+                SettingsItem(
+                  onTap: () async {
+                    FlutterSecureStorage storage = FlutterSecureStorage();
+                    secureStorage.add("access-token","");
+                    await storage.deleteAll().then(
+                            (value) => Get.offAll(() => const LoginPage()));
 
-              /// -- MENU
-              ProfileMenuWidget(title: "Settings", icon: Icons.ac_unit_sharp, onPress: () {}),
-              ProfileMenuWidget(title: "Billing Details", icon: Icons.wallet, onPress: () {}),
-              ProfileMenuWidget(title: "User Management", icon:Icons.verified_user, onPress: () {}),
-              const Divider(),
-              const SizedBox(height: 10),
-              ProfileMenuWidget(title: "Information", icon: Icons.info, onPress: () {}),
-              ProfileMenuWidget(
-                  title: "Logout",
-                  icon: Icons.logout,
-                  textColor: Colors.red,
-                  endIcon: false,
-                  onPress: () {
-
-                  }),
-            ],
-          ),
+                  },
+                  icons: Icons.exit_to_app_rounded,
+                  title: "Sign Out",
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );

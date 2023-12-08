@@ -1,6 +1,7 @@
 import 'package:arv/models/response_models/profile.dart';
 import 'package:arv/utils/arv_api.dart';
 import 'package:arv/views/authentication/login_new.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -9,6 +10,8 @@ import 'package:get/get.dart';
 
 import '../../utils/secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:babstrap_settings_screen/babstrap_settings_screen.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -36,223 +39,112 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Center(
-            child: FutureBuilder<Profile>(
-              future: arvApi.getProfile(),
-              builder: (context, snapshot) {
-                Profile? profile = snapshot.data;
-                if (profile == null) return Container();
-                nameController.text = profile.profileName ?? "";
-                return Container(
-                  padding: const EdgeInsets.only(
-                      top: 10, bottom: 100, right: 20, left: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      const SizedBox(
-                        width: 100,
-                        height: 100,
-                        child: CircleAvatar(
-                          radius: 30,
-                          child: CircleAvatar(
-                            radius: 45,
-                            backgroundImage: AssetImage(
-                              'assets/images/icon_User.png',
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 30,
-                      ),
-                      Row(
-                        children: const [
-                          Text(
-                            "Name",
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black),
-                          )
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        children: [
-                          const Icon(
-                            Icons.face,
-                            color: Colors.grey,
-                            size: 28.0,
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            profile.profileName ?? "",
-                            textAlign: TextAlign.start,
-                            style: const TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black),
-                          )
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 6,
-                      ),
-                      Row(
-                        children: const [
-                          Text(
-                            "This name visible only the Attendance contacts",
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.grey),
-                          )
-                        ],
-                      ),
-                      const Divider(
-                        color: Colors.grey,
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        children: const [
-                          Text(
-                            "Phone Number",
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black),
-                          )
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 6,
-                      ),
-                      Row(
-                        children: [
-                          const Icon(
-                            Icons.phone,
-                            color: Colors.grey,
-                            size: 28.0,
-                          ),
-                          const SizedBox(width: 10),
-                          Text(
-                            profile.phone,
-                            textAlign: TextAlign.start,
-                            style: const TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black),
-                          )
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 6,
-                      ),
-                      const Divider(
-                        color: Colors.grey,
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      InkWell(
-                        onTap: () async {
-                          Fluttertoast.showToast(
-                            msg: "Coming soon",
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.SNACKBAR,
-                            timeInSecForIosWeb: 1,
-                            backgroundColor: Colors.grey.shade700,
-                            textColor: Colors.white,
-                            fontSize: 16.0,
-                          );
-
-                        },
-                        child: Row(
-                          children: const [
-                            Icon(
-                              Icons.wallet,
-                              color: Colors.grey,
-                              size: 28.0,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              "Wallet",
-                              textAlign: TextAlign.start,
-                              style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.black),
-                            )
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 6,
-                      ),
-                      const Divider(
-                        color: Colors.grey,
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      InkWell(
-                        onTap: () async {
-                          FlutterSecureStorage storage = FlutterSecureStorage();
-                          secureStorage.add("access-token","");
-                          await storage.deleteAll().then(
-                              (value) => Get.offAll(() => const LoginPage()));
-                        },
-                        child: Row(
-                          children: const [
-                            Icon(
-                              Icons.logout,
-                              color: Colors.grey,
-                              size: 28.0,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              "Logout",
-                              textAlign: TextAlign.start,
-                              style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.black),
-                            )
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 6,
-                      ),
-                      const Divider(
-                        color: Colors.grey,
-                      ),
-                    ],
-                  ),
-                );
-              },
+      body: Padding(
+        padding: const EdgeInsets.all(10),
+        child: ListView(
+          children: [
+            // User card
+            BigUserCard(
+              userName: "Babacar Ndong",
+              userProfilePic: AssetImage("assets/logo.png"),
+              cardActionWidget: SettingsItem(
+                icons: Icons.edit,
+                iconStyle: IconStyle(
+                  withBackground: true,
+                  borderRadius: 50,
+                  backgroundColor: Colors.yellow[600],
+                ),
+                title: "ARV",
+                subtitle: "It's your shop",
+                onTap: () {
+                  print("OK");
+                },
+              ),
             ),
-          ),
+            SettingsGroup(
+              items: [
+                SettingsItem(
+                  onTap: () {},
+                  icons: CupertinoIcons.folder_fill,
+                  iconStyle: IconStyle(),
+                  title: 'Wallet',
+                  subtitle: "Coming soon",
+                ),
+                // SettingsItem(
+                //   onTap: () {},
+                //   icons: Icons.dark_mode_rounded,
+                //   iconStyle: IconStyle(
+                //     iconsColor: Colors.white,
+                //     withBackground: true,
+                //     backgroundColor: Colors.red,
+                //   ),
+                //   title: 'Dark mode',
+                //   subtitle: "Automatic",
+                //   trailing: Switch.adaptive(
+                //     value: false,
+                //     onChanged: (value) {},
+                //   ),
+                // ),
+              ],
+            ),
+            SettingsGroup(
+              items: [
+                SettingsItem(
+                  onTap: () {
+                    _settingModalBottomSheet(context);
+                  },
+                  icons: Icons.info_rounded,
+                  iconStyle: IconStyle(
+                    backgroundColor: Colors.purple,
+                  ),
+                  title: 'About',
+                  subtitle: "All copy rights under ARV ",
+                ),
+              ],
+            ),
+            // You can add a settings title
+            SettingsGroup(
+              settingsGroupTitle: "Account",
+              items: [
+                SettingsItem(
+                  onTap: () async {
+                    FlutterSecureStorage storage = FlutterSecureStorage();
+                    secureStorage.add("access-token","");
+                    await storage.deleteAll().then(
+                            (value) => Get.offAll(() => const LoginPage()));
+
+                  },
+                  icons: Icons.exit_to_app_rounded,
+                  title: "Sign Out",
+                ),
+              ],
+            ),
+          ],
         ),
       ),
+    );
+  }
+
+  void _settingModalBottomSheet(context){
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc){
+          return Container(
+            padding: EdgeInsets.all(30),
+            child: new Wrap(
+              children: <Widget>[
+                Text(
+                  'ARV Shopping Mall, 39, TVR Road, Thruthuraipoondi, Tamil Nadu 614713',
+                  style: GoogleFonts.poppins(
+                    fontSize: 14.0,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
     );
   }
 }

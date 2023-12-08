@@ -224,15 +224,17 @@ class _OrderProgressState extends State<OrderProgress> {
                                                   orderStatusList[2]
                                               ? TrackerData(
                                                   title: "Order On the way",
-                                                  date: utils.getDateString(order
-                                                      .expectedDeliveryDate),
+                                                  date: order
+                                                      .expectedDeliveryDate!=null?utils.getDateString(order
+                                                      .expectedDeliveryDate):"",
                                                   tracker_details: [
                                                     TrackerDetails(
                                                       title:
                                                           "Your delivery partner on the way with you order",
-                                                      datetime: utils
+                                                      datetime:order
+                                                          .expectedDeliveryDate!=null? utils
                                                           .getDateString(order
-                                                              .expectedDeliveryDate),
+                                                              .expectedDeliveryDate):"",
                                                     ),
                                                   ],
                                                 )
@@ -316,15 +318,15 @@ class _OrderProgressState extends State<OrderProgress> {
                                                       orderStatusList[3]
                                                   ? TrackerData(
                                                       title: "Order Delivered",
-                                                      date: utils.getDateString(
-                                                          order.deliveredDate),
+                                                      date:order.deliveredDate!=null? utils.getDateString(
+                                                          order.deliveredDate):"",
                                                       tracker_details: [
                                                         TrackerDetails(
                                                           title:
                                                               "You received your order",
-                                                          datetime: utils
+                                                          datetime: order.expectedDeliveryDate!=null?utils
                                                               .getDateString(order
-                                                                  .expectedDeliveryDate),
+                                                                  .expectedDeliveryDate):"",
                                                         ),
                                                       ],
                                                     )

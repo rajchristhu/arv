@@ -7,15 +7,18 @@ class CartPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: const [
-          CartListItems(),
-          CartValue(),
-        ],
+    return Scaffold(
+      body:  SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: const [
+            CartListItems(),
+            CartValue(),
+          ],
+        ),
       ),
-    );
+    )
+     ;
   }
 }
