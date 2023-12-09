@@ -12,10 +12,10 @@ import 'package:arv/utils/custom_progress_bar.dart';
 import 'package:arv/utils/secure_storage.dart';
 import 'package:arv/views/order_page/input_box.dart';
 import 'package:flutter/material.dart';
-
+import 'package:fluttertoast/fluttertoast.dart';
 // ignore: depend_on_referenced_packages
 import 'package:get/get.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+
 class CartValue extends StatefulWidget {
   const CartValue({
     super.key,
@@ -372,7 +372,8 @@ class _CartValueState extends State<CartValue> {
                         landMark: landmark.text,
                         isDeliveryAddress: true,
                       );
-                      print("$addressId, ${name.text}, ${phone.text}, ${addressLine1.text}");
+                      print(
+                          "$addressId, ${name.text}, ${phone.text}, ${addressLine1.text}");
                       await arvApi.addAddresses(address);
                       await Future.delayed(const Duration(seconds: 2));
                       await getAddress();
@@ -385,6 +386,8 @@ class _CartValueState extends State<CartValue> {
                               variant: e.orderProductVariation!,
                               qty: e.orderQty!,
                               itemTotalPrice: e.orderPrice ?? 0.0,
+                              itemName: e.productName,
+                              itemPrice: e.orderPrice,
                             ),
                           )
                           .toList();
@@ -411,8 +414,7 @@ class _CartValueState extends State<CartValue> {
                       } catch (e) {
                         //
                       }
-                    }
-                    else{
+                    } else {
                       Fluttertoast.showToast(
                         msg: "Please enter the details",
                         toastLength: Toast.LENGTH_SHORT,

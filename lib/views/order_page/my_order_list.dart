@@ -122,8 +122,13 @@ class _OrderProgressState extends State<OrderProgress> {
                                     height: 40,
                                     width: 40,
                                   ),
-                                  Text(
-                                    "${order.orderItems[index].itemName}",
+                                  const SizedBox(width: 15),
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.6,
+                                    child: Text(
+                                      "${order.orderItems[index].itemName}",
+                                    ),
                                   ),
                                   const SizedBox(width: 5),
                                   Text(
