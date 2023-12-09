@@ -1,6 +1,5 @@
 import 'package:arv/models/response_models/my_orders.dart';
 import 'package:arv/shared/cart_service.dart';
-import 'package:arv/shared/utils.dart';
 import 'package:arv/utils/app_colors.dart';
 import 'package:arv/utils/arv_api.dart';
 import 'package:flutter/material.dart';
@@ -17,14 +16,16 @@ class MyOrderList extends StatefulWidget {
   @override
   State<MyOrderList> createState() => _MyOrderListState();
 }
+
 late MyOrders myOrders;
+
 class _MyOrderListState extends State<MyOrderList> {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<CartService>(
       init: Get.find<CartService>(),
       builder: (controller) {
-         myOrders = controller.myOrders;
+        myOrders = controller.myOrders;
         if (myOrders.list.isEmpty) {
           return const Center(
             child: Text("No orders to show"),
@@ -38,7 +39,7 @@ class _MyOrderListState extends State<MyOrderList> {
           itemCount: myOrders.list.length,
           itemBuilder: (BuildContext context, int index) {
             OrderDetails order = myOrders.list[index];
-            return OrderProgress(order,index);
+            return OrderProgress(order, index);
           },
         );
       },
@@ -196,13 +197,11 @@ class _OrderProgressState extends State<OrderProgress> {
                                         tracker_data: [
                                           TrackerData(
                                             title: "Order Placed",
-                                            date: utils.getDateString(
-                                                order.orderedDate),
+                                            date: order.orderedDate,
                                             tracker_details: [
                                               TrackerDetails(
                                                 title: "Your order was placed ",
-                                                datetime: utils.getDateString(
-                                                    order.orderedDate),
+                                                datetime: order.orderedDate,
                                               ),
                                               order.orderStatus ==
                                                       orderStatusList[1]
@@ -210,8 +209,7 @@ class _OrderProgressState extends State<OrderProgress> {
                                                       title:
                                                           "ARV accepts your order",
                                                       datetime:
-                                                          utils.getDateString(
-                                                              order.placedDate),
+                                                          order.placedDate,
                                                     )
                                                   : TrackerDetails(
                                                       title: "",
@@ -224,15 +222,14 @@ class _OrderProgressState extends State<OrderProgress> {
                                                   orderStatusList[2]
                                               ? TrackerData(
                                                   title: "Order On the way",
-                                                  date: utils.getDateString(order
-                                                      .expectedDeliveryDate),
+                                                  date: order
+                                                      .expectedDeliveryDate,
                                                   tracker_details: [
                                                     TrackerDetails(
                                                       title:
                                                           "Your delivery partner on the way with you order",
-                                                      datetime: utils
-                                                          .getDateString(order
-                                                              .expectedDeliveryDate),
+                                                      datetime: order
+                                                          .expectedDeliveryDate,
                                                     ),
                                                   ],
                                                 )
@@ -263,24 +260,20 @@ class _OrderProgressState extends State<OrderProgress> {
                                             tracker_data: [
                                               TrackerData(
                                                 title: "Order Placed",
-                                                date: utils.getDateString(
-                                                    order.orderedDate),
+                                                date: order.orderedDate,
                                                 tracker_details: [
                                                   TrackerDetails(
                                                     title:
                                                         "Your order was placed ",
-                                                    datetime:
-                                                        utils.getDateString(
-                                                            order.orderedDate),
+                                                    datetime: order.orderedDate,
                                                   ),
                                                   order.orderStatus ==
                                                           orderStatusList[1]
                                                       ? TrackerDetails(
                                                           title:
                                                               "ARV accepts your order",
-                                                          datetime: utils
-                                                              .getDateString(order
-                                                                  .placedDate),
+                                                          datetime:
+                                                              order.placedDate,
                                                         )
                                                       : TrackerDetails(
                                                           title: "",
@@ -293,16 +286,14 @@ class _OrderProgressState extends State<OrderProgress> {
                                                       orderStatusList[2]
                                                   ? TrackerData(
                                                       title: "Order On the way",
-                                                      date: utils.getDateString(
-                                                          order
-                                                              .expectedDeliveryDate),
+                                                      date: order
+                                                          .expectedDeliveryDate,
                                                       tracker_details: [
                                                         TrackerDetails(
                                                           title:
                                                               "Your delivery partner on the way with you order",
-                                                          datetime: utils
-                                                              .getDateString(order
-                                                                  .expectedDeliveryDate),
+                                                          datetime: order
+                                                              .expectedDeliveryDate,
                                                         ),
                                                       ],
                                                     )
@@ -316,15 +307,13 @@ class _OrderProgressState extends State<OrderProgress> {
                                                       orderStatusList[3]
                                                   ? TrackerData(
                                                       title: "Order Delivered",
-                                                      date: utils.getDateString(
-                                                          order.deliveredDate),
+                                                      date: order.deliveredDate,
                                                       tracker_details: [
                                                         TrackerDetails(
                                                           title:
                                                               "You received your order",
-                                                          datetime: utils
-                                                              .getDateString(order
-                                                                  .expectedDeliveryDate),
+                                                          datetime: order
+                                                              .expectedDeliveryDate,
                                                         ),
                                                       ],
                                                     )
@@ -353,24 +342,20 @@ class _OrderProgressState extends State<OrderProgress> {
                                             tracker_data: [
                                               TrackerData(
                                                 title: "Order Placed",
-                                                date: utils.getDateString(
-                                                    order.orderedDate),
+                                                date: order.orderedDate,
                                                 tracker_details: [
                                                   TrackerDetails(
                                                     title:
                                                         "Your order was placed ",
-                                                    datetime:
-                                                        utils.getDateString(
-                                                            order.orderedDate),
+                                                    datetime: order.orderedDate,
                                                   ),
                                                   order.orderStatus ==
                                                           orderStatusList[1]
                                                       ? TrackerDetails(
                                                           title:
                                                               "ARV accepts your order",
-                                                          datetime: utils
-                                                              .getDateString(order
-                                                                  .placedDate),
+                                                          datetime:
+                                                              order.placedDate,
                                                         )
                                                       : TrackerDetails(
                                                           title: "",
@@ -398,9 +383,11 @@ class _OrderProgressState extends State<OrderProgress> {
                             left: 6,
                           ),
                         ),
-                        myOrders.list.length-1==widget.ind?SizedBox(height: 200,):Container()
-
-
+                        myOrders.list.length - 1 == widget.ind
+                            ? const SizedBox(
+                                height: 200,
+                              )
+                            : Container()
                       ],
                     ),
                   ),
