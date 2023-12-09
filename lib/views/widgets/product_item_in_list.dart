@@ -30,6 +30,7 @@ class _ProductItemInListState extends State<ProductItemInList> {
   int quantity = 0;
   String productId = "";
   String productVariant = "";
+  double price = 0.0;
 
   @override
   void initState() {
@@ -41,6 +42,7 @@ class _ProductItemInListState extends State<ProductItemInList> {
     productId = widget.product.id;
     try {
       productVariant = widget.product.productVariation![0];
+      price = widget.product.sellingPrice![0];
     } catch (e) {
       productVariant = "";
     }
@@ -249,6 +251,7 @@ class _ProductItemInListState extends State<ProductItemInList> {
           productId: productId,
           variant: productVariant,
           qty: count,
+          orderPrice: price,
         ),
       );
     }

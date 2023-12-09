@@ -574,6 +574,7 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
           productId: productId!,
           variant: variantList[variantIndex].productVariant,
           qty: count,
+          orderPrice: variantList[variantIndex].price,
         ),
       );
     }

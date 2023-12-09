@@ -38,6 +38,7 @@ class _ProductGridState extends State<ProductGridCard> {
             widget.product.stock!.isNotEmpty ? widget.product.stock![0] : 0;
         String productId = widget.product.id;
         String productVariant = widget.product.productVariation![0];
+        double price = widget.product.sellingPrice![0];
 
         return InkWell(
           onTap: () {
@@ -83,154 +84,159 @@ class _ProductGridState extends State<ProductGridCard> {
                       )),
                       Expanded(
                         flex: 1,
-                          child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 0),
-                            // Add padding to text
-                            child: Text(
-                              widget.product.productName ?? "",
-                              style: GoogleFonts.poppins(
-                                fontSize: 14.0,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black,
-                              ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 0, top: 0),
-                            // Add padding
-                            child: Text(
-                              widget.product.productSubCategory.name,
-                              style: GoogleFonts.poppins(
-                                fontSize: 8.0,
-                                fontWeight: FontWeight.w300,
-                                color: Colors.black,
-                              ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "${widget.product.mrpPrice!.isNotEmpty ? widget.product.mrpPrice![0].toInt() : ""} rs",
-                                style: GoogleFonts.poppins(
-                                  fontSize: 14.0,
-                                  decoration: TextDecoration.lineThrough,
-                                  fontWeight: FontWeight.w300,
-                                  color: Colors.black,
-                                ),
-                              ),
-                              Text(
-                                "${widget.product.sellingPrice!.isNotEmpty ? widget.product.sellingPrice![0].toInt() : ""} rs",
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 0),
+                              // Add padding to text
+                              child: Text(
+                                widget.product.productName ?? "",
                                 style: GoogleFonts.poppins(
                                   fontSize: 14.0,
                                   fontWeight: FontWeight.w600,
                                   color: Colors.black,
                                 ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                               ),
-                            ],
-                          ),
-                          Container(
-                            width: 1000000,
-                            height: 32,
-                            padding: const EdgeInsets.only(right: 0, top: 5),
-                            child: count == 0
-                                ? OutlinedButton(
-                                    onPressed: () async {
-                                      await performCartOperation(
-                                        true,
-                                        quantity,
-                                        count,
-                                        productId,
-                                        productVariant,
-                                      );
-                                    },
-                                    style: OutlinedButton.styleFrom(
-                                      side: BorderSide(width: 1.0, color: pink),
-                                    ),
-                                    child: Text(
-                                      'Add',
-                                      style: GoogleFonts.poppins(
-                                        fontSize: 14.0,
-                                        fontWeight: FontWeight.w300,
-                                        color: pink,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 0, top: 0),
+                              // Add padding
+                              child: Text(
+                                widget.product.productSubCategory.name,
+                                style: GoogleFonts.poppins(
+                                  fontSize: 8.0,
+                                  fontWeight: FontWeight.w300,
+                                  color: Colors.black,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "${widget.product.mrpPrice!.isNotEmpty ? widget.product.mrpPrice![0].toInt() : ""} rs",
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 14.0,
+                                    decoration: TextDecoration.lineThrough,
+                                    fontWeight: FontWeight.w300,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                Text(
+                                  "${widget.product.sellingPrice!.isNotEmpty ? widget.product.sellingPrice![0].toInt() : ""} rs",
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 14.0,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Container(
+                              width: 1000000,
+                              height: 32,
+                              padding: const EdgeInsets.only(right: 0, top: 5),
+                              child: count == 0
+                                  ? OutlinedButton(
+                                      onPressed: () async {
+                                        await performCartOperation(
+                                          true,
+                                          quantity,
+                                          count,
+                                          productId,
+                                          productVariant,
+                                          price,
+                                        );
+                                      },
+                                      style: OutlinedButton.styleFrom(
+                                        side:
+                                            BorderSide(width: 1.0, color: pink),
                                       ),
-                                    ),
-                                  )
-                                : Container(
-                                    width: 10000,
-                                    height: 32,
-                                    margin:
-                                        const EdgeInsets.only(right: 0, top: 5),
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        width: 1.0,
-                                        color: pink,
+                                      child: Text(
+                                        'Add',
+                                        style: GoogleFonts.poppins(
+                                          fontSize: 14.0,
+                                          fontWeight: FontWeight.w300,
+                                          color: pink,
+                                        ),
                                       ),
-                                      borderRadius: const BorderRadius.all(
-                                        Radius.circular(5),
+                                    )
+                                  : Container(
+                                      width: 10000,
+                                      height: 32,
+                                      margin: const EdgeInsets.only(
+                                          right: 0, top: 5),
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                          width: 1.0,
+                                          color: pink,
+                                        ),
+                                        borderRadius: const BorderRadius.all(
+                                          Radius.circular(5),
+                                        ),
                                       ),
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        InkWell(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          InkWell(
+                                              child: Icon(
+                                                Icons.remove,
+                                                size: 16,
+                                                color: gray,
+                                              ),
+                                              onTap: () async {
+                                                await performCartOperation(
+                                                  false,
+                                                  quantity,
+                                                  count,
+                                                  productId,
+                                                  productVariant,
+                                                  price,
+                                                );
+                                              }),
+                                          Container(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 8.0),
+                                            child: Text(
+                                              '$count',
+                                              style: const TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 14.0,
+                                                fontWeight: FontWeight.w300,
+                                              ),
+                                            ),
+                                          ),
+                                          InkWell(
                                             child: Icon(
-                                              Icons.remove,
+                                              Icons.add,
                                               size: 16,
                                               color: gray,
                                             ),
                                             onTap: () async {
                                               await performCartOperation(
-                                                false,
+                                                true,
                                                 quantity,
                                                 count,
                                                 productId,
                                                 productVariant,
+                                                price,
                                               );
-                                            }),
-                                        Container(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 8.0),
-                                          child: Text(
-                                            '$count',
-                                            style: const TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 14.0,
-                                              fontWeight: FontWeight.w300,
-                                            ),
+                                            },
                                           ),
-                                        ),
-                                        InkWell(
-                                          child: Icon(
-                                            Icons.add,
-                                            size: 16,
-                                            color: gray,
-                                          ),
-                                          onTap: () async {
-                                            await performCartOperation(
-                                              true,
-                                              quantity,
-                                              count,
-                                              productId,
-                                              productVariant,
-                                            );
-                                          },
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                          ),
-                        ],
-                      )),
+                            ),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -243,7 +249,7 @@ class _ProductGridState extends State<ProductGridCard> {
   }
 
   Future<void> performCartOperation(bool isInc, int quantity, int count,
-      String productId, String productVariant) async {
+      String productId, String productVariant, double price) async {
     ArvProgressDialog.instance.showProgressDialog(context);
 
     log("Cart Added");
@@ -261,6 +267,7 @@ class _ProductGridState extends State<ProductGridCard> {
           productId: productId,
           variant: productVariant,
           qty: count,
+          orderPrice: price,
         ),
       );
     }
