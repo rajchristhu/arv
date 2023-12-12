@@ -1,6 +1,7 @@
 import 'package:arv/models/request/cart.dart';
 import 'package:arv/models/response_models/products.dart';
 import 'package:arv/shared/cart_service.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:arv/utils/app_colors.dart';
 import 'package:arv/utils/arv_api.dart';
 import 'package:arv/utils/custom_progress_bar.dart';
@@ -134,16 +135,16 @@ class _ProductItemInListState extends State<ProductItemInList> {
                           // Align text
                           children: [
                             Text(
-                              "${widget.product.mrpPrice!.isEmpty ? '' : (widget.product.mrpPrice![0]).toInt()} rs",
-                              style: GoogleFonts.poppins(
+                              "${widget.product.mrpPrice!.isEmpty ? '' : (widget.product.mrpPrice![0]).toInt()} ₹",
+                              style: GoogleFonts.montserrat(
                                 fontSize: 14.0,
                                 fontWeight: FontWeight.w300,
                                 color: Colors.black,
                               ),
                             ),
                             Text(
-                              "${widget.product.sellingPrice!.isEmpty ? '' : (widget.product.sellingPrice![0]).toInt()} rs",
-                              style: GoogleFonts.poppins(
+                              "${widget.product.sellingPrice!.isEmpty ? '' : (widget.product.sellingPrice![0]).toInt()} ₹",
+                              style: GoogleFonts.montserrat(
                                 fontSize: 14.0,
                                 fontWeight: FontWeight.w300,
                                 color: Colors.black,

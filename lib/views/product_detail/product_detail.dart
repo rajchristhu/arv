@@ -3,11 +3,13 @@ import 'package:arv/models/response_models/products.dart';
 import 'package:arv/shared/cart_service.dart';
 import 'package:arv/utils/app_colors.dart';
 import 'package:arv/utils/arv_api.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:arv/utils/custom_progress_bar.dart';
 import 'package:arv/views/order_page/cart.dart';
 import 'package:arv/views/widgets/favourite_picks.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 // ignore: depend_on_referenced_packages
 import 'package:get/get.dart';
@@ -262,48 +264,13 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
               )
             ],
           ),
-          const SizedBox(height: 15),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const SizedBox(
-                height: 25,
-                child: Text(
-                  "4.5",
-                  textAlign: TextAlign.justify,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    height: 1.5,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              SizedBox(
-                width: 170,
-                height: 25,
-                child: ListView.builder(
-                  itemCount: 5,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) {
-                    return Icon(
-                      index == 4 ? Icons.star_half_rounded : Icons.star,
-                      color: Colors.orange,
-                    );
-                  },
-                ),
-              ),
-              const Spacer(),
-            ],
-          ),
           const SizedBox(height: 10),
           Row(
             children: [
               Text(
-                'Rs. ${sellingPrices[variantIndex]}',
+                '₹ ${sellingPrices[variantIndex]}',
                 textAlign: TextAlign.justify,
-                style: const TextStyle(
+                style:   GoogleFonts.montserrat(
                   color: Colors.black,
                   fontSize: 28,
                   height: 1.5,
@@ -316,15 +283,16 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
                   Container(
                     padding: const EdgeInsets.all(20),
                     child: Text(
-                      'Rs. ${mrpPrices[variantIndex]}',
+                      '₹ ${mrpPrices[variantIndex]}',
                       textAlign: TextAlign.justify,
-                      style: TextStyle(
+                      style: GoogleFonts.montserrat(
                         color: gray,
                         fontSize: 17.5,
                         height: 1.5,
                         fontWeight: FontWeight.bold,
                         decoration: TextDecoration.lineThrough,
                       ),
+
                     ),
                   ),
                 ],

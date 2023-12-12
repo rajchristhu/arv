@@ -2,7 +2,7 @@
     package="com.arv.app.arv">
     <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="arv"
+        android:label="ARV"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
        <meta-data android:name="com.google.android.geo.API_KEY"

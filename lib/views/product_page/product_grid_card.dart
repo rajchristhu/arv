@@ -1,5 +1,5 @@
 import 'dart:developer';
-
+import 'package:google_fonts/google_fonts.dart';
 import 'package:arv/models/request/cart.dart';
 import 'package:arv/models/response_models/products.dart';
 import 'package:arv/shared/cart_service.dart';
@@ -83,7 +83,7 @@ class _ProductGridState extends State<ProductGridCard> {
                         },
                       )),
                       Expanded(
-                        flex: 1,
+                        flex: 2,
                         child: Column(
                           children: [
                             Padding(
@@ -118,8 +118,8 @@ class _ProductGridState extends State<ProductGridCard> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  "${widget.product.mrpPrice!.isNotEmpty ? widget.product.mrpPrice![0].toInt() : ""} rs",
-                                  style: GoogleFonts.poppins(
+                                  "${widget.product.mrpPrice!.isNotEmpty ? widget.product.mrpPrice![0].toInt() : ""} ₹",
+                                  style: GoogleFonts.montserrat(
                                     fontSize: 14.0,
                                     decoration: TextDecoration.lineThrough,
                                     fontWeight: FontWeight.w300,
@@ -127,8 +127,8 @@ class _ProductGridState extends State<ProductGridCard> {
                                   ),
                                 ),
                                 Text(
-                                  "${widget.product.sellingPrice!.isNotEmpty ? widget.product.sellingPrice![0].toInt() : ""} rs",
-                                  style: GoogleFonts.poppins(
+                                  "${widget.product.sellingPrice!.isNotEmpty ? widget.product.sellingPrice![0].toInt() : ""} ₹",
+                                  style: GoogleFonts.montserrat(
                                     fontSize: 14.0,
                                     fontWeight: FontWeight.w600,
                                     color: Colors.black,

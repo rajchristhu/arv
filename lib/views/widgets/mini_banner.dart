@@ -21,7 +21,7 @@ class MiniBanner extends StatelessWidget {
                 height: 70,
                 width: MediaQuery.of(context).size.width,
               )
-            : Image.asset("assets/images/rect1.jpg");
+            : Container();
       },
     );
   }

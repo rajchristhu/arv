@@ -1,5 +1,5 @@
 import 'dart:developer';
-
+import 'package:google_fonts/google_fonts.dart';
 import 'package:arv/models/request/order.dart';
 import 'package:arv/models/response_models/addresses.dart';
 import 'package:arv/models/response_models/cart_list.dart';
@@ -125,7 +125,7 @@ class _CartValueState extends State<CartValue> {
                     const Spacer(),
                     Text(
                       "₹ $totalAmount",
-                      style: TextStyle(
+                      style: GoogleFonts.montserrat(
                         color: black,
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -152,7 +152,7 @@ class _CartValueState extends State<CartValue> {
                     const Spacer(),
                     Text(
                       "₹ ${deliveryCharge ?? 0.0}",
-                      style: TextStyle(
+                      style: GoogleFonts.montserrat(
                         color: black,
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -179,7 +179,7 @@ class _CartValueState extends State<CartValue> {
                     const Spacer(),
                     Text(
                       "₹ ${totalAmount == 0 ? 0.0 : totalAmount + (deliveryCharge == null ? 0.0 : deliveryCharge!.toDouble())}",
-                      style: TextStyle(
+                      style: GoogleFonts.montserrat(
                         color: black,
                         fontSize: 18,
                         fontWeight: FontWeight.bold,

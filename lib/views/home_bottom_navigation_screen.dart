@@ -7,6 +7,7 @@ import 'package:arv/shared/cart_service.dart';
 import 'package:arv/shared/navigation_service.dart';
 import 'package:arv/utils/app_colors.dart';
 import 'package:arv/utils/arv_api.dart';
+import 'package:arv/utils/custom_progress_bar.dart';
 import 'package:arv/views/home_page/home_page.dart';
 import 'package:arv/views/order_page/cart.dart';
 import 'package:arv/views/order_page/order_page.dart';
@@ -56,12 +57,19 @@ class _HomeBottomNavigationScreenState
 
     final double itemHeight = (size.height - kToolbarHeight) / 3;
     final double itemWidth = size.width / 2;
+    // ArvProgressDialog.instance
+    //     .showProgressDialog(context);
     return GetBuilder<MainScreenController>(
       init: Get.find<MainScreenController>(),
       builder: (controller) {
+        // ArvProgressDialog.instance
+        //     .dismissDialog(context);
+
         return ValueListenableBuilder<int>(
           valueListenable: navigationService.navigationValue,
           builder: (context, value, child) {
+            ArvProgressDialog.instance
+                .dismissDialog(context);
             int currentTab = value;
             return Scaffold(
               resizeToAvoidBottomInset: true,
@@ -351,16 +359,16 @@ class _HomeBottomNavigationScreenState
                   ? Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
+                      children: const [
+                        // Center(
+                        //   child: Image.asset(
+                        //     "assets/images/service-not-availabe.jpg",
+                        //     fit: BoxFit.contain,
+                        //     height: 300,
+                        //     width: 300,
+                        //   ),
+                        // ),
                         Center(
-                          child: Image.asset(
-                            "assets/images/service-not-availabe.jpg",
-                            fit: BoxFit.contain,
-                            height: 300,
-                            width: 300,
-                          ),
-                        ),
-                        const Center(
                           child: Text(
                             "Service Not Available at your location!",
                             style: TextStyle(

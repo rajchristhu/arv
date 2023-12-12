@@ -4,7 +4,7 @@ import 'package:arv/utils/app_colors.dart';
 import 'package:arv/views/home_page/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import 'package:google_fonts/google_fonts.dart';
 class LandingPage extends StatelessWidget {
   const LandingPage({
     super.key,
@@ -57,7 +57,7 @@ class LandingPage extends StatelessWidget {
                       children: [
                         Text(
                           "Item ${controller.items.length} | ₹ ${controller.cartTotal.orderValue}",
-                          style: TextStyle(
+                          style: GoogleFonts.montserrat(
                             fontSize: 18,
                             color: white,
                             fontWeight: FontWeight.bold,

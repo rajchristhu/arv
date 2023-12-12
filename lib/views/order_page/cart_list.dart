@@ -2,6 +2,7 @@ import 'package:arv/models/response_models/cart_list.dart';
 import 'package:arv/shared/cart_service.dart';
 import 'package:arv/utils/app_colors.dart';
 import 'package:arv/utils/arv_api.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:arv/utils/custom_progress_bar.dart';
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
@@ -193,7 +194,7 @@ class _CartListItemsState extends State<CartListItems> {
                                                 : "₹ ${price * product.orderQty!}",
                                             maxLines: 2,
                                             overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
+                                            style: GoogleFonts.montserrat(
                                                 color: black,
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.w600),

@@ -10,6 +10,7 @@ Color white = HexColor("#FFFFFF");
 Color gray = HexColor("#868889");
 Color gray50 = HexColor("#cccecf");
 Color lightpink = HexColor("#F6EDF9");
+Color lightpink2 = HexColor("#FFD1DF");
 Color pink = HexColor("#FE0167");
 Color primaryColorLight = HexColor("#FE0167");
 Color swiggyOrange = HexColor("#3C0068");

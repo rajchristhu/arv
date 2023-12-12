@@ -222,7 +222,7 @@ class _ProductsPageState extends State<ProductsPage> {
                                     },
                                     child: Container(
                                       color: indexVal == index
-                                          ? pink
+                                          ? lightpink2
                                           : Colors.white,
                                       height: 100,
                                       padding: const EdgeInsets.only(
@@ -242,7 +242,7 @@ class _ProductsPageState extends State<ProductsPage> {
                                                   const BorderRadius.all(
                                                       Radius.circular(5)),
                                               color: indexVal == index
-                                                  ? pink
+                                                  ? lightpink2
                                                   : gray50,
                                             ),
                                             child: Center(
@@ -273,7 +273,7 @@ class _ProductsPageState extends State<ProductsPage> {
                     ? Container(
                         padding: const EdgeInsets.only(top: 10, right: 10),
                         decoration: BoxDecoration(
-                          border: Border.all(color: lightpink),
+                          border: Border.all(color: lightpink2),
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(12.0),
                         ),
@@ -343,7 +343,7 @@ class _ProductsPageState extends State<ProductsPage> {
                                         },
                                         child: Container(
                                           color: indexVal == index
-                                              ? pink
+                                              ? lightpink2
                                               : Colors.white,
                                           height: 100,
                                           padding: const EdgeInsets.only(
@@ -364,7 +364,7 @@ class _ProductsPageState extends State<ProductsPage> {
                                                       const BorderRadius.all(
                                                           Radius.circular(5)),
                                                   color: indexVal == index
-                                                      ? pink
+                                                      ? lightpink2
                                                       : gray50,
                                                 ),
                                                 child: Center(
