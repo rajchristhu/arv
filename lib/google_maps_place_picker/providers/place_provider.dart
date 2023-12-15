@@ -60,7 +60,7 @@ class PlaceProvider extends ChangeNotifier {
     try {
       permissionGranted = await location.requestPermission();
       if (permissionGranted == LocationPlatformInterface.PermissionStatus.granted) {
-        currentPosition = await Geolocator().getCurrentPosition(
+        currentPosition = await Geolocator.getCurrentPosition(
         desiredAccuracy: desiredAccuracy ?? LocationAccuracy.best);
       } else {
         currentPosition = null;

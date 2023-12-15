@@ -43,9 +43,14 @@ class _LoginPageState extends State<LoginPage> {
     await auth.verifyPhoneNumber(
       phoneNumber: number,
       timeout: const Duration(seconds: 60),
-      verificationCompleted: (PhoneAuthCredential credential) {},
+      verificationCompleted: (PhoneAuthCredential credential) {
+        ArvProgressDialog.instance.dismissDialog(context);
+      },
       verificationFailed: (FirebaseAuthException e) {
         utils.notify(e.code);
+        utils.notify(e.toString());
+        print(e.toString());
+        print(e.code);
         ArvProgressDialog.instance.dismissDialog(context);
       },
       codeSent: (String verificationId, int? resendToken) async {
@@ -62,7 +67,9 @@ class _LoginPageState extends State<LoginPage> {
           ),
         );
       },
-      codeAutoRetrievalTimeout: (String verificationId) {},
+      codeAutoRetrievalTimeout: (String verificationId) {
+        ArvProgressDialog.instance.dismissDialog(context);
+      },
     );
   }
 

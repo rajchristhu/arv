@@ -3,6 +3,7 @@
 import 'package:arv/utils/distance-calculator.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:geocoding/geocoding.dart';
 
 import '../utils/secure_storage.dart';
 import 'app_const.dart';
@@ -19,7 +20,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 // ignore: library_private_types_in_public_api
 
 class MainScreenController extends GetxController {
-  final Geolocator geoLocator = Geolocator()..forceAndroidLocationManager;
+  final Geolocator geoLocator = Geolocator();
   Position? _currentPosition;
   String _currentAddress = "";
   String _storeName = "";
@@ -34,7 +35,9 @@ class MainScreenController extends GetxController {
 
   @override
   Future<void> onInit() async {
+
     super.onInit();
+
     nae = AppConstantsUtils.loc;
     print("nae");
     print(nae);
@@ -177,7 +180,7 @@ class MainScreenController extends GetxController {
     return 12742 * asin(sqrt(a));
   }
   _getCurrentLocation() async {
-    _currentPosition = await geoLocator.getCurrentPosition(
+    _currentPosition = await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.best,
     );
     _getAddressFromLatLng(
@@ -188,7 +191,7 @@ class MainScreenController extends GetxController {
 
   _getAddressFromLatLng(double latitude, double longitude) async {
     try {
-      List<Placemark> p = await geoLocator.placemarkFromCoordinates(
+      List<Placemark> p = await placemarkFromCoordinates(
         latitude,
         longitude,
       );

@@ -58,7 +58,7 @@ dev_dependencies:
   flutter_svg: 2.0.5
   flutter_statusbarcolor_ns: ^0.5.0
   permission_handler: ^10.2.0
-  geolocator: ^5.3.1
+  geolocator: ^7.0.0
   location: ^4.4.0
   tuple: ^2.0.1
   infinite_scroll_pagination: ^3.2.0
