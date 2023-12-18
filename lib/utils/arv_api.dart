@@ -547,7 +547,7 @@ class _ArvApi {
   }
 
   Future<void> placeOrder(Order order) async {
-    var url = Uri.parse("$hostUrl/orders");
+    var url = Uri.parse("http://192.168.7.182:8082/orders");
     var headers = await _getHeaders();
     try {
       var response = await http.post(

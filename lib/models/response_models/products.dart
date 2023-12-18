@@ -56,6 +56,7 @@ class ProductDto {
   double? discount;
   String? tags;
   String? imageUri;
+  bool isEnabled;
 
   ProductDto({
     required this.id,
@@ -79,9 +80,11 @@ class ProductDto {
     required this.discount,
     required this.tags,
     required this.imageUri,
+    required this.isEnabled,
   });
 
-  factory ProductDto.fromRawJson(String str) => ProductDto.fromJson(json.decode(str));
+  factory ProductDto.fromRawJson(String str) =>
+      ProductDto.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
@@ -109,11 +112,14 @@ class ProductDto {
           ? []
           : List<int>.from(json["quantity"].map((x) => x)),
       stock: List<int>.from(json["stock"].map((x) => x)),
-      productVariants: json["productVariants"] == null ? [] : List<ProductVariant>.from(
-          json["productVariants"].map((x) => ProductVariant.fromJson(x))),
+      productVariants: json["productVariants"] == null
+          ? []
+          : List<ProductVariant>.from(
+              json["productVariants"].map((x) => ProductVariant.fromJson(x))),
       discount: json["discount"]?.toDouble(),
       tags: json["tags"],
       imageUri: json["imageUri"],
+      isEnabled: json["isEnabled"],
     );
   }
 
@@ -142,6 +148,7 @@ class ProductDto {
         "discount": discount,
         "tags": tags,
         "imageUri": imageUri,
+        "isEnabled": isEnabled,
       };
 }
 

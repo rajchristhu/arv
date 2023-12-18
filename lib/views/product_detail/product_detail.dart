@@ -3,16 +3,13 @@ import 'package:arv/models/response_models/products.dart';
 import 'package:arv/shared/cart_service.dart';
 import 'package:arv/utils/app_colors.dart';
 import 'package:arv/utils/arv_api.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:arv/utils/custom_progress_bar.dart';
-import 'package:arv/views/order_page/cart.dart';
 import 'package:arv/views/widgets/favourite_picks.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
-
 // ignore: depend_on_referenced_packages
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../../shared/navigation_service.dart';
 
@@ -270,7 +267,7 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
               Text(
                 '₹ ${sellingPrices[variantIndex]}',
                 textAlign: TextAlign.justify,
-                style:   GoogleFonts.montserrat(
+                style: GoogleFonts.montserrat(
                   color: Colors.black,
                   fontSize: 28,
                   height: 1.5,
@@ -292,89 +289,91 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
                         fontWeight: FontWeight.bold,
                         decoration: TextDecoration.lineThrough,
                       ),
-
                     ),
                   ),
                 ],
               ),
               const Spacer(),
-              FutureBuilder(
-                future: arvApi.getCartCountById(
-                    productDto.id, variantList[variantIndex].productVariant),
-                initialData: 0,
-                builder: (context, snapshot) {
-                  count = snapshot.data ?? 0;
-                  return count == 0
-                      ? SizedBox(
-                          width: 100,
-                          height: 35,
-                          child: ElevatedButton(
-                            onPressed: () async =>
-                                await performCartOperation(true),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.pink,
-                            ),
-                            child: const Text(
-                              "Add",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                              ),
-                            ),
-                          ),
-                        )
-                      : Container(
-                          width: 100,
-                          height: 35,
-                          margin: const EdgeInsets.all(3),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              width: 1.0,
-                              color: pink,
-                            ),
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(5),
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              InkWell(
-                                child: Icon(
-                                  Icons.remove,
-                                  size: 20,
-                                  color: gray,
-                                ),
-                                onTap: () async =>
-                                    await performCartOperation(false),
-                              ),
-                              Container(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8.0),
-                                child: Text(
-                                  '$count',
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w300,
+              productDto.isEnabled
+                  ? FutureBuilder(
+                      future: arvApi.getCartCountById(productDto.id,
+                          variantList[variantIndex].productVariant),
+                      initialData: 0,
+                      builder: (context, snapshot) {
+                        count = snapshot.data ?? 0;
+                        return count == 0
+                            ? SizedBox(
+                                width: 100,
+                                height: 35,
+                                child: ElevatedButton(
+                                  onPressed: () async =>
+                                      await performCartOperation(true),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.pink,
+                                  ),
+                                  child: const Text(
+                                    "Add",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              InkWell(
-                                child: Icon(
-                                  Icons.add,
-                                  size: 20,
-                                  color: gray,
+                              )
+                            : Container(
+                                width: 100,
+                                height: 35,
+                                margin: const EdgeInsets.all(3),
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    width: 1.0,
+                                    color: pink,
+                                  ),
+                                  borderRadius: const BorderRadius.all(
+                                    Radius.circular(5),
+                                  ),
                                 ),
-                                onTap: () async =>
-                                    await performCartOperation(true),
-                              ),
-                            ],
-                          ),
-                        );
-                },
-              ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    InkWell(
+                                      child: Icon(
+                                        Icons.remove,
+                                        size: 20,
+                                        color: gray,
+                                      ),
+                                      onTap: () async =>
+                                          await performCartOperation(false),
+                                    ),
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8.0),
+                                      child: Text(
+                                        '$count',
+                                        style: const TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w300,
+                                        ),
+                                      ),
+                                    ),
+                                    InkWell(
+                                      child: Icon(
+                                        Icons.add,
+                                        size: 20,
+                                        color: gray,
+                                      ),
+                                      onTap: () async =>
+                                          await performCartOperation(true),
+                                    ),
+                                  ],
+                                ),
+                              );
+                      },
+                    )
+                  : Container(),
             ],
           ),
           const SizedBox(height: 20),

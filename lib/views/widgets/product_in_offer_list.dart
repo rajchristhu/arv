@@ -5,8 +5,10 @@ import 'package:arv/utils/app_colors.dart';
 import 'package:arv/utils/arv_api.dart';
 import 'package:arv/views/product_detail/product_detail.dart';
 import 'package:flutter/material.dart';
+
 // ignore: depend_on_referenced_packages
 import 'package:get/get.dart';
+
 // ignore: depend_on_referenced_packages
 import 'package:google_fonts/google_fonts.dart';
 
@@ -120,77 +122,83 @@ class _ProductInOfferListState extends State<ProductInOfferList> {
                             ),
                           ],
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 10),
-                          child: count == 0
-                              ? OutlinedButton(
-                                  onPressed: () async =>
-                                      await performCartOperation(true),
-                                  style: OutlinedButton.styleFrom(
-                                    side: BorderSide(width: 1.0, color: pink),
-                                  ),
-                                  child: Text(
-                                    'Add',
-                                    style: GoogleFonts.poppins(
-                                      fontSize: 14.0,
-                                      fontWeight: FontWeight.w300,
-                                      color: pink,
-                                    ),
-                                  ),
-                                )
-                              : Container(
-                                  width: 62.5,
-                                  height: 35,
-                                  margin: const EdgeInsets.all(3),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      width: 1.0,
-                                      color: pink,
-                                    ),
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(5),
-                                    ),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      InkWell(
-                                        child: Icon(
-                                          Icons.remove,
-                                          size: 16,
-                                          color: gray,
+                        widget.product.isEnabled
+                            ? Padding(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: count == 0
+                                    ? OutlinedButton(
+                                        onPressed: () async =>
+                                            await performCartOperation(true),
+                                        style: OutlinedButton.styleFrom(
+                                          side: BorderSide(
+                                              width: 1.0, color: pink),
                                         ),
-                                        onTap: () async =>
-                                            await performCartOperation(false),
-                                      ),
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8.0),
                                         child: Text(
-                                          '$count',
-                                          style: const TextStyle(
-                                            color: Colors.black,
+                                          'Add',
+                                          style: GoogleFonts.poppins(
                                             fontSize: 14.0,
                                             fontWeight: FontWeight.w300,
+                                            color: pink,
                                           ),
                                         ),
-                                      ),
-                                      InkWell(
-                                        child: Icon(
-                                          Icons.add,
-                                          size: 16,
-                                          color: gray,
+                                      )
+                                    : Container(
+                                        width: 62.5,
+                                        height: 35,
+                                        margin: const EdgeInsets.all(3),
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                            width: 1.0,
+                                            color: pink,
+                                          ),
+                                          borderRadius: const BorderRadius.all(
+                                            Radius.circular(5),
+                                          ),
                                         ),
-                                        onTap: () async =>
-                                            await performCartOperation(true),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            InkWell(
+                                              child: Icon(
+                                                Icons.remove,
+                                                size: 16,
+                                                color: gray,
+                                              ),
+                                              onTap: () async =>
+                                                  await performCartOperation(
+                                                      false),
+                                            ),
+                                            Container(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 8.0),
+                                              child: Text(
+                                                '$count',
+                                                style: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 14.0,
+                                                  fontWeight: FontWeight.w300,
+                                                ),
+                                              ),
+                                            ),
+                                            InkWell(
+                                              child: Icon(
+                                                Icons.add,
+                                                size: 16,
+                                                color: gray,
+                                              ),
+                                              onTap: () async =>
+                                                  await performCartOperation(
+                                                      true),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ],
-                                  ),
-                                ),
-                        ),
+                              )
+                            : Container(),
                       ],
                     )
                   ],

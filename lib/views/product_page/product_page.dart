@@ -4,14 +4,13 @@ import 'package:arv/models/response_models/sub_categories.dart';
 import 'package:arv/shared/cart_service.dart';
 import 'package:arv/utils/app_colors.dart';
 import 'package:arv/utils/arv_api.dart';
-import 'package:arv/utils/custom_progress_bar.dart';
 import 'package:arv/views/product_page/product_grid_card.dart';
 import 'package:arv/views/product_page/product_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:provider/provider.dart';
 
 import '../../shared/navigation_service.dart';
 
@@ -53,6 +52,8 @@ class _ProductsPageState extends State<ProductsPage> {
 
   final PagingController<int, ProductDto> _pagingController =
       PagingController(firstPageKey: 0);
+
+  var provider;
   ValueNotifier<Products> productsNotifier = ValueNotifier(Products(
     list: [],
     currentPage: 0,
@@ -63,18 +64,22 @@ class _ProductsPageState extends State<ProductsPage> {
   getProductsByCategory(
       String majorCategory, String categoryId, String? subCategory) async {
     if (isDisposed) return;
-    ArvProgressDialog.instance.showProgressDialog(context);
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      products = await arvApi.getAllProducts(
-        page,
-        majorCategory,
-        categoryId,
-        subCategory,
-      );
-      productsNotifier.value = products;
-      // ignore: use_build_context_synchronously
-      ArvProgressDialog.instance.dismissDialog(context);
-    });
+    // ArvProgressDialog.instance.showProgressDialog(context);
+    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+    //   products = await arvApi.getAllProducts(
+    //     page,
+    //     majorCategory,
+    //     categoryId,
+    //     subCategory,
+    //   );
+    //   productsNotifier.value = products;
+    //   // ignore: use_build_context_synchronously
+    //   ArvProgressDialog.instance.dismissDialog(context);
+    // });
+    provider.setParams(majorCategory, categoryId, subCategory);
+
+    _pagingController
+        .addPageRequestListener((pageKey) => fetchApiCall(pageKey));
   }
 
   void safeUpdate() => WidgetsBinding.instance
@@ -83,33 +88,15 @@ class _ProductsPageState extends State<ProductsPage> {
   @override
   void initState() {
     super.initState();
-
     page = widget.currentPage;
-    _pagingController.addPageRequestListener((pageKey) {
-      fetchApiCall(
-        pageKey,
-        "",
-        widget.category,
-        widget.subSubCategory,
-      );
-    });
+    provider = Provider.of<NewsProvider>(context, listen: false);
   }
 
-  static const _pageSize = 100;
-
-  Future<void> fetchApiCall(
-    int pageKey,
-    String? majorCategory,
-    String? categoryId,
-    String? subCategoryId,
-  ) async {
+  Future<void> fetchApiCall(int pageKey) async {
     try {
       final Products articles;
-      articles = await Provider.of<NewsProvider>(context, listen: false)
-          .fetchNews(pageKey, majorCategory, categoryId, subCategoryId);
-      final isLastPage = articles.list.length < 15;
-      print("fdfdf");
-      print(articles.list.length);
+      articles = await provider.fetchNews(pageKey);
+      final isLastPage = articles.list.isEmpty;
       if (isLastPage) {
         _pagingController.appendLastPage(articles.list);
       } else {
@@ -178,7 +165,7 @@ class _ProductsPageState extends State<ProductsPage> {
                                 scrollDirection: Axis.vertical,
                                 shrinkWrap: true,
                                 itemBuilder: (context, index) {
-                                   category = categories.list[index];
+                                  category = categories.list[index];
 
                                   if (selectedCategory == "") {
                                     selectedCategory = category!.id;
@@ -190,12 +177,7 @@ class _ProductsPageState extends State<ProductsPage> {
                                     if (_pagingController.itemList != null) {
                                       _pagingController.itemList!.clear();
                                     }
-                                    fetchApiCall(
-                                      0,
-                                      category!.majorCategory,
-                                      category!.id,
-                                      widget.subSubCategory,
-                                    );
+                                    fetchApiCall(0);
                                   }
                                   return InkWell(
                                     onTap: () {
@@ -212,12 +194,8 @@ class _ProductsPageState extends State<ProductsPage> {
                                             null) {
                                           _pagingController.itemList!.clear();
                                         }
-                                        fetchApiCall(
-                                          0,
-                                          category!.majorCategory,
-                                          category!.id,
-                                          widget.subSubCategory,
-                                        );
+
+                                        fetchApiCall(0);
                                       });
                                     },
                                     child: Container(
@@ -310,12 +288,7 @@ class _ProductsPageState extends State<ProductsPage> {
                                           _pagingController.itemList!.clear();
                                         }
 
-                                        fetchApiCall(
-                                          0,
-                                          subCategory.majorCategory,
-                                          '${widget.category}',
-                                          subCategory.id,
-                                        );
+                                        fetchApiCall(0);
                                       }
                                       return InkWell(
                                         onTap: () {
@@ -333,12 +306,7 @@ class _ProductsPageState extends State<ProductsPage> {
                                               _pagingController.itemList!
                                                   .clear();
                                             }
-                                            fetchApiCall(
-                                              0,
-                                              subCategory.majorCategory,
-                                              '${widget.category}',
-                                              subCategory.id,
-                                            );
+                                            fetchApiCall(0);
                                           });
                                         },
                                         child: Container(

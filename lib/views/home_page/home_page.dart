@@ -14,7 +14,6 @@ import 'package:arv/views/widgets/offer_products.dart';
 import 'package:arv/views/widgets/single_scroll_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomePage extends StatelessWidget {
@@ -85,25 +84,25 @@ class HomePage extends StatelessWidget {
                                   color: Colors.black,
                                 ),
                               ),
-                              InkWell(
-                                onTap: () {
-                                  Get.to(() => const ProductsPage(
-                                        true,
-                                        false,
-                                        0,
-                                        null,
-                                        null,
-                                      ));
-                                },
-                                child: Text(
-                                  "See All",
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 18.0,
-                                    fontWeight: FontWeight.w400,
-                                    color: pink,
-                                  ),
-                                ),
-                              ),
+                              // InkWell(
+                              //   onTap: () {
+                              //     Get.to(() => const ProductsPage(
+                              //           true,
+                              //           false,
+                              //           0,
+                              //           null,
+                              //           null,
+                              //         ));
+                              //   },
+                              //   child: Text(
+                              //     "See All",
+                              //     style: GoogleFonts.poppins(
+                              //       fontSize: 18.0,
+                              //       fontWeight: FontWeight.w400,
+                              //       color: pink,
+                              //     ),
+                              //   ),
+                              // ),
                             ],
                           ),
                         ),

@@ -1,16 +1,11 @@
-import 'package:arv/models/response_models/profile.dart';
-import 'package:arv/utils/arv_api.dart';
 import 'package:arv/views/authentication/login_new.dart';
+import 'package:babstrap_settings_screen/babstrap_settings_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
 // ignore: depend_on_referenced_packages
 import 'package:get/get.dart';
 
 import '../../utils/secure_storage.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:babstrap_settings_screen/babstrap_settings_screen.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -105,11 +100,8 @@ class _ProfilePageState extends State<ProfilePage> {
               items: [
                 SettingsItem(
                   onTap: () async {
-                    FlutterSecureStorage storage = FlutterSecureStorage();
-                    secureStorage.add("access-token","");
-                    await storage.deleteAll().then(
-                            (value) => Get.offAll(() => const LoginPage()));
-
+                    await secureStorage.deleteAll();
+                    Get.offAll(() => const LoginPage());
                   },
                   icons: Icons.exit_to_app_rounded,
                   title: "Sign Out",

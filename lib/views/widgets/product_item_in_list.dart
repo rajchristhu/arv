@@ -152,77 +152,83 @@ class _ProductItemInListState extends State<ProductItemInList> {
                             ),
                           ],
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 0),
-                          child: count == 0
-                              ? OutlinedButton(
-                                  onPressed: () async =>
-                                      await performCartOperation(true),
-                                  style: OutlinedButton.styleFrom(
-                                    side: BorderSide(width: 1.0, color: pink),
-                                  ),
-                                  child: Text(
-                                    'Add',
-                                    style: GoogleFonts.poppins(
-                                      fontSize: 14.0,
-                                      fontWeight: FontWeight.w300,
-                                      color: pink,
-                                    ),
-                                  ),
-                                )
-                              : Container(
-                                  width: 75,
-                                  height: 35,
-                                  margin: const EdgeInsets.all(8),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      width: 1.0,
-                                      color: pink,
-                                    ),
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(5),
-                                    ),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      InkWell(
-                                        child: Icon(
-                                          Icons.remove,
-                                          size: 16,
-                                          color: gray,
+                        widget.product.isEnabled
+                            ? Padding(
+                                padding: const EdgeInsets.only(right: 0),
+                                child: count == 0
+                                    ? OutlinedButton(
+                                        onPressed: () async =>
+                                            await performCartOperation(true),
+                                        style: OutlinedButton.styleFrom(
+                                          side: BorderSide(
+                                              width: 1.0, color: pink),
                                         ),
-                                        onTap: () async =>
-                                            await performCartOperation(false),
-                                      ),
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8.0),
                                         child: Text(
-                                          '$count',
-                                          style: const TextStyle(
-                                            color: Colors.black,
+                                          'Add',
+                                          style: GoogleFonts.poppins(
                                             fontSize: 14.0,
                                             fontWeight: FontWeight.w300,
+                                            color: pink,
                                           ),
                                         ),
-                                      ),
-                                      InkWell(
-                                        child: Icon(
-                                          Icons.add,
-                                          size: 16,
-                                          color: gray,
+                                      )
+                                    : Container(
+                                        width: 75,
+                                        height: 35,
+                                        margin: const EdgeInsets.all(8),
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                            width: 1.0,
+                                            color: pink,
+                                          ),
+                                          borderRadius: const BorderRadius.all(
+                                            Radius.circular(5),
+                                          ),
                                         ),
-                                        onTap: () async =>
-                                            await performCartOperation(true),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            InkWell(
+                                              child: Icon(
+                                                Icons.remove,
+                                                size: 16,
+                                                color: gray,
+                                              ),
+                                              onTap: () async =>
+                                                  await performCartOperation(
+                                                      false),
+                                            ),
+                                            Container(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 8.0),
+                                              child: Text(
+                                                '$count',
+                                                style: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 14.0,
+                                                  fontWeight: FontWeight.w300,
+                                                ),
+                                              ),
+                                            ),
+                                            InkWell(
+                                              child: Icon(
+                                                Icons.add,
+                                                size: 16,
+                                                color: gray,
+                                              ),
+                                              onTap: () async =>
+                                                  await performCartOperation(
+                                                      true),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ],
-                                  ),
-                                ),
-                        ),
+                              )
+                            : Container(),
                       ],
                     ),
                   ],
