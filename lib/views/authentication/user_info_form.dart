@@ -51,7 +51,7 @@ class _UserInfoFormState extends State<UserInfoForm> {
           ),
           const Spacer(),
           SizedBox(
-            height: MediaQuery.of(context).size.height * 0.175,
+            height: MediaQuery.of(context).size.height * 0.07,
             width: MediaQuery.of(context).size.width * 0.95,
             child: ListView(
               physics: const NeverScrollableScrollPhysics(),
@@ -64,64 +64,64 @@ class _UserInfoFormState extends State<UserInfoForm> {
                   textController: name,
                   isEnabled: true,
                 ),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Text(
-                    "Nearby City",
-                    style: TextStyle(
-                      color: appColor,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
-                FutureBuilder<List<Store>>(
-                  future: arvApi.getAvailableLocations(),
-                  builder: (context, snapshot) {
-                    List<Store> locations = snapshot.data ?? [];
-                    return Container(
-                      height: MediaQuery.of(context).size.height * 0.05,
-                      width: 220,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: appColor,
-                          width: 1,
-                        ),
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(2.5),
-                        ),
-                      ),
-                      padding: const EdgeInsets.all(5),
-                      margin: const EdgeInsets.all(17.5),
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton(
-                          isDense: true,
-                          isExpanded: false,
-                          hint: const Text(
-                            "Select",
-                            style: TextStyle(fontSize: 15.0),
-                          ),
-                          items: locations.map((place) {
-                            return DropdownMenuItem(
-                              value: place.id,
-                              child: Padding(
-                                padding: const EdgeInsets.only(left: 0.0),
-                                child: Text(
-                                  place.name,
-                                  style: const TextStyle(fontSize: 15.0),
-                                ),
-                              ),
-                            );
-                          }).toList(),
-                          value: location,
-                          onChanged: (value) => setState(
-                            () => location = value,
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
+                // Container(
+                //   padding: const EdgeInsets.symmetric(horizontal: 20),
+                //   child: Text(
+                //     "Nearby City",
+                //     style: TextStyle(
+                //       color: appColor,
+                //       fontWeight: FontWeight.bold,
+                //       fontSize: 18,
+                //     ),
+                //   ),
+                // ),
+                // FutureBuilder<List<Store>>(
+                //   future: arvApi.getAvailableLocations(),
+                //   builder: (context, snapshot) {
+                //     List<Store> locations = snapshot.data ?? [];
+                //     return Container(
+                //       height: MediaQuery.of(context).size.height * 0.05,
+                //       width: 220,
+                //       decoration: BoxDecoration(
+                //         border: Border.all(
+                //           color: appColor,
+                //           width: 1,
+                //         ),
+                //         borderRadius: const BorderRadius.all(
+                //           Radius.circular(2.5),
+                //         ),
+                //       ),
+                //       padding: const EdgeInsets.all(5),
+                //       margin: const EdgeInsets.all(17.5),
+                //       child: DropdownButtonHideUnderline(
+                //         child: DropdownButton(
+                //           isDense: true,
+                //           isExpanded: false,
+                //           hint: const Text(
+                //             "Select",
+                //             style: TextStyle(fontSize: 15.0),
+                //           ),
+                //           items: locations.map((place) {
+                //             return DropdownMenuItem(
+                //               value: place.id,
+                //               child: Padding(
+                //                 padding: const EdgeInsets.only(left: 0.0),
+                //                 child: Text(
+                //                   place.name,
+                //                   style: const TextStyle(fontSize: 15.0),
+                //                 ),
+                //               ),
+                //             );
+                //           }).toList(),
+                //           value: location,
+                //           onChanged: (value) => setState(
+                //             () => location = value,
+                //           ),
+                //         ),
+                //       ),
+                //     );
+                //   },
+                // ),
               ],
             ),
           ),
@@ -130,10 +130,14 @@ class _UserInfoFormState extends State<UserInfoForm> {
             padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 10),
             child: ElevatedButton(
               onPressed: () async {
-                if (location != null && name.text.isNotEmpty) {
-                  await arvApi.updateProfile(name.text);
-                  AppConstantsUtils.location=location!;
-                  Get.offAll(() => const HomeBottomNavigationScreen());
+                print("efg");
+                print(name.text);
+
+                if (name.text.isNotEmpty) {
+                  arvApi.updateProfile(name.text).then((value) => {
+                    print("dfdff"),
+                    Navigator.pop(context)
+                  });
                 } else {}
               },
               style: ElevatedButton.styleFrom(
@@ -223,9 +227,14 @@ class _NameUpdateState extends State<UserInfoForm> {
             padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 10),
             child: ElevatedButton(
               onPressed: () async {
+                print("efg");
+                print(name.text);
+
                 if (name.text.isNotEmpty) {
-                  await arvApi.updateProfile(name.text);
-                  Get.offAll(() => const HomeBottomNavigationScreen());
+                   arvApi.updateProfile(name.text).then((value) => {
+                     print("dfdff"),
+                     Navigator.pop(context)
+                   });
                 } else {}
               },
               style: ElevatedButton.styleFrom(

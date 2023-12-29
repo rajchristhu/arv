@@ -654,6 +654,8 @@ class _ArvApi {
   }
 
   Future<Map<String, String>> _getHeaders() async {
+    print("await secureStorage.get('access-token')");
+    print(await secureStorage.get('access-token'));
     return {
       "content-type": "application/json",
       "Authorization": "Bearer ${await secureStorage.get('access-token')}"

@@ -56,7 +56,7 @@ class _ProductItemInListState extends State<ProductItemInList> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<int>(
+    return FutureBuilder<dynamic>(
       initialData: 0,
       future: arvApi.getCartCountById(widget.product.id, productVariant),
       builder: (context, snapshot) {
@@ -152,7 +152,7 @@ class _ProductItemInListState extends State<ProductItemInList> {
                             ),
                           ],
                         ),
-                        widget.product.isEnabled
+                        widget.product.isEnabled?? false
                             ? Padding(
                                 padding: const EdgeInsets.only(right: 0),
                                 child: count == 0

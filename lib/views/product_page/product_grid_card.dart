@@ -61,6 +61,7 @@ class _ProductGridState extends State<ProductGridCard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
+                        flex: 2,
                           child: Image.network(
                         arvApi.getMediaUri(widget.product.imageUri ?? ""),
                         height: 50,

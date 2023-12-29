@@ -54,7 +54,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   borderRadius: 50,
                   backgroundColor: Colors.yellow[600],
                 ),
-                title: "Maria Christhu Rajan",
+                title: "ARV",
                 subtitle: "It's your shop",
                 onTap: () {
                   print("OK");

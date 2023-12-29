@@ -15,6 +15,8 @@ class FixedCategorySection extends StatelessWidget {
         future: arvApi.getAllHomeBanners("SECTION_2"),
         builder: (context, snapshot) {
           List<HomeBanner> banners = snapshot.data?.list ?? [];
+          print("ffsfsfsf");
+          print(banners.length);
           if (banners.isEmpty) return Container();
           return Row(
             children: [
@@ -32,19 +34,19 @@ class FixedCategorySection extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 10),
-              Expanded(
+              banners.length!=1? Expanded(
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
                   child: SizedBox(
                     height: 130,
                     width: MediaQuery.of(context).size.width,
                     child: Image.network(
-                      arvApi.getMediaUri(banners[1].imageUri),
+                      arvApi.getMediaUri(banners.length>1?banners[1].imageUri:banners[0].imageUri),
                       fit: BoxFit.fill,
                     ),
                   ),
                 ),
-              ),
+              ):Container(),
             ],
           );
         },

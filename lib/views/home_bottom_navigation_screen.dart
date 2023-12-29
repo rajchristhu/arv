@@ -19,7 +19,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../models/response_models/profile.dart';
 import '../shared/app_const.dart';
+import 'authentication/user_info_form.dart';
 import 'map/maps_place_picker_page.dart';
 
 class HomeBottomNavigationScreen extends StatefulWidget {
@@ -34,10 +36,11 @@ class _HomeBottomNavigationScreenState
   String nae = "";
 
   @override
-  void initState() {
+  void initState()  {
     changeStatusColor(primaryColor);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
     super.initState();
+    getProfile();
     Get.lazyPut(() => CartService());
     Get.lazyPut(() => MainScreenController());
     nae = AppConstantsUtils.loc;
@@ -359,26 +362,27 @@ class _HomeBottomNavigationScreenState
                   ? Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
-                      children: const [
-                        // Center(
-                        //   child: Image.asset(
-                        //     "assets/images/service-not-availabe.jpg",
-                        //     fit: BoxFit.contain,
-                        //     height: 300,
-                        //     width: 300,
-                        //   ),
-                        // ),
+                      children:  [
                         Center(
-                          child: Text(
-                            "Service Not Available at your location!",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                              color: Colors.black,
-                            ),
-                            maxLines: 2,
+                          child: SvgPicture.asset(
+                            "assets/images/ser.svg",
+                            semanticsLabel: 'Acme Logo',
+                            width: 300,
+                            height: 300,
+                            fit: BoxFit.contain,
                           ),
                         ),
+                        // Center(
+                        //   child: Text(
+                        //     "Service Not Available at your location!",
+                        //     style: TextStyle(
+                        //       fontWeight: FontWeight.bold,
+                        //       fontSize: 16,
+                        //       color: Colors.black,
+                        //     ),
+                        //     maxLines: 2,
+                        //   ),
+                        // ),
                       ],
                     )
                   : searchController.text.isNotEmpty
@@ -552,4 +556,33 @@ class _HomeBottomNavigationScreenState
       },
     );
   }
+  getProfile(){
+ arvApi.getProfile().then((value) => {
+ print("profile"),
+     print(value.profileName),
+   if(value.profileName==""){
+   _showBottomSheet(context)}
+ });
+
+  }
+  void _showBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: false,
+      isDismissible: false,
+      enableDrag: false,
+      useSafeArea: true,
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30.0),
+          topRight: Radius.circular(30.0),
+        ),
+      ),
+      builder: (BuildContext context) {
+        return const UserInfoForm();
+      },
+    );
+  }
+
 }

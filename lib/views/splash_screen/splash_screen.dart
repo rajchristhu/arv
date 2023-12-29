@@ -128,25 +128,6 @@ class _SplashPageState extends State<SplashPage> {
     );
   }
 
-  void _showBottomSheet(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: false,
-      isDismissible: false,
-      enableDrag: false,
-      useSafeArea: true,
-      backgroundColor: Colors.white,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(30.0),
-          topRight: Radius.circular(30.0),
-        ),
-      ),
-      builder: (BuildContext context) {
-        return const UserInfoForm();
-      },
-    );
-  }
 }
 
 class ArvLogo extends StatelessWidget {

@@ -20,13 +20,15 @@ class CarouselSectionOne extends StatelessWidget {
       future: arvApi.getAllHomeBanners("SECTION_1"),
       builder: (context, snapshot) {
         List<HomeBanner> homeBanners = snapshot.data?.list ?? [];
+        print("ejfnjnfjnef");
+        print(homeBanners.length);
         if (homeBanners.isEmpty) return Container();
         return CarouselSlider(
           options: CarouselOptions(
               autoPlay: true,
               aspectRatio: 2.35,
               enlargeCenterPage: false,
-              autoPlayAnimationDuration: const Duration(seconds: 1)),
+              autoPlayAnimationDuration: const Duration(seconds: 3)),
           items: homeBanners.map(
             (banner) {
               return InkWell(
