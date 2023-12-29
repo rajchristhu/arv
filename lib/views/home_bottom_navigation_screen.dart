@@ -557,10 +557,10 @@ class _HomeBottomNavigationScreenState
     );
   }
   getProfile(){
- arvApi.getProfile().then((value) => {
+ arvApi.getNameApi().then((value) => {
  print("profile"),
-     print(value.profileName),
-   if(value.profileName==""){
+     print(value.usename),
+   if(value.usename==""){
    _showBottomSheet(context)}
  });
 

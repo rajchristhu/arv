@@ -36,6 +36,8 @@ class _ProductGridState extends State<ProductGridCard> {
         int count = snapshot.data ?? 0;
         int quantity =
             widget.product.stock!.isNotEmpty ? widget.product.stock![0] : 0;
+        print("fdfkdfkdmf");
+        print(quantity);
         String productId = widget.product.id;
         String productVariant = widget.product.productVariation![0];
         double price = widget.product.sellingPrice![0];
@@ -143,7 +145,7 @@ class _ProductGridState extends State<ProductGridCard> {
                                     height: 32,
                                     padding:
                                         const EdgeInsets.only(right: 0, top: 5),
-                                    child: count == 0
+                                    child:quantity==0?Container(): count == 0
                                         ? OutlinedButton(
                                             onPressed: () async {
                                               await performCartOperation(
@@ -160,7 +162,7 @@ class _ProductGridState extends State<ProductGridCard> {
                                                   width: 1.0, color: pink),
                                             ),
                                             child: Text(
-                                              'Add',
+                                              quantity.toString(),
                                               style: GoogleFonts.poppins(
                                                 fontSize: 14.0,
                                                 fontWeight: FontWeight.w300,
