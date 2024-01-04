@@ -142,8 +142,7 @@ class _ArvApi {
   }
 
   Future<ProfileName> getNameApi() async {
-
-    ProfileName profileName=ProfileName(usename: "");
+    ProfileName profileName = ProfileName(usename: "");
     var url = Uri.parse("$hostUrl/username");
     try {
       http.Response response = await http.get(
@@ -154,23 +153,22 @@ class _ArvApi {
         profileName = ProfileName.fromRawJson(response.body);
       }
       log("Update Response ${response.body}");
-
     } catch (e) {
       log("Profile Update Exception : $e");
     }
     return profileName;
   }
-  Future<void> updateProfile(String username) async {
-    ProfileName profile=ProfileName(usename: "");
-    profile.usename = username;
 
+  Future<void> updateProfile(String username) async {
+    ProfileName profile = ProfileName(usename: "");
+    profile.usename = username;
 
     var url = Uri.parse("$hostUrl/auth");
     try {
       http.Response response = await http.put(
         url,
         headers: await _getHeaders(),
-        body:profile.toRawJson(),
+        body: profile.toRawJson(),
       );
       log("Update Response ${response.body}");
     } catch (e) {
@@ -568,7 +566,7 @@ class _ArvApi {
   }
 
   Future<void> placeOrder(Order order) async {
-    var url = Uri.parse("http://192.168.7.182:8082/orders");
+    var url = Uri.parse("$hostUrl/orders");
     var headers = await _getHeaders();
     try {
       var response = await http.post(
@@ -581,6 +579,7 @@ class _ArvApi {
         utils.notify(ResponseMessage.fromRawJson(response.body).message);
         deleteAllCartItems();
       }
+      log(response.body);
     } catch (e) {
       log("Exception : $e");
     }
