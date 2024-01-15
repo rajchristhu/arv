@@ -36,11 +36,16 @@ class _ProductGridState extends State<ProductGridCard> {
         int count = snapshot.data ?? 0;
         int quantity =
             widget.product.stock!.isNotEmpty ? widget.product.stock![0] : 0;
-        print("fdfkdfkdmf");
-        print(quantity);
         String productId = widget.product.id;
         String productVariant = widget.product.productVariation![0];
         double price = widget.product.sellingPrice![0];
+        List<double> vDiscount =
+            List.generate(widget.product.vdiscount.length, (index) {
+          return index <= widget.product.vdiscount.length - 1
+              ? widget.product.vdiscount[index]
+              : 0;
+        });
+        double discount = vDiscount[0];
 
         return InkWell(
           onTap: () {
@@ -63,28 +68,28 @@ class _ProductGridState extends State<ProductGridCard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
-                        flex: 2,
+                          flex: 2,
                           child: Image.network(
-                        arvApi.getMediaUri(widget.product.imageUri ?? ""),
-                        height: 50,
-                        width: double.infinity,
-                        fit: BoxFit.contain,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Container(
+                            arvApi.getMediaUri(widget.product.imageUri ?? ""),
                             height: 50,
-                            padding: const EdgeInsets.all(10),
-                            child: Center(
-                              child: Text(
-                                "No image",
-                                style: TextStyle(
-                                  fontSize: 8,
-                                  color: gray,
+                            width: double.infinity,
+                            fit: BoxFit.contain,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Container(
+                                height: 50,
+                                padding: const EdgeInsets.all(10),
+                                child: Center(
+                                  child: Text(
+                                    "No image",
+                                    style: TextStyle(
+                                      fontSize: 8,
+                                      color: gray,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                          );
-                        },
-                      )),
+                              );
+                            },
+                          )),
                       Expanded(
                         flex: 2,
                         child: Column(
@@ -145,102 +150,105 @@ class _ProductGridState extends State<ProductGridCard> {
                                     height: 32,
                                     padding:
                                         const EdgeInsets.only(right: 0, top: 5),
-                                    child:quantity==0?Container(): count == 0
-                                        ? OutlinedButton(
-                                            onPressed: () async {
-                                              await performCartOperation(
-                                                true,
-                                                quantity,
-                                                count,
-                                                productId,
-                                                productVariant,
-                                                price,
-                                              );
-                                            },
-                                            style: OutlinedButton.styleFrom(
-                                              side: BorderSide(
-                                                  width: 1.0, color: pink),
-                                            ),
-                                            child: Text(
-                                             'Add',
-                                              style: GoogleFonts.poppins(
-                                                fontSize: 14.0,
-                                                fontWeight: FontWeight.w300,
-                                                color: pink,
-                                              ),
-                                            ),
-                                          )
-                                        : Container(
-                                            width: 10000,
-                                            height: 32,
-                                            margin: const EdgeInsets.only(
-                                                right: 0, top: 5),
-                                            decoration: BoxDecoration(
-                                              border: Border.all(
-                                                width: 1.0,
-                                                color: pink,
-                                              ),
-                                              borderRadius:
-                                                  const BorderRadius.all(
-                                                Radius.circular(5),
-                                              ),
-                                            ),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceAround,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                InkWell(
-                                                    child: Icon(
-                                                      Icons.remove,
-                                                      size: 16,
-                                                      color: gray,
-                                                    ),
-                                                    onTap: () async {
-                                                      await performCartOperation(
-                                                        false,
-                                                        quantity,
-                                                        count,
-                                                        productId,
-                                                        productVariant,
-                                                        price,
-                                                      );
-                                                    }),
-                                                Container(
-                                                  padding: const EdgeInsets
-                                                          .symmetric(
-                                                      horizontal: 8.0),
-                                                  child: Text(
-                                                    '$count',
-                                                    style: const TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 14.0,
-                                                      fontWeight:
-                                                          FontWeight.w300,
-                                                    ),
+                                    child: quantity == 0
+                                        ? Container()
+                                        : count == 0
+                                            ? OutlinedButton(
+                                                onPressed: () async {
+                                                  await performCartOperation(
+                                                    true,
+                                                    quantity,
+                                                    count,
+                                                    productId,
+                                                    productVariant,
+                                                    price,
+                                                  );
+                                                },
+                                                style: OutlinedButton.styleFrom(
+                                                  side: BorderSide(
+                                                      width: 1.0, color: pink),
+                                                ),
+                                                child: Text(
+                                                  'Add',
+                                                  style: GoogleFonts.poppins(
+                                                    fontSize: 14.0,
+                                                    fontWeight: FontWeight.w300,
+                                                    color: pink,
                                                   ),
                                                 ),
-                                                InkWell(
-                                                  child: Icon(
-                                                    Icons.add,
-                                                    size: 16,
-                                                    color: gray,
+                                              )
+                                            : Container(
+                                                width: 10000,
+                                                height: 32,
+                                                margin: const EdgeInsets.only(
+                                                    right: 0, top: 5),
+                                                decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                    width: 1.0,
+                                                    color: pink,
                                                   ),
-                                                  onTap: () async {
-                                                    await performCartOperation(
-                                                      true,
-                                                      quantity,
-                                                      count,
-                                                      productId,
-                                                      productVariant,
-                                                      price,
-                                                    );
-                                                  },
+                                                  borderRadius:
+                                                      const BorderRadius.all(
+                                                    Radius.circular(5),
+                                                  ),
                                                 ),
-                                              ],
-                                            ),
-                                          ),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceAround,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    InkWell(
+                                                        child: Icon(
+                                                          Icons.remove,
+                                                          size: 16,
+                                                          color: gray,
+                                                        ),
+                                                        onTap: () async {
+                                                          await performCartOperation(
+                                                            false,
+                                                            quantity,
+                                                            count,
+                                                            productId,
+                                                            productVariant,
+                                                            price,
+                                                          );
+                                                        }),
+                                                    Container(
+                                                      padding: const EdgeInsets
+                                                              .symmetric(
+                                                          horizontal: 8.0),
+                                                      child: Text(
+                                                        '$count',
+                                                        style: const TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 14.0,
+                                                          fontWeight:
+                                                              FontWeight.w300,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    InkWell(
+                                                      child: Icon(
+                                                        Icons.add,
+                                                        size: 16,
+                                                        color: gray,
+                                                      ),
+                                                      onTap: () async {
+                                                        await performCartOperation(
+                                                          true,
+                                                          quantity,
+                                                          count,
+                                                          productId,
+                                                          productVariant,
+                                                          price,
+                                                        );
+                                                      },
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
                                   )
                                 : Container(),
                           ],
