@@ -18,3 +18,6 @@ Color secondaryColor = HexColor("#FB6E3B");
 Color brownBackGroundColor = HexColor("#F4DBB2");
 Color accentColor = HexColor("#FB6E3B");
 Color black = HexColor("#000000");
+Color grayt = HexColor("#99868889");
+Color grayts = HexColor("#99868889");
+Color transColor = HexColor("#00FFFFFF");

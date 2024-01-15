@@ -12,10 +12,10 @@ class ProfileName {
   String toRawJson() => json.encode(toJson());
 
   factory ProfileName.fromJson(Map<String, dynamic> json) => ProfileName(
-    usename: json["usename"] ?? "",
+    usename: json["profileName"] ?? "",
       );
 
   Map<String, dynamic> toJson() => {
-        "usename": usename,
+        "profileName": usename,
       };
 }

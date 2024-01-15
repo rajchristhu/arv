@@ -152,8 +152,7 @@ class _ProductItemInListState extends State<ProductItemInList> {
                             ),
                           ],
                         ),
-                        widget.product.isEnabled?? false
-                            ? Padding(
+                             Padding(
                                 padding: const EdgeInsets.only(right: 0),
                                 child: count == 0
                                     ? OutlinedButton(
@@ -228,7 +227,6 @@ class _ProductItemInListState extends State<ProductItemInList> {
                                         ),
                                       ),
                               )
-                            : Container(),
                       ],
                     ),
                   ],

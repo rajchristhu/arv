@@ -162,7 +162,7 @@ class _ProductGridState extends State<ProductGridCard> {
                                                   width: 1.0, color: pink),
                                             ),
                                             child: Text(
-                                              quantity.toString(),
+                                             'Add',
                                               style: GoogleFonts.poppins(
                                                 fontSize: 14.0,
                                                 fontWeight: FontWeight.w300,

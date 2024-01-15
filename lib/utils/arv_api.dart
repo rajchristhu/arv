@@ -143,7 +143,7 @@ class _ArvApi {
 
   Future<ProfileName> getNameApi() async {
     ProfileName profileName = ProfileName(usename: "");
-    var url = Uri.parse("$hostUrl/username");
+    var url = Uri.parse("$hostUrl/auth/username");
     try {
       http.Response response = await http.get(
         url,

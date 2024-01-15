@@ -35,6 +35,7 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
   String? productId;
   int count = 0;
   int quantity = 0;
+  int quantityCheck = 0;
   int variantIndex = 0;
   List<ProductVariant> variantList = [];
   List<double> mrpPrices = [];
@@ -54,8 +55,8 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
         child: FutureBuilder(
           future: arvApi.getProductById(productId),
           builder: (context, snapshot) {
-            ProductDto? productDto = snapshot.data!;
-            quantity = ((productDto.stock != null &&
+            ProductDto? productDto = snapshot.data;
+            quantity = ((productDto!.stock != null &&
                     (productDto.stock?.length ?? 0) > 0)
                 ? productDto.stock![0]
                 : 0);
@@ -63,6 +64,8 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
             mrpPrices = productDto.mrpPrice ?? [];
             sellingPrices = productDto.sellingPrice ?? [];
             variantList = productDto.productVariants;
+            quantityCheck= variantList[0].qty;
+
             return Column(
               children: [
                 header(productDto),
@@ -196,9 +199,33 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
   }
 
   Widget hero(ProductDto? productDto) {
+    print("quantityCheck");
+    print(quantityCheck);
     return Stack(
       children: [
-        Container(
+        quantityCheck==0?
+            Stack(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(40),
+                  height: MediaQuery.of(context).size.height * 0.3,
+                  width: MediaQuery.of(context).size.width,
+                  child: Image.network(
+                    arvApi.getMediaUri(productDto?.imageUri),
+                    fit: BoxFit.contain,
+                  ),
+                ),
+                Positioned(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height * 0.3,
+                    color: grayts,
+                    child:  Center(child:Text("Out of stock",style: TextStyle(fontSize: 30,fontWeight: FontWeight.w800),) ,),
+                  )
+                  ,),
+              ],
+            )
+       : Container(
           padding: const EdgeInsets.all(40),
           height: MediaQuery.of(context).size.height * 0.3,
           width: MediaQuery.of(context).size.width,
@@ -301,7 +328,7 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
                       initialData: 0,
                       builder: (context, snapshot) {
                         count = snapshot.data ?? 0;
-                        return count == 0
+                        return     quantityCheck==0?Container(): count == 0
                             ? SizedBox(
                                 width: 100,
                                 height: 35,
@@ -379,6 +406,7 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
           const SizedBox(height: 20),
           SizedBox(
             width: MediaQuery.of(context).size.width,
+
             child: Column(
               children: [
                 Row(
@@ -421,13 +449,19 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
               itemCount: variantList.length,
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
+                print("nfdjbnfjdnfjnd");
+                print(variantList[index].qty);
                 bool selectedIndex = index == variantIndex;
                 return InkWell(
                   onTap: () {
                     variantIndex = index;
-                    setState(() {});
+                    setState(() {
+                      quantityCheck= variantList[index].qty;
+                    });
                   },
-                  child: Container(
+                  child:
+
+                  Container(
                     padding: const EdgeInsets.all(2),
                     width: 70,
                     margin: const EdgeInsets.symmetric(horizontal: 5),

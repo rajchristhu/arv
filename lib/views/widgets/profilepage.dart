@@ -1,17 +1,15 @@
-import 'package:arv/models/response_models/profile.dart';
 import 'package:arv/utils/arv_api.dart';
 import 'package:arv/views/authentication/login_new.dart';
+import 'package:babstrap_settings_screen/babstrap_settings_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 // ignore: depend_on_referenced_packages
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../../utils/secure_storage.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:babstrap_settings_screen/babstrap_settings_screen.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -24,15 +22,27 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   TextEditingController nameController = TextEditingController();
+  String profileName = "";
 
   @override
   void initState() {
     super.initState();
+    getProfile();
   }
 
   @override
   void dispose() {
     super.dispose();
+  }
+
+  getProfile() {
+    arvApi.getNameApi().then((value) => {
+          print("profile"),
+          print(value.usename),
+          setState(() {
+            profileName = value.usename.toString();
+          })
+        });
   }
 
   @override
@@ -54,7 +64,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   borderRadius: 50,
                   backgroundColor: Colors.yellow[600],
                 ),
-                title: "ARV",
+                title: profileName,
                 subtitle: "It's your shop",
                 onTap: () {
                   print("OK");
@@ -109,10 +119,10 @@ class _ProfilePageState extends State<ProfilePage> {
                 SettingsItem(
                   onTap: () async {
                     FlutterSecureStorage storage = FlutterSecureStorage();
-                    secureStorage.add("access-token","");
-                    await storage.deleteAll().then(
-                            (value) => Get.offAll(() => const LoginPage()));
-
+                    secureStorage.add("access-token", "");
+                    await storage
+                        .deleteAll()
+                        .then((value) => Get.offAll(() => const LoginPage()));
                   },
                   icons: Icons.exit_to_app_rounded,
                   title: "Sign Out",
@@ -125,10 +135,10 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  void _settingModalBottomSheet(context){
+  void _settingModalBottomSheet(context) {
     showModalBottomSheet(
         context: context,
-        builder: (BuildContext bc){
+        builder: (BuildContext bc) {
           return Container(
             padding: EdgeInsets.all(30),
             child: new Wrap(
@@ -144,7 +154,6 @@ class _ProfilePageState extends State<ProfilePage> {
               ],
             ),
           );
-        }
-    );
+        });
   }
 }

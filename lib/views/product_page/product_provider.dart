@@ -29,6 +29,8 @@ class NewsProvider with ChangeNotifier {
   }
 
   Future<Products> fetchNews(int pageNo) async {
+    print("djnfgjdnf");
+    print(pageNo);
     var client = http.Client();
     try {
       String location = AppConstantsUtils.location;
@@ -36,7 +38,8 @@ class NewsProvider with ChangeNotifier {
       var response = await client.get(Uri.parse(
         "$hostUrl/public/products?majorCategoryId=${majorCategory ?? 'Groceries'}${categoryId != null ? "&categoryId=$categoryId" : ""}${subCategoryId != null ? "&subCategoryId=$subCategoryId" : ""}&priceFrom=0&priceTo=0&page=$pageNo&storeId=$location",
       ));
-      log('$hostUrl/public/products?majorCategoryId=${majorCategory ?? 'Groceries'}${categoryId != null ? "&categoryId=$categoryId" : ""}${subCategoryId != null ? "&subCategoryId=$subCategoryId" : ""}&priceFrom=0&priceTo=0&page=$pageNo&storeId=$location');
+      print("fssfsfsfs");
+      print('$hostUrl/public/products?majorCategoryId=${majorCategory ?? 'Groceries'}${categoryId != null ? "&categoryId=$categoryId" : ""}${subCategoryId != null ? "&subCategoryId=$subCategoryId" : ""}&priceFrom=0&priceTo=0&page=$pageNo&storeId=$location');
 
       if (response.statusCode == 200) {
         newsResponse = Products.fromJson(jsonDecode(response.body));
