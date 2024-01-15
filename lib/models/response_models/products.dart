@@ -57,6 +57,7 @@ class ProductDto {
   String? tags;
   String? imageUri;
   bool isEnabled;
+  List<double> vdiscount;
 
   ProductDto({
     required this.id,
@@ -81,6 +82,7 @@ class ProductDto {
     required this.tags,
     required this.imageUri,
     required this.isEnabled,
+    required this.vdiscount,
   });
 
   factory ProductDto.fromRawJson(String str) =>
@@ -120,6 +122,10 @@ class ProductDto {
       tags: json["tags"],
       imageUri: json["imageUri"],
       isEnabled: json["isEnabled"],
+      vdiscount: json["vdiscount"] == null
+          ? []
+          : List<double>.from(
+              json["vdiscount"].map((x) => ProductVariant.fromJson(x))),
     );
   }
 
@@ -149,6 +155,7 @@ class ProductDto {
         "tags": tags,
         "imageUri": imageUri,
         "isEnabled": isEnabled,
+        "vdiscount": vdiscount,
       };
 }
 

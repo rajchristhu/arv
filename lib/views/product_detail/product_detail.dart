@@ -40,6 +40,7 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
   List<ProductVariant> variantList = [];
   List<double> mrpPrices = [];
   List<double> sellingPrices = [];
+  List<double> vDiscount = [];
 
   @override
   void initState() {
@@ -64,7 +65,11 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
             mrpPrices = productDto.mrpPrice ?? [];
             sellingPrices = productDto.sellingPrice ?? [];
             variantList = productDto.productVariants;
-            quantityCheck= variantList[0].qty;
+            quantityCheck = variantList[0].qty;
+            vDiscount = productDto.vdiscount;
+            vDiscount = List.generate(vDiscount.length, (index) {
+              return index <= vDiscount.length - 1 ? vDiscount[index] : 0;
+            });
 
             return Column(
               children: [
@@ -203,37 +208,43 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
     print(quantityCheck);
     return Stack(
       children: [
-        quantityCheck==0?
-            Stack(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(40),
-                  height: MediaQuery.of(context).size.height * 0.3,
-                  width: MediaQuery.of(context).size.width,
-                  child: Image.network(
-                    arvApi.getMediaUri(productDto?.imageUri),
-                    fit: BoxFit.contain,
-                  ),
-                ),
-                Positioned(
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
+        quantityCheck == 0
+            ? Stack(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(40),
                     height: MediaQuery.of(context).size.height * 0.3,
-                    color: grayts,
-                    child:  Center(child:Text("Out of stock",style: TextStyle(fontSize: 30,fontWeight: FontWeight.w800),) ,),
-                  )
-                  ,),
-              ],
-            )
-       : Container(
-          padding: const EdgeInsets.all(40),
-          height: MediaQuery.of(context).size.height * 0.3,
-          width: MediaQuery.of(context).size.width,
-          child: Image.network(
-            arvApi.getMediaUri(productDto?.imageUri),
-            fit: BoxFit.contain,
-          ),
-        ),
+                    width: MediaQuery.of(context).size.width,
+                    child: Image.network(
+                      arvApi.getMediaUri(productDto?.imageUri),
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                  Positioned(
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height * 0.3,
+                      color: grayts,
+                      child: Center(
+                        child: Text(
+                          "Out of stock",
+                          style: TextStyle(
+                              fontSize: 30, fontWeight: FontWeight.w800),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              )
+            : Container(
+                padding: const EdgeInsets.all(40),
+                height: MediaQuery.of(context).size.height * 0.3,
+                width: MediaQuery.of(context).size.width,
+                child: Image.network(
+                  arvApi.getMediaUri(productDto?.imageUri),
+                  fit: BoxFit.contain,
+                ),
+              ),
         Positioned(
           top: 10,
           right: 20,
@@ -328,76 +339,79 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
                       initialData: 0,
                       builder: (context, snapshot) {
                         count = snapshot.data ?? 0;
-                        return     quantityCheck==0?Container(): count == 0
-                            ? SizedBox(
-                                width: 100,
-                                height: 35,
-                                child: ElevatedButton(
-                                  onPressed: () async =>
-                                      await performCartOperation(true),
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.pink,
-                                  ),
-                                  child: const Text(
-                                    "Add",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18,
-                                    ),
-                                  ),
-                                ),
-                              )
-                            : Container(
-                                width: 100,
-                                height: 35,
-                                margin: const EdgeInsets.all(3),
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    width: 1.0,
-                                    color: pink,
-                                  ),
-                                  borderRadius: const BorderRadius.all(
-                                    Radius.circular(5),
-                                  ),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    InkWell(
-                                      child: Icon(
-                                        Icons.remove,
-                                        size: 20,
-                                        color: gray,
+                        return quantityCheck == 0
+                            ? Container()
+                            : count == 0
+                                ? SizedBox(
+                                    width: 100,
+                                    height: 35,
+                                    child: ElevatedButton(
+                                      onPressed: () async =>
+                                          await performCartOperation(true),
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.pink,
                                       ),
-                                      onTap: () async =>
-                                          await performCartOperation(false),
-                                    ),
-                                    Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 8.0),
-                                      child: Text(
-                                        '$count',
-                                        style: const TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w300,
+                                      child: const Text(
+                                        "Add",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18,
                                         ),
                                       ),
                                     ),
-                                    InkWell(
-                                      child: Icon(
-                                        Icons.add,
-                                        size: 20,
-                                        color: gray,
+                                  )
+                                : Container(
+                                    width: 100,
+                                    height: 35,
+                                    margin: const EdgeInsets.all(3),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        width: 1.0,
+                                        color: pink,
                                       ),
-                                      onTap: () async =>
-                                          await performCartOperation(true),
+                                      borderRadius: const BorderRadius.all(
+                                        Radius.circular(5),
+                                      ),
                                     ),
-                                  ],
-                                ),
-                              );
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        InkWell(
+                                          child: Icon(
+                                            Icons.remove,
+                                            size: 20,
+                                            color: gray,
+                                          ),
+                                          onTap: () async =>
+                                              await performCartOperation(false),
+                                        ),
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 8.0),
+                                          child: Text(
+                                            '$count',
+                                            style: const TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w300,
+                                            ),
+                                          ),
+                                        ),
+                                        InkWell(
+                                          child: Icon(
+                                            Icons.add,
+                                            size: 20,
+                                            color: gray,
+                                          ),
+                                          onTap: () async =>
+                                              await performCartOperation(true),
+                                        ),
+                                      ],
+                                    ),
+                                  );
                       },
                     )
                   : Container(),
@@ -406,7 +420,6 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
           const SizedBox(height: 20),
           SizedBox(
             width: MediaQuery.of(context).size.width,
-
             child: Column(
               children: [
                 Row(
@@ -456,12 +469,10 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
                   onTap: () {
                     variantIndex = index;
                     setState(() {
-                      quantityCheck= variantList[index].qty;
+                      quantityCheck = variantList[index].qty;
                     });
                   },
-                  child:
-
-                  Container(
+                  child: Container(
                     padding: const EdgeInsets.all(2),
                     width: 70,
                     margin: const EdgeInsets.symmetric(horizontal: 5),
