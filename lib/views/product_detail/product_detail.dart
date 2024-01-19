@@ -7,6 +7,7 @@ import 'package:arv/utils/custom_progress_bar.dart';
 import 'package:arv/views/widgets/favourite_picks.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+
 // ignore: depend_on_referenced_packages
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -66,11 +67,11 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
             sellingPrices = productDto.sellingPrice ?? [];
             variantList = productDto.productVariants;
             quantityCheck = variantList[0].qty;
+
             vDiscount = productDto.vdiscount;
             vDiscount = List.generate(vDiscount.length, (index) {
               return index <= vDiscount.length - 1 ? vDiscount[index] : 0;
             });
-
             return Column(
               children: [
                 header(productDto),
@@ -236,14 +237,64 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
                   ),
                 ],
               )
-            : Container(
-                padding: const EdgeInsets.all(40),
-                height: MediaQuery.of(context).size.height * 0.3,
-                width: MediaQuery.of(context).size.width,
-                child: Image.network(
-                  arvApi.getMediaUri(productDto?.imageUri),
-                  fit: BoxFit.contain,
-                ),
+            : Stack(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(40),
+                    height: MediaQuery.of(context).size.height * 0.3,
+                    width: MediaQuery.of(context).size.width,
+                    child: Image.network(
+                      arvApi.getMediaUri(productDto?.imageUri),
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                  vDiscount.length!=0?     Positioned(
+                    child: Container(
+                      height: 100,
+                      child: Stack(
+                        children: <Widget>[
+                        ClipOval(
+                            child: Container(
+                              color: Colors.grey,
+                              height: 70.0, // height of the button
+                              width: 70.0, // width of the button
+                            ),
+                          ),
+                         GestureDetector(
+                            onTap: () {},
+                            child: ClipOval(
+                              child: Container(
+                                //color: Colors.green,
+                                height: 60.0, // height of the button
+                                width: 60.0, // width of the button
+                                decoration: BoxDecoration(
+                                    color: primaryColor,
+                                    border: Border.all(
+                                        color: Colors.white,
+                                        width: 10.0,
+                                        style: BorderStyle.solid),
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: Colors.grey,
+                                          offset: Offset(21.0, 10.0),
+                                          blurRadius: 20.0,
+                                          spreadRadius: 40.0)
+                                    ],
+                                    shape: BoxShape.circle),
+                                child: Center(
+                                    child: Text(vDiscount.length!=0?vDiscount[0].toString():"dff",
+                                        style: TextStyle(
+                                            color: Colors.white
+                                                .withOpacity(0.6)))),
+                              ),
+                            ),
+                          ),
+
+                        ],
+                      ),
+                    ),
+                  ):Container(),
+                ],
               ),
         Positioned(
           top: 10,
