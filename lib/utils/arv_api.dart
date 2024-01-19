@@ -268,6 +268,8 @@ class _ArvApi {
     if (response.statusCode == 200) {
       try {
         products = Products.fromRawJson(response.body);
+        log("Update Response ${response.body}");
+
       } catch (e) {
         log("Exception : $e");
       }
@@ -359,6 +361,8 @@ class _ArvApi {
     if (response.statusCode == 200) {
       try {
         product = ProductDto.fromRawJson(response.body);
+        log("Update Response ${response.body}");
+
       } catch (e) {
         log("Exception : $e");
       }
@@ -384,6 +388,8 @@ class _ArvApi {
     if (response.statusCode == 200) {
       try {
         products = Products.fromRawJson(response.body);
+        log("Update Response ${response.body}");
+
       } catch (e) {
         log("Exception : $e");
       }
