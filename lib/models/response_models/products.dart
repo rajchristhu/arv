@@ -124,8 +124,7 @@ class ProductDto {
       isEnabled: json["isEnabled"],
       vdiscount: json["vdiscount"] == null
           ? []
-          : List<double>.from(
-              json["vdiscount"].map((x) => ProductVariant.fromJson(x))),
+          : List<double>.from(json["vdiscount"].map((x) => x)),
     );
   }
 
