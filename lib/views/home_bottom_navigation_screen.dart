@@ -19,7 +19,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../models/response_models/profile.dart';
+import 'package:cached_network_image/src/cached_image_widget.dart';
 import '../shared/app_const.dart';
 import 'authentication/user_info_form.dart';
 import 'map/maps_place_picker_page.dart';
@@ -409,13 +409,41 @@ class _HomeBottomNavigationScreenState
                                       },
                                       child: Row(
                                         children: [
-                                          Image.network(
-                                            arvApi.getMediaUri(
+                                          CachedNetworkImage(
+                                            imageUrl:      arvApi.getMediaUri(
                                                 productDto.imageUri),
                                             width: 100,
                                             height: 100,
-                                            fit: BoxFit.contain,
+
+                                            placeholder: (context, url) => Container(
+                                              width: 100,
+                                              height: 100,
+                                              padding: const EdgeInsets.all(10),
+                                              child: Center(
+                                                child: Text(
+                                                  "Loading ...",
+                                                  style: TextStyle(
+                                                    fontSize: 8,
+                                                    color: gray,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            errorWidget: (context, url, error) =>Container(
+                                              width: 100,
+                                              height: 100,                                              padding: const EdgeInsets.all(10),
+                                              child: Center(
+                                                child: Text(
+                                                  "No image",
+                                                  style: TextStyle(
+                                                    fontSize: 8,
+                                                    color: gray,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
                                           ),
+
                                           Column(
                                             children: [
                                               SizedBox(

@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 // ignore: depend_on_referenced_packages
 import 'package:order_tracker_zen/order_tracker_zen.dart';
+import 'package:cached_network_image/src/cached_image_widget.dart';
 
 class MyOrderList extends StatefulWidget {
   const MyOrderList({
@@ -117,12 +118,43 @@ class _OrderProgressState extends State<OrderProgress> {
                             itemBuilder: (context, index) {
                               return Row(
                                 children: [
-                                  Image.network(
-                                    arvApi.getMediaUri(
+
+                                  CachedNetworkImage(
+                                    imageUrl: arvApi.getMediaUri(
                                         order.orderItems[index].productId),
                                     height: 40,
                                     width: 40,
+
+                                    placeholder: (context, url) => Container(
+                                      height: 40,
+                                      width: 40,
+                                      padding: const EdgeInsets.all(10),
+                                      child: Center(
+                                        child: Text(
+                                          "Loading ...",
+                                          style: TextStyle(
+                                            fontSize: 8,
+                                            color: gray,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    errorWidget: (context, url, error) =>Container(
+                                      height: 40,
+                                      width: 40,
+                                      padding: const EdgeInsets.all(10),
+                                      child: Center(
+                                        child: Text(
+                                          "No image",
+                                          style: TextStyle(
+                                            fontSize: 8,
+                                            color: gray,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
                                   ),
+
                                   const SizedBox(width: 15),
                                   SizedBox(
                                     width:

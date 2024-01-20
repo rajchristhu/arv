@@ -1,7 +1,10 @@
 import 'package:arv/models/response_models/home_banner.dart';
 import 'package:arv/utils/arv_api.dart';
 import 'package:arv/views/product_page/product_page.dart';
+import 'package:cached_network_image/src/cached_image_widget.dart';
 import 'package:flutter/material.dart';
+
+import '../../utils/app_colors.dart';
 
 class DualCardSection extends StatelessWidget {
   const DualCardSection({
@@ -51,9 +54,34 @@ class DualCardSection extends StatelessWidget {
                           child: SizedBox(
                             height: 110,
                             width: MediaQuery.of(context).size.width,
-                            child: Image.network(
-                              arvApi.getMediaUri(imageUri1),
-                              fit: BoxFit.fill,
+                            child: CachedNetworkImage(
+                              imageUrl: arvApi.getMediaUri(imageUri1),
+                              placeholder: (context, url) => Container(
+                                height: 110,
+                                padding: const EdgeInsets.all(10),
+                                child: Center(
+                                  child: Text(
+                                    "Loading ...",
+                                    style: TextStyle(
+                                      fontSize: 8,
+                                      color: gray,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              errorWidget: (context, url, error) => Container(
+                                height: 110,
+                                padding: const EdgeInsets.all(10),
+                                child: Center(
+                                  child: Text(
+                                    "No image",
+                                    style: TextStyle(
+                                      fontSize: 8,
+                                      color: gray,
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
                         ),
@@ -82,13 +110,40 @@ class DualCardSection extends StatelessWidget {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(8.0),
                           child: SizedBox(
-                            height: 110,
-                            width: MediaQuery.of(context).size.width,
-                            child: Image.network(
-                              arvApi.getMediaUri(imageUri2),
-                              fit: BoxFit.fill,
-                            ),
-                          ),
+                              height: 110,
+                              width: MediaQuery.of(context).size.width,
+                              child: CachedNetworkImage(
+                                imageUrl: arvApi.getMediaUri(imageUri2),
+                                fit: BoxFit.fill,
+                                placeholder: (context, url) => Container(
+                                  height: 110,
+                                  width: MediaQuery.of(context).size.width,
+                                  padding: const EdgeInsets.all(10),
+                                  child: Center(
+                                    child: Text(
+                                      "Loading ...",
+                                      style: TextStyle(
+                                        fontSize: 8,
+                                        color: gray,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                errorWidget: (context, url, error) => Container(
+                                  height: 110,
+                                  width: MediaQuery.of(context).size.width,
+                                  padding: const EdgeInsets.all(10),
+                                  child: Center(
+                                    child: Text(
+                                      "No image",
+                                      style: TextStyle(
+                                        fontSize: 8,
+                                        color: gray,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              )),
                         ),
                       ),
                     )

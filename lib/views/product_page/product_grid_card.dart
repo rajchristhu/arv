@@ -10,6 +10,8 @@ import 'package:arv/views/product_detail/product_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class ProductGridCard extends StatefulWidget {
   const ProductGridCard({super.key, required this.product});
@@ -48,6 +50,7 @@ class _ProductGridState extends State<ProductGridCard> {
         double discount = vDiscount.length!=0? vDiscount[0]:0;
 print("sjdfbsbfjnf");
 print(discount);
+print(quantity);
         return InkWell(
           onTap: () {
             Get.to(() => ProductDetailPageView(productId: productId));
@@ -69,30 +72,139 @@ print(discount);
                       color: Colors.white,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
+                        children: [ quantity == 0
+                            ?  Expanded(
+                            flex: 2,
+                            child:Stack(
+                          children: [
+
+                            CachedNetworkImage(
+                              imageUrl: arvApi.getMediaUri(widget.product.imageUri ?? ""),
+                              height: 50,
+                              width: double.infinity,
+
+                              placeholder: (context, url) => Container(
+                                height: 50,
+                                padding: const EdgeInsets.all(10),
+                                child: Center(
+                                  child: Text(
+                                    "Loading ...",
+                                    style: TextStyle(
+                                      fontSize: 8,
+                                      color: gray,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              errorWidget: (context, url, error) =>Container(
+                                height: 50,
+                                padding: const EdgeInsets.all(10),
+                                child: Center(
+                                  child: Text(
+                                    "No image",
+                                    style: TextStyle(
+                                      fontSize: 8,
+                                      color: gray,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            // Image.network(
+                            //       arvApi.getMediaUri(widget.product.imageUri ?? ""),
+                            //       height: 50,
+                            //       width: double.infinity,
+                            //
+                            //       fit: BoxFit.contain,
+                            //       errorBuilder: (context, error, stackTrace) {
+                            //         return Container(
+                            //           height: 50,
+                            //           padding: const EdgeInsets.all(10),
+                            //           child: Center(
+                            //             child: Text(
+                            //               "No image",
+                            //               style: TextStyle(
+                            //                 fontSize: 8,
+                            //                 color: gray,
+                            //               ),
+                            //             ),
+                            //           ),
+                            //         );
+                            //       },
+                            //     ),
+                            Positioned(
+                              child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                height: 100,
+                                color: grayts,
+                                child: Center(
+                                  child: Text(
+                                    "Out of stock",
+                                    style: TextStyle(
+                                        fontSize: 10, fontWeight: FontWeight.w800),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        )):
                           Expanded(
                               flex: 2,
-                              child: Image.network(
-                                arvApi.getMediaUri(widget.product.imageUri ?? ""),
+                              child:   CachedNetworkImage(
+                                imageUrl: arvApi.getMediaUri(widget.product.imageUri ?? ""),
                                 height: 50,
                                 width: double.infinity,
-                                fit: BoxFit.contain,
-                                errorBuilder: (context, error, stackTrace) {
-                                  return Container(
-                                    height: 50,
-                                    padding: const EdgeInsets.all(10),
-                                    child: Center(
-                                      child: Text(
-                                        "No image",
-                                        style: TextStyle(
-                                          fontSize: 8,
-                                          color: gray,
-                                        ),
+
+                                placeholder: (context, url) => Container(
+                                  height: 50,
+                                  padding: const EdgeInsets.all(10),
+                                  child: Center(
+                                    child: Text(
+                                      "Loading ...",
+                                      style: TextStyle(
+                                        fontSize: 8,
+                                        color: gray,
                                       ),
                                     ),
-                                  );
-                                },
-                              )),
+                                  ),
+                                ),
+                                errorWidget: (context, url, error) =>Container(
+                                  height: 50,
+                                  padding: const EdgeInsets.all(10),
+                                  child: Center(
+                                    child: Text(
+                                      "No image",
+                                      style: TextStyle(
+                                        fontSize: 8,
+                                        color: gray,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+
+                              // Image.network(
+                              //   arvApi.getMediaUri(widget.product.imageUri ?? ""),
+                              //   height: 50,
+                              //   width: double.infinity,
+                              //   fit: BoxFit.contain,
+                              //   errorBuilder: (context, error, stackTrace) {
+                              //     return Container(
+                              //       height: 50,
+                              //       padding: const EdgeInsets.all(10),
+                              //       child: Center(
+                              //         child: Text(
+                              //           "No image",
+                              //           style: TextStyle(
+                              //             fontSize: 8,
+                              //             color: gray,
+                              //           ),
+                              //         ),
+                              //       ),
+                              //     );
+                              //   },
+                              // )
+                          ),
                           Expanded(
                             flex: 2,
                             child: Column(
@@ -263,7 +375,7 @@ print(discount);
                   ),
                 ),
               ),
-              vDiscount.length!=0?     Positioned(
+              vDiscount.length!=0 &&discount!=0?     Positioned(
                 child: Container(
                   height: 50,
                   child: Stack(
@@ -288,7 +400,7 @@ print(discount);
                                     color: Colors.white,
                                     width: 2.0,
                                     style: BorderStyle.solid),
-                                boxShadow: [
+                                boxShadow: const [
                                   BoxShadow(
                                       color: Colors.grey,
                                       offset: Offset(8.0, 8.0),
@@ -297,14 +409,12 @@ print(discount);
                                 ],
                                 shape: BoxShape.circle),
                             child: Center(
-                                child: Text(vDiscount.length!=0?vDiscount[0].toString():"dff",
-                                    style: TextStyle(
-                                        color: Colors.white
-                                            .withOpacity(0.6)))),
+                                child: Text(vDiscount.length!=0?vDiscount[0].toString()+"%":"dff",
+                                    style:   TextStyle(
+                                        color: Colors.white,fontSize: 8,fontWeight: FontWeight.w800))),
                           ),
                         ),
                       ),
-
                     ],
                   ),
                 ),

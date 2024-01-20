@@ -11,6 +11,7 @@ import 'package:get/get.dart';
 
 // ignore: depend_on_referenced_packages
 import 'package:google_fonts/google_fonts.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class ProductInOfferList extends StatefulWidget {
   const ProductInOfferList({
@@ -79,22 +80,68 @@ class _ProductInOfferListState extends State<ProductInOfferList> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Image.network(
-                      arvApi.getMediaUri(widget.product.imageUri ?? ""),
+                    CachedNetworkImage(
+                      imageUrl:    arvApi.getMediaUri(widget.product.imageUri ?? ""),
                       height: 90,
-                      width: MediaQuery.of(context).size.width,
-                      errorBuilder: (BuildContext context, Object exception,
-                          StackTrace? stackTrace) {
-                        return Container(
-                          color: white,
-                          height: 90,
-                          width: MediaQuery.of(context).size.width,
-                          child: const Center(
-                            child: Text("No Image"),
+                      progressIndicatorBuilder: (context, url, downloadProgress) =>
+                          Container(
+                            height: 90,
+                            padding: const EdgeInsets.all(10),
+                            child: Center(
+                              child: Text(
+                                "Loading",
+                                style: TextStyle(
+                                  fontSize: 8,
+                                  color: gray,
+                                ),
+                              ),
+                            ),
                           ),
-                        ); // Display an error message if the image fails to load
-                      },
+                      errorWidget: (context, url, error) =>Container(
+                        height: 90,
+                        padding: const EdgeInsets.all(10),
+                        child: Center(
+                          child: Text(
+                            "No image",
+                            style: TextStyle(
+                              fontSize: 8,
+                              color: gray,
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
+                    // Image.network(
+                    //   arvApi.getMediaUri(widget.product.imageUri ?? ""),
+                    //   height: 90,
+                    //   loadingBuilder: (context, error, stackTrace) {
+                    //     return Container(
+                    //       height: 90,
+                    //       padding: const EdgeInsets.all(10),
+                    //       child: Center(
+                    //         child: Text(
+                    //           "No image",
+                    //           style: TextStyle(
+                    //             fontSize: 8,
+                    //             color: gray,
+                    //           ),
+                    //         ),
+                    //       ),
+                    //     );
+                    //   },
+                    //   width: MediaQuery.of(context).size.width,
+                    //   errorBuilder: (BuildContext context, Object exception,
+                    //       StackTrace? stackTrace) {
+                    //     return Container(
+                    //       color: white,
+                    //       height: 90,
+                    //       width: MediaQuery.of(context).size.width,
+                    //       child: const Center(
+                    //         child: Text("No Image"),
+                    //       ),
+                    //     ); // Display an error message if the image fails to load
+                    //   },
+                    // ),
                     Text(
                       "   ${widget.product.productName}",
                       maxLines: 1,

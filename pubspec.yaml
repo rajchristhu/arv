@@ -44,9 +44,11 @@ dev_dependencies:
   google_fonts: ^4.0.4
   cupertino_icons: ^1.0.3
   floating_bottom_bar: ^0.0.2
+  flutter_cache_manager: ^3.3.1
   carousel_slider: ^4.2.1
   http: ^0.13.3
   flutter_secure_storage: ^8.0.0
+  cached_network_image: ^3.2.3
   shared_preferences: ^2.2.1
   lottie: ^2.0.0
   firebase_auth: ^4.1.3

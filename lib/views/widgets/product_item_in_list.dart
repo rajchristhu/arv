@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:get/get.dart';
 // ignore: depend_on_referenced_packages
-import 'package:google_fonts/google_fonts.dart';
+import 'package:cached_network_image/src/cached_image_widget.dart';
 
 class ProductItemInList extends StatefulWidget {
   const ProductItemInList({
@@ -81,23 +81,43 @@ class _ProductItemInListState extends State<ProductItemInList> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Image.network(
-                      arvApi.getMediaUri(widget.product.id),
+                    CachedNetworkImage(
+                      imageUrl: arvApi.getMediaUri(widget.product.id),
+
                       height: 80,
                       width: double.infinity,
-                      fit: BoxFit.contain,
-                      errorBuilder: (BuildContext context, Object exception,
-                          StackTrace? stackTrace) {
-                        return Container(
-                          color: white,
-                          height: 90,
-                          width: MediaQuery.of(context).size.width,
-                          child: const Center(
-                            child: Text("No Image"),
+
+                      placeholder: (context, url) => Container(
+                        height: 80,
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(10),
+                        child: Center(
+                          child: Text(
+                            "Loading ...",
+                            style: TextStyle(
+                              fontSize: 8,
+                              color: gray,
+                            ),
                           ),
-                        );
-                      },
+                        ),
+                      ),
+                      errorWidget: (context, url, error) =>Container(
+                        height: 80,
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(10),
+                        child: Center(
+                          child: Text(
+                            "No image",
+                            style: TextStyle(
+                              fontSize: 8,
+                              color: gray,
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
+
+
                     const SizedBox(height: 10),
                     Padding(
                       padding: const EdgeInsets.only(left: 8),

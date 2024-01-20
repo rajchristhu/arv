@@ -7,6 +7,7 @@ import 'package:arv/utils/custom_progress_bar.dart';
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:get/get.dart';
+import 'package:cached_network_image/src/cached_image_widget.dart';
 
 class CartListItems extends StatefulWidget {
   const CartListItems({Key? key}) : super(key: key);
@@ -74,7 +75,8 @@ class _CartListItemsState extends State<CartListItems> {
                   child: Text("No products to show"),
                 );
               }
-
+print("nfjnd jndjf");
+print( cartList.list.length);
               return ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
@@ -110,24 +112,42 @@ class _CartListItemsState extends State<CartListItems> {
                                       topRight: Radius.circular(2.0),
                                       bottomLeft: Radius.circular(2.0),
                                       bottomRight: Radius.circular(12.0)),
-                                  child: Image.network(
-                                    arvApi.getMediaUri(product.id),
+                                  child: CachedNetworkImage(
+                                    imageUrl: arvApi.getMediaUri(product.id),
                                     fit: BoxFit.cover,
                                     width: 50,
                                     height: 50,
-                                    errorBuilder: (BuildContext context,
-                                        Object exception,
-                                        StackTrace? stackTrace) {
-                                      return Container(
-                                        color: white,
-                                        height: 100,
-                                        width: 100,
-                                        child: const Center(
-                                          child: Text("No Image"),
+                                    placeholder: (context, url) => Container(
+                                      width: 50,
+                                      height: 50,
+                                      padding: const EdgeInsets.all(10),
+                                      child: Center(
+                                        child: Text(
+                                          "Loading ...",
+                                          style: TextStyle(
+                                            fontSize: 8,
+                                            color: gray,
+                                          ),
                                         ),
-                                      ); // Display an error message if the image fails to load
-                                    },
-                                  ),
+                                      ),
+                                    ),
+                                    errorWidget: (context, url, error) =>Container(
+                                      width: 50,
+                                      height: 50,
+                                      padding: const EdgeInsets.all(10),
+                                      child: Center(
+                                        child: Text(
+                                          "No image",
+                                          style: TextStyle(
+                                            fontSize: 8,
+                                            color: gray,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+
+
                                 ),
                               ),
                               const SizedBox(

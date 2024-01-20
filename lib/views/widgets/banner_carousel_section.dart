@@ -5,6 +5,9 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../utils/app_colors.dart';
+import 'package:cached_network_image/src/cached_image_widget.dart';
+
 class BannerCarouselSection extends StatelessWidget {
   const BannerCarouselSection({
     super.key,
@@ -57,9 +60,41 @@ class BannerCarouselSection extends StatelessWidget {
                     borderRadius: const BorderRadius.all(Radius.circular(12.0)),
                     child: Stack(
                       children: <Widget>[
-                        Image.network(arvApi.getMediaUri(banner.imageUri),
-                            fit: BoxFit.fill,
-                            width: MediaQuery.of(context).size.width),
+                        CachedNetworkImage(
+                          imageUrl: arvApi.getMediaUri(banner.imageUri),
+                      fit: BoxFit.fill,
+                      width: MediaQuery.of(context).size.width,
+
+                          placeholder: (context, url) => Container(
+                            width: MediaQuery.of(context).size.width,
+
+                            padding: const EdgeInsets.all(10),
+                            child: Center(
+                              child: Text(
+                                "Loading ...",
+                                style: TextStyle(
+                                  fontSize: 8,
+                                  color: gray,
+                                ),
+                              ),
+                            ),
+                          ),
+                          errorWidget: (context, url, error) =>Container(
+                            width: MediaQuery.of(context).size.width,
+
+                            padding: const EdgeInsets.all(10),
+                            child: Center(
+                              child: Text(
+                                "No image",
+                                style: TextStyle(
+                                  fontSize: 8,
+                                  color: gray,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+
                       ],
                     ),
                   ),

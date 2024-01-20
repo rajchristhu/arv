@@ -11,6 +11,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
+import 'package:cached_network_image/src/cached_image_widget.dart';
 
 import '../../shared/navigation_service.dart';
 
@@ -207,36 +208,42 @@ class _ProductsPageState extends State<ProductsPage> {
                                           bottom: 20, top: 10),
                                       margin: const EdgeInsets.only(left: 10),
                                       width: 50,
-                                      child: Image.network(
-                                        arvApi
+                                      child:   CachedNetworkImage(
+                                        imageUrl:     arvApi
                                             .getMediaUri(category!.image ?? ""),
                                         width: 50,
                                         height: 50,
-                                        errorBuilder:
-                                            (context, error, stackTrace) {
-                                          return Container(
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  const BorderRadius.all(
-                                                      Radius.circular(5)),
-                                              color: indexVal == index
-                                                  ? lightpink2
-                                                  : gray50,
-                                            ),
-                                            child: Center(
-                                              child: Text(
-                                                category!.name,
-                                                style: TextStyle(
-                                                  color: indexVal == index
-                                                      ? white
-                                                      : black,
-                                                ),
-                                                textAlign: TextAlign.center,
+
+                                        placeholder: (context, url) => Container(
+                                          width: 50,
+                                          height: 50,
+                                          padding: const EdgeInsets.all(10),
+                                          child: Center(
+                                            child: Text(
+                                              "Loading ...",
+                                              style: TextStyle(
+                                                fontSize: 8,
+                                                color: gray,
                                               ),
                                             ),
-                                          );
-                                        },
+                                          ),
+                                        ),
+                                        errorWidget: (context, url, error) =>Container(
+                                          width: 50,
+                                          height: 50,
+                                          padding: const EdgeInsets.all(10),
+                                          child: Center(
+                                            child: Text(
+                                              "No image",
+                                              style: TextStyle(
+                                                fontSize: 8,
+                                                color: gray,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
                                       ),
+
                                     ),
                                   );
                                 },
@@ -319,36 +326,42 @@ class _ProductsPageState extends State<ProductsPage> {
                                           margin:
                                               const EdgeInsets.only(left: 10),
                                           width: 50,
-                                          child: Image.network(
-                                            arvApi.getMediaUri(
+                                          child:  CachedNetworkImage(
+                                            imageUrl: arvApi.getMediaUri(
                                                 subCategory.image ?? ""),
                                             width: 50,
                                             height: 50,
-                                            errorBuilder:
-                                                (context, error, stackTrace) {
-                                              return Container(
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      const BorderRadius.all(
-                                                          Radius.circular(5)),
-                                                  color: indexVal == index
-                                                      ? lightpink2
-                                                      : gray50,
-                                                ),
-                                                child: Center(
-                                                  child: Text(
-                                                    subCategory.name,
-                                                    style: TextStyle(
-                                                      color: indexVal == index
-                                                          ? white
-                                                          : black,
-                                                    ),
-                                                    textAlign: TextAlign.center,
+
+                                            placeholder: (context, url) => Container(
+                                              width: 50,
+                                              height: 50,
+                                              padding: const EdgeInsets.all(10),
+                                              child: Center(
+                                                child: Text(
+                                                  "Loading ...",
+                                                  style: TextStyle(
+                                                    fontSize: 8,
+                                                    color: gray,
                                                   ),
                                                 ),
-                                              );
-                                            },
+                                              ),
+                                            ),
+                                            errorWidget: (context, url, error) =>Container(
+                                              width: 50,
+                                              height: 50,
+                                              padding: const EdgeInsets.all(10),
+                                              child: Center(
+                                                child: Text(
+                                                  "No image",
+                                                  style: TextStyle(
+                                                    fontSize: 8,
+                                                    color: gray,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
                                           ),
+
                                         ),
                                       );
                                     },

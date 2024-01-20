@@ -5,6 +5,7 @@ import 'package:arv/utils/app_colors.dart';
 import 'package:arv/utils/arv_api.dart';
 import 'package:arv/utils/custom_progress_bar.dart';
 import 'package:arv/views/widgets/favourite_picks.dart';
+import 'package:cached_network_image/src/cached_image_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -33,6 +34,7 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
   ];
   Color selectedColor = Colors.blue;
   var isFavourite = false;
+  var check = false;
   String? productId;
   int count = 0;
   int quantity = 0;
@@ -46,6 +48,7 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
   @override
   void initState() {
     super.initState();
+    check = true;
     productId = widget.productId;
     arvApi.productView('$productId');
   }
@@ -66,8 +69,10 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
             mrpPrices = productDto.mrpPrice ?? [];
             sellingPrices = productDto.sellingPrice ?? [];
             variantList = productDto.productVariants;
-            quantityCheck = variantList[0].qty;
-
+            if (check) {
+              quantityCheck = variantList[0].qty;
+              check = false;
+            }
             vDiscount = productDto.vdiscount;
             vDiscount = List.generate(vDiscount.length, (index) {
               return index <= vDiscount.length - 1 ? vDiscount[index] : 0;
@@ -216,9 +221,32 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
                     padding: const EdgeInsets.all(40),
                     height: MediaQuery.of(context).size.height * 0.3,
                     width: MediaQuery.of(context).size.width,
-                    child: Image.network(
-                      arvApi.getMediaUri(productDto?.imageUri),
-                      fit: BoxFit.contain,
+                    child: CachedNetworkImage(
+                      imageUrl: arvApi.getMediaUri(productDto?.imageUri),
+                      placeholder: (context, url) => Container(
+                        padding: const EdgeInsets.all(10),
+                        child: Center(
+                          child: Text(
+                            "Loading ...",
+                            style: TextStyle(
+                              fontSize: 8,
+                              color: gray,
+                            ),
+                          ),
+                        ),
+                      ),
+                      errorWidget: (context, url, error) => Container(
+                        padding: const EdgeInsets.all(10),
+                        child: Center(
+                          child: Text(
+                            "No image",
+                            style: TextStyle(
+                              fontSize: 8,
+                              color: gray,
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                   Positioned(
@@ -240,60 +268,97 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
             : Stack(
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(40),
-                    height: MediaQuery.of(context).size.height * 0.3,
-                    width: MediaQuery.of(context).size.width,
-                    child: Image.network(
-                      arvApi.getMediaUri(productDto?.imageUri),
-                      fit: BoxFit.contain,
-                    ),
-                  ),
-                  vDiscount.length!=0?     Positioned(
-                    child: Container(
-                      height: 100,
-                      child: Stack(
-                        children: <Widget>[
-                        ClipOval(
-                            child: Container(
-                              color: Colors.grey,
-                              height: 70.0, // height of the button
-                              width: 70.0, // width of the button
-                            ),
-                          ),
-                         GestureDetector(
-                            onTap: () {},
-                            child: ClipOval(
-                              child: Container(
-                                //color: Colors.green,
-                                height: 60.0, // height of the button
-                                width: 60.0, // width of the button
-                                decoration: BoxDecoration(
-                                    color: primaryColor,
-                                    border: Border.all(
-                                        color: Colors.white,
-                                        width: 10.0,
-                                        style: BorderStyle.solid),
-                                    boxShadow: [
-                                      BoxShadow(
-                                          color: Colors.grey,
-                                          offset: Offset(21.0, 10.0),
-                                          blurRadius: 20.0,
-                                          spreadRadius: 40.0)
-                                    ],
-                                    shape: BoxShape.circle),
-                                child: Center(
-                                    child: Text(vDiscount.length!=0?vDiscount[0].toString():"dff",
-                                        style: TextStyle(
-                                            color: Colors.white
-                                                .withOpacity(0.6)))),
+                      padding: const EdgeInsets.all(40),
+                      height: MediaQuery.of(context).size.height * 0.3,
+                      width: MediaQuery.of(context).size.width,
+                      child: CachedNetworkImage(
+                        imageUrl: arvApi.getMediaUri(productDto?.imageUri),
+                        fit: BoxFit.contain,
+                        placeholder: (context, url) => Container(
+                          height: MediaQuery.of(context).size.height * 0.3,
+                          width: MediaQuery.of(context).size.width,
+                          padding: const EdgeInsets.all(10),
+                          child: Center(
+                            child: Text(
+                              "Loading ...",
+                              style: TextStyle(
+                                fontSize: 8,
+                                color: gray,
                               ),
                             ),
                           ),
-
-                        ],
-                      ),
-                    ),
-                  ):Container(),
+                        ),
+                        errorWidget: (context, url, error) => Container(
+                          height: MediaQuery.of(context).size.height * 0.3,
+                          width: MediaQuery.of(context).size.width,
+                          padding: const EdgeInsets.all(10),
+                          child: Center(
+                            child: Text(
+                              "No image",
+                              style: TextStyle(
+                                fontSize: 8,
+                                color: gray,
+                              ),
+                            ),
+                          ),
+                        ),
+                      )),
+                  vDiscount.length != 0
+                      ? vDiscount[0] == 0
+                          ? Container()
+                          : Positioned(
+                              child: Container(
+                                height: 100,
+                                child: Stack(
+                                  children: <Widget>[
+                                    ClipOval(
+                                      child: Container(
+                                        color: Colors.grey,
+                                        height: 70.0, // height of the button
+                                        width: 70.0, // width of the button
+                                      ),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {},
+                                      child: ClipOval(
+                                        child: Container(
+                                          //color: Colors.green,
+                                          height: 60.0, // height of the button
+                                          width: 60.0, // width of the button
+                                          decoration: BoxDecoration(
+                                              color: primaryColor,
+                                              border: Border.all(
+                                                  color: Colors.white,
+                                                  width: 10.0,
+                                                  style: BorderStyle.solid),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                    color: Colors.grey,
+                                                    offset: Offset(21.0, 10.0),
+                                                    blurRadius: 20.0,
+                                                    spreadRadius: 40.0)
+                                              ],
+                                              shape: BoxShape.circle),
+                                          child: Center(
+                                              child: Text(
+                                                  vDiscount.length != 0
+                                                      ? vDiscount[0]
+                                                              .toString() +
+                                                          '%'
+                                                      : "dff",
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 10,
+                                                      fontWeight:
+                                                          FontWeight.w800))),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )
+                      : Container(),
                 ],
               ),
         Positioned(
@@ -520,6 +585,8 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
                   onTap: () {
                     variantIndex = index;
                     setState(() {
+                      print("object");
+                      print("sdpdwsdoollo");
                       quantityCheck = variantList[index].qty;
                     });
                   },

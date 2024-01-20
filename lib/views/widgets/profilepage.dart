@@ -71,32 +71,32 @@ class _ProfilePageState extends State<ProfilePage> {
                 },
               ),
             ),
-            SettingsGroup(
-              items: [
-                SettingsItem(
-                  onTap: () {},
-                  icons: CupertinoIcons.folder_fill,
-                  iconStyle: IconStyle(),
-                  title: 'Wallet',
-                  subtitle: "Coming soon",
-                ),
-                // SettingsItem(
-                //   onTap: () {},
-                //   icons: Icons.dark_mode_rounded,
-                //   iconStyle: IconStyle(
-                //     iconsColor: Colors.white,
-                //     withBackground: true,
-                //     backgroundColor: Colors.red,
-                //   ),
-                //   title: 'Dark mode',
-                //   subtitle: "Automatic",
-                //   trailing: Switch.adaptive(
-                //     value: false,
-                //     onChanged: (value) {},
-                //   ),
-                // ),
-              ],
-            ),
+            // SettingsGroup(
+            //   items: [
+            //     SettingsItem(
+            //       onTap: () {},
+            //       icons: CupertinoIcons.folder_fill,
+            //       iconStyle: IconStyle(),
+            //       title: 'Wallet',
+            //       subtitle: "Coming soon",
+            //     ),
+            //     // SettingsItem(
+            //     //   onTap: () {},
+            //     //   icons: Icons.dark_mode_rounded,
+            //     //   iconStyle: IconStyle(
+            //     //     iconsColor: Colors.white,
+            //     //     withBackground: true,
+            //     //     backgroundColor: Colors.red,
+            //     //   ),
+            //     //   title: 'Dark mode',
+            //     //   subtitle: "Automatic",
+            //     //   trailing: Switch.adaptive(
+            //     //     value: false,
+            //     //     onChanged: (value) {},
+            //     //   ),
+            //     // ),
+            //   ],
+            // ),
             SettingsGroup(
               items: [
                 SettingsItem(

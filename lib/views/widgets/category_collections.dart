@@ -4,6 +4,7 @@ import 'package:arv/utils/arv_api.dart';
 import 'package:arv/views/product_page/product_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:cached_network_image/src/cached_image_widget.dart';
 
 class CategoryCollections extends StatelessWidget {
   const CategoryCollections({
@@ -54,28 +55,42 @@ class CategoryCollections extends StatelessWidget {
                     borderRadius: const BorderRadius.all(Radius.circular(12.0)),
                     child: Stack(
                       children: <Widget>[
-                        Image.network(
-                          arvApi.getMediaUri(categories[index].id),
+                        CachedNetworkImage(
+                          imageUrl: arvApi.getMediaUri(categories[index].id),
                           fit: BoxFit.fill,
                           width: 110,
                           height: 150,
-                          errorBuilder: (context, error, stackTrace) {
-                            return Container(
-                              color: gray50,
-                              child: Center(
-                                child: Text(
-                                  categories[index].name,
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                    color: black,
-                                  ),
-                                  textAlign: TextAlign.center,
+
+                          placeholder: (context, url) => Container(
+                            width: 110,
+                            height: 150,
+                            padding: const EdgeInsets.all(10),
+                            child: Center(
+                              child: Text(
+                                "Loading ...",
+                                style: TextStyle(
+                                  fontSize: 8,
+                                  color: gray,
                                 ),
                               ),
-                            );
-                          },
-                        ),
+                            ),
+                          ),
+                          errorWidget: (context, url, error) =>Container(
+                            width: 110,
+                            height: 150,
+                            padding: const EdgeInsets.all(10),
+                            child: Center(
+                              child: Text(
+                                "No image",
+                                style: TextStyle(
+                                  fontSize: 8,
+                                  color: gray,
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+
                       ],
                     ),
                   ),

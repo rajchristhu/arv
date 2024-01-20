@@ -35,21 +35,17 @@ class _UserInfoFormState extends State<UserInfoForm> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Verification success",
+                  "Enter Name",
                   style: TextStyle(
                     color: appColor,
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
                   ),
                 ),
-                Icon(
-                  Icons.verified_user,
-                  color: appColor,
-                ),
+
               ],
             ),
           ),
-          const Spacer(),
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.07,
             width: MediaQuery.of(context).size.width * 0.95,
@@ -126,8 +122,8 @@ class _UserInfoFormState extends State<UserInfoForm> {
             ),
           ),
           Container(
-            margin: const EdgeInsets.symmetric(vertical: 25, horizontal: 10),
-            padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 10),
+            margin: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+            padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 0),
             child: ElevatedButton(
               onPressed: () async {
                 print("efg");
@@ -149,7 +145,7 @@ class _UserInfoFormState extends State<UserInfoForm> {
                 height: MediaQuery.of(context).size.height * 0.065,
                 child: const Center(
                   child: Text(
-                    "Explore",
+                    "Submit",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
