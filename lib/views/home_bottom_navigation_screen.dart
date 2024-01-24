@@ -133,7 +133,7 @@ class _HomeBottomNavigationScreenState
                                               ? controller.currentAddress
                                               : nae.toString(),
                                           style: GoogleFonts.poppins(
-                                            fontSize: 18.0,
+                                            fontSize: 14.0,
                                             fontWeight: FontWeight.w500,
                                             color: Colors.white,
                                           ),
@@ -168,7 +168,7 @@ class _HomeBottomNavigationScreenState
                                     child: Text(
                                       'Nearby Branch : ${controller.storeName}',
                                       style: GoogleFonts.poppins(
-                                        fontSize: 14.0,
+                                        fontSize: 12.0,
                                         fontWeight: FontWeight.w500,
                                         color: Colors.amberAccent,
                                       ),

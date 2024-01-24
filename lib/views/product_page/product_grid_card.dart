@@ -223,34 +223,35 @@ print(quantity);
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 0, top: 0),
-                                  // Add padding
-                                  child: Text(
-                                    widget.product.productSubCategory.name,
-                                    style: GoogleFonts.poppins(
-                                      fontSize: 8.0,
-                                      fontWeight: FontWeight.w300,
-                                      color: Colors.black,
-                                    ),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
+                                // Padding(
+                                //   padding: const EdgeInsets.only(left: 0, top: 0),
+                                //   // Add padding
+                                //   child: Text(
+                                //     widget.product.productSubCategory.name,
+                                //     style: GoogleFonts.poppins(
+                                //       fontSize: 8.0,
+                                //       fontWeight: FontWeight.w300,
+                                //       color: Colors.black,
+                                //     ),
+                                //     maxLines: 1,
+                                //     overflow: TextOverflow.ellipsis,
+                                //   ),
+                                // ),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      "${widget.product.mrpPrice!.isNotEmpty ? widget.product.mrpPrice![0].toInt() : ""} ₹",
+                                      "₹ ${widget.product.mrpPrice!.isNotEmpty ? widget.product.mrpPrice![0].toInt() : ""} ",
                                       style: GoogleFonts.montserrat(
                                         fontSize: 14.0,
                                         decoration: TextDecoration.lineThrough,
+
                                         fontWeight: FontWeight.w300,
                                         color: Colors.black,
                                       ),
                                     ),
                                     Text(
-                                      "${widget.product.sellingPrice!.isNotEmpty ? widget.product.sellingPrice![0].toInt() : ""} ₹",
+                                      "₹ ${widget.product.sellingPrice!.isNotEmpty ? widget.product.sellingPrice![0].toInt() : ""} ",
                                       style: GoogleFonts.montserrat(
                                         fontSize: 14.0,
                                         fontWeight: FontWeight.w600,

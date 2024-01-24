@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:cached_network_image/src/cached_image_widget.dart';
 
+import '../product_detail/product_detail.dart';
+
 class CartListItems extends StatefulWidget {
   const CartListItems({Key? key}) : super(key: key);
 
@@ -99,7 +101,11 @@ print( cartList.list.length);
                         padding: const EdgeInsets.only(
                             bottom: 16, left: 16, right: 16),
                         child: InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            Get.to(() => ProductDetailPageView(
+                              productId: product.id,
+                            ));
+                          },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,

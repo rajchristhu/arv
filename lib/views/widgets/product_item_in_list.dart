@@ -1,16 +1,18 @@
 import 'package:arv/models/request/cart.dart';
 import 'package:arv/models/response_models/products.dart';
 import 'package:arv/shared/cart_service.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:arv/utils/app_colors.dart';
 import 'package:arv/utils/arv_api.dart';
 import 'package:arv/utils/custom_progress_bar.dart';
 import 'package:arv/views/product_detail/product_detail.dart';
-import 'package:flutter/material.dart';
-// ignore: depend_on_referenced_packages
-import 'package:get/get.dart';
+
 // ignore: depend_on_referenced_packages
 import 'package:cached_network_image/src/cached_image_widget.dart';
+import 'package:flutter/material.dart';
+
+// ignore: depend_on_referenced_packages
+import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ProductItemInList extends StatefulWidget {
   const ProductItemInList({
@@ -83,10 +85,8 @@ class _ProductItemInListState extends State<ProductItemInList> {
                   children: [
                     CachedNetworkImage(
                       imageUrl: arvApi.getMediaUri(widget.product.id),
-
                       height: 80,
                       width: double.infinity,
-
                       placeholder: (context, url) => Container(
                         height: 80,
                         width: double.infinity,
@@ -101,7 +101,7 @@ class _ProductItemInListState extends State<ProductItemInList> {
                           ),
                         ),
                       ),
-                      errorWidget: (context, url, error) =>Container(
+                      errorWidget: (context, url, error) => Container(
                         height: 80,
                         width: double.infinity,
                         padding: const EdgeInsets.all(10),
@@ -116,8 +116,6 @@ class _ProductItemInListState extends State<ProductItemInList> {
                         ),
                       ),
                     ),
-
-
                     const SizedBox(height: 10),
                     Padding(
                       padding: const EdgeInsets.only(left: 8),
@@ -150,103 +148,104 @@ class _ProductItemInListState extends State<ProductItemInList> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          // Align text
-                          children: [
-                            Text(
-                              "${widget.product.mrpPrice!.isEmpty ? '' : (widget.product.mrpPrice![0]).toInt()} ₹",
-                              style: GoogleFonts.montserrat(
-                                fontSize: 14.0,
-                                fontWeight: FontWeight.w300,
-                                color: Colors.black,
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8, top: 4),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            // Align text
+                            children: [
+                              Text(
+                                "₹ ${widget.product.mrpPrice!.isEmpty ? '' : (widget.product.mrpPrice![0]).toInt()} ",
+                                style: GoogleFonts.montserrat(
+                                  fontSize: 14.0,
+                                  decoration: TextDecoration.lineThrough,
+
+                                  fontWeight: FontWeight.w300,
+                                  color: Colors.black,
+                                ),
                               ),
-                            ),
-                            Text(
-                              "${widget.product.sellingPrice!.isEmpty ? '' : (widget.product.sellingPrice![0]).toInt()} ₹",
-                              style: GoogleFonts.montserrat(
-                                fontSize: 14.0,
-                                fontWeight: FontWeight.w300,
-                                color: Colors.black,
+                              Text(
+                                "₹ ${widget.product.sellingPrice!.isEmpty ? '' : (widget.product.sellingPrice![0]).toInt()} ",
+                                style: GoogleFonts.montserrat(
+                                  fontSize: 14.0,
+                                  fontWeight: FontWeight.w300,
+                                  color: Colors.black,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                             Padding(
-                                padding: const EdgeInsets.only(right: 0),
-                                child: count == 0
-                                    ? OutlinedButton(
-                                        onPressed: () async =>
-                                            await performCartOperation(true),
-                                        style: OutlinedButton.styleFrom(
-                                          side: BorderSide(
-                                              width: 1.0, color: pink),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 0),
+                          child: count == 0
+                              ? OutlinedButton(
+                                  onPressed: () async =>
+                                      await performCartOperation(true),
+                                  style: OutlinedButton.styleFrom(
+                                    side: BorderSide(width: 1.0, color: pink),
+                                  ),
+                                  child: Text(
+                                    'Add',
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 14.0,
+                                      fontWeight: FontWeight.w300,
+                                      color: pink,
+                                    ),
+                                  ),
+                                )
+                              : Container(
+                                  width: 75,
+                                  height: 35,
+                                  margin: const EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      width: 1.0,
+                                      color: pink,
+                                    ),
+                                    borderRadius: const BorderRadius.all(
+                                      Radius.circular(5),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      InkWell(
+                                        child: Icon(
+                                          Icons.remove,
+                                          size: 16,
+                                          color: gray,
                                         ),
+                                        onTap: () async =>
+                                            await performCartOperation(false),
+                                      ),
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8.0),
                                         child: Text(
-                                          'Add',
-                                          style: GoogleFonts.poppins(
+                                          '$count',
+                                          style: const TextStyle(
+                                            color: Colors.black,
                                             fontSize: 14.0,
                                             fontWeight: FontWeight.w300,
-                                            color: pink,
                                           ),
-                                        ),
-                                      )
-                                    : Container(
-                                        width: 75,
-                                        height: 35,
-                                        margin: const EdgeInsets.all(8),
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                            width: 1.0,
-                                            color: pink,
-                                          ),
-                                          borderRadius: const BorderRadius.all(
-                                            Radius.circular(5),
-                                          ),
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            InkWell(
-                                              child: Icon(
-                                                Icons.remove,
-                                                size: 16,
-                                                color: gray,
-                                              ),
-                                              onTap: () async =>
-                                                  await performCartOperation(
-                                                      false),
-                                            ),
-                                            Container(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 8.0),
-                                              child: Text(
-                                                '$count',
-                                                style: const TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 14.0,
-                                                  fontWeight: FontWeight.w300,
-                                                ),
-                                              ),
-                                            ),
-                                            InkWell(
-                                              child: Icon(
-                                                Icons.add,
-                                                size: 16,
-                                                color: gray,
-                                              ),
-                                              onTap: () async =>
-                                                  await performCartOperation(
-                                                      true),
-                                            ),
-                                          ],
                                         ),
                                       ),
-                              )
+                                      InkWell(
+                                        child: Icon(
+                                          Icons.add,
+                                          size: 16,
+                                          color: gray,
+                                        ),
+                                        onTap: () async =>
+                                            await performCartOperation(true),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                        )
                       ],
                     ),
                   ],

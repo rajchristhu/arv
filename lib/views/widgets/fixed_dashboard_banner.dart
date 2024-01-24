@@ -19,16 +19,17 @@ class FixedDashboardBanner extends StatelessWidget {
       builder: (context, snapshot) {
         int length = snapshot.data?.list.length ?? 0;
         String? imageUri = length == 0 ? null : snapshot.data?.list[0].imageUri;
+        String? valu = length == 0 ? null : snapshot.data?.list[0].categoryId;
         return imageUri != null
             ? InkWell(
                 onTap: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => const ProductsPage(
+                      builder: (context) =>  ProductsPage(
                         false,
                         true,
                         1,
-                        '64ff716ec78bc62fc17ef206',
+                        valu!,
                         null,
                       ),
                     ),

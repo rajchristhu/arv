@@ -80,37 +80,40 @@ class _ProductInOfferListState extends State<ProductInOfferList> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CachedNetworkImage(
-                      imageUrl:    arvApi.getMediaUri(widget.product.imageUri ?? ""),
-                      height: 90,
-                      progressIndicatorBuilder: (context, url, downloadProgress) =>
-                          Container(
-                            height: 90,
-                            padding: const EdgeInsets.all(10),
-                            child: Center(
-                              child: Text(
-                                "Loading",
-                                style: TextStyle(
-                                  fontSize: 8,
-                                  color: gray,
+                    Center(
+                      child: CachedNetworkImage(
+                        imageUrl:    arvApi.getMediaUri(widget.product.imageUri ?? ""),
+                        height: 90,
+                        progressIndicatorBuilder: (context, url, downloadProgress) =>
+                            Container(
+                              height: 90,
+                              padding: const EdgeInsets.all(10),
+                              child: Center(
+                                child: Text(
+                                  "Loading",
+                                  style: TextStyle(
+                                    fontSize: 8,
+                                    color: gray,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                      errorWidget: (context, url, error) =>Container(
-                        height: 90,
-                        padding: const EdgeInsets.all(10),
-                        child: Center(
-                          child: Text(
-                            "No image",
-                            style: TextStyle(
-                              fontSize: 8,
-                              color: gray,
+                        errorWidget: (context, url, error) =>Container(
+                          height: 90,
+                          padding: const EdgeInsets.all(10),
+                          child: Center(
+                            child: Text(
+                              "No image",
+                              style: TextStyle(
+                                fontSize: 8,
+                                color: gray,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
+                    )
+                    ,
                     // Image.network(
                     //   arvApi.getMediaUri(widget.product.imageUri ?? ""),
                     //   height: 90,
@@ -158,12 +161,16 @@ class _ProductInOfferListState extends State<ProductInOfferList> {
                         Column(
                           children: [
                             Text(
-                              "   ${widget.product.mrpPrice!.isEmpty ? "" : widget.product.mrpPrice![0]}",
+                              " ₹ ${widget.product.mrpPrice!.isEmpty ? "" : widget.product.mrpPrice![0]}",
                               maxLines: 1,
+                              style: TextStyle(
+                                decoration: TextDecoration.lineThrough,
+
+                              ),
                               overflow: TextOverflow.ellipsis,
                             ),
                             Text(
-                              "   ${widget.product.sellingPrice!.isEmpty ? "" : widget.product.sellingPrice![0]}",
+                              " ₹ ${widget.product.sellingPrice!.isEmpty ? "" : widget.product.sellingPrice![0]}",
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),

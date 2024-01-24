@@ -72,7 +72,7 @@ class SingleScrollList extends StatelessWidget {
                             );
                           },
                           child: Text(
-                            "See All",
+                            "",
                             style: GoogleFonts.poppins(
                               fontSize: 18.0,
                               fontWeight: FontWeight.w400,

@@ -102,73 +102,51 @@ class _OrderProgressState extends State<OrderProgress> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        const SizedBox(height: 10),
                         Text(
-                          order.id,
+                          "Order ${widget.ind+1}",
                           style: TextStyle(
                               color: black,
                               fontSize: 17,
                               fontWeight: FontWeight.w600),
                         ),
-                        const SizedBox(height: 10),
+
                         SizedBox(
                           height: order.orderItems.length * 40,
                           child: ListView.builder(
                             itemCount: order.orderItems.length,
                             physics: const NeverScrollableScrollPhysics(),
                             itemBuilder: (context, index) {
-                              return Row(
-                                children: [
+                              return
 
-                                  CachedNetworkImage(
-                                    imageUrl: arvApi.getMediaUri(
-                                        order.orderItems[index].productId),
-                                    height: 40,
-                                    width: 40,
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
 
-                                    placeholder: (context, url) => Container(
-                                      height: 40,
-                                      width: 40,
-                                      padding: const EdgeInsets.all(10),
-                                      child: Center(
-                                        child: Text(
-                                          "Loading ...",
-                                          style: TextStyle(
-                                            fontSize: 8,
-                                            color: gray,
+                                        Container(
+                                        height: 40,
+                                          width: 10,
+
+                                        ),
+
+                                        const SizedBox(width: 15),
+                                        SizedBox(
+                                          width:
+                                          MediaQuery.of(context).size.width * 0.6,
+                                          child: Text(
+                                            "${order.orderItems[index].itemName}",
                                           ),
                                         ),
-                                      ),
-                                    ),
-                                    errorWidget: (context, url, error) =>Container(
-                                      height: 40,
-                                      width: 40,
-                                      padding: const EdgeInsets.all(10),
-                                      child: Center(
-                                        child: Text(
-                                          "No image",
-                                          style: TextStyle(
-                                            fontSize: 8,
-                                            color: gray,
-                                          ),
+                                        const SizedBox(width: 5),
+                                        Text(
+                                          " ( ${order.orderItems[index].qty} x ${order.orderItems[index].itemPrice} )",
                                         ),
-                                      ),
-                                    ),
-                                  ),
-
-                                  const SizedBox(width: 15),
-                                  SizedBox(
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.6,
-                                    child: Text(
-                                      "${order.orderItems[index].itemName}",
-                                    ),
-                                  ),
-                                  const SizedBox(width: 5),
-                                  Text(
-                                    " ( ${order.orderItems[index].qty} x ${order.orderItems[index].itemPrice} )",
-                                  ),
-                                ],
-                              );
+                                      ],
+                                    )
+                                  ],
+                                );
                             },
                           ),
                         ),
@@ -235,11 +213,11 @@ class _OrderProgressState extends State<OrderProgress> {
                                         tracker_data: [
                                           TrackerData(
                                             title: "Order Placed",
-                                            date: order.orderedDate,
+                                            date: '',
                                             tracker_details: [
                                               TrackerDetails(
                                                 title: "Your order was placed ",
-                                                datetime: order.orderedDate,
+                                                datetime: '',
                                               ),
                                               order.orderStatus ==
                                                       orderStatusList[1]
@@ -299,12 +277,12 @@ class _OrderProgressState extends State<OrderProgress> {
                                   tracker_data: [
                                     TrackerData(
                                       title: "Order Placed",
-                                      date: order.orderedDate,
+                                      date: '',
                                       tracker_details: [
                                         TrackerDetails(
                                           title:
                                           "Your order was placed ",
-                                          datetime: order.orderedDate,
+                                          datetime: '',
                                         ),
                                         order.orderStatus ==
                                             orderStatusList[1]
@@ -367,19 +345,19 @@ class _OrderProgressState extends State<OrderProgress> {
                             children: [
                               Padding(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 30),
+                                    horizontal: 30, vertical: 30),
                                 child: OrderTrackerZen(
                                   success_color: pink,
                                   background_color: gray,
                                   tracker_data: [
                                     TrackerData(
                                       title: "Order Placed",
-                                      date: order.orderedDate,
+                                      date: '',
                                       tracker_details: [
                                         TrackerDetails(
                                           title:
                                           "Your order was placed ",
-                                          datetime: order.orderedDate,
+                                          datetime:'',
                                         ),
                                         order.orderStatus ==
                                             orderStatusList[1]
@@ -387,7 +365,7 @@ class _OrderProgressState extends State<OrderProgress> {
                                           title:
                                           "ARV accepts your order",
                                           datetime:
-                                          order.placedDate,
+                                          'order.placedDate',
                                         )
                                             : TrackerDetails(
                                           title: "",
