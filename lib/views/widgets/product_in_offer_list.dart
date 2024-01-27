@@ -67,6 +67,7 @@ class _ProductInOfferListState extends State<ProductInOfferList> {
           onTap: () {
             Get.to(() => ProductDetailPageView(
                   productId: productId,
+                checks:false
                 ));
           },
           child: Padding(
@@ -124,7 +125,7 @@ class _ProductInOfferListState extends State<ProductInOfferList> {
                     //       child: Center(
                     //         child: Text(
                     //           "No image",
-                    //           style: TextStyle(
+                    //           style: TextStylem(
                     //             fontSize: 8,
                     //             color: gray,
                     //           ),

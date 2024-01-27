@@ -186,7 +186,7 @@ class _OTPNewPageState extends State<OTPNewPage> {
                                     .dismissDialog(context);
 
                                 Get.offAll(
-                                    () => const HomeBottomNavigationScreen());
+                                    () =>  HomeBottomNavigationScreen(checkVal:true));
                               } else {
                                 utils.notify("OTP is 6 digit");
                               }

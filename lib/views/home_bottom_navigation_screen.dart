@@ -25,7 +25,8 @@ import 'authentication/user_info_form.dart';
 import 'map/maps_place_picker_page.dart';
 
 class HomeBottomNavigationScreen extends StatefulWidget {
-  const HomeBottomNavigationScreen({Key? key}) : super(key: key);
+  bool checkVal;
+   HomeBottomNavigationScreen({ required this.checkVal}) ;
 
   @override
   State createState() => _HomeBottomNavigationScreenState();
@@ -38,6 +39,7 @@ class _HomeBottomNavigationScreenState
   @override
   void initState()  {
     changeStatusColor(primaryColor);
+
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
     super.initState();
     getProfile();
@@ -73,7 +75,8 @@ class _HomeBottomNavigationScreenState
           builder: (context, value, child) {
             ArvProgressDialog.instance
                 .dismissDialog(context);
-            int currentTab = value;
+            int currentTab = widget.checkVal?value:4;
+            widget.checkVal=true;
             return Scaffold(
               resizeToAvoidBottomInset: true,
               appBar: [0, 1, 6].contains(currentTab)
@@ -405,6 +408,7 @@ class _HomeBottomNavigationScreenState
                                       onTap: () {
                                         Get.to(() => ProductDetailPageView(
                                               productId: productDto.id,
+                                            checks:false
                                             ));
                                       },
                                       child: Row(
@@ -476,7 +480,7 @@ class _HomeBottomNavigationScreenState
                           },
                         )
                       : currentTab == 4
-                          ? const CartPage()
+                          ? const  CartPage()
                           : currentTab == 2
                               ? const MyOrders()
                               : currentTab == 3
@@ -587,8 +591,8 @@ class _HomeBottomNavigationScreenState
   getProfile(){
  arvApi.getNameApi().then((value) => {
  print("profile"),
-     print(value.usename),
-   if(value.usename==""){
+     print(value.profileName),
+   if(value.profileName==""){
    _showBottomSheet(context)}
  });
 

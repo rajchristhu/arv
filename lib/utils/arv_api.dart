@@ -142,7 +142,7 @@ class _ArvApi {
   }
 
   Future<ProfileName> getNameApi() async {
-    ProfileName profileName = ProfileName(usename: "");
+    ProfileName profileName = ProfileName(profileName: "");
     var url = Uri.parse("$hostUrl/auth/username");
     try {
       http.Response response = await http.get(
@@ -160,8 +160,9 @@ class _ArvApi {
   }
 
   Future<void> updateProfile(String username) async {
-    ProfileName profile = ProfileName(usename: "");
-    profile.usename = username;
+    ProfileName profile = ProfileName(profileName: "");
+    profile.profileName = username;
+    print(profile.toRawJson());
 
     var url = Uri.parse("$hostUrl/auth");
     try {
@@ -401,16 +402,21 @@ class _ArvApi {
     var url = Uri.parse("$hostUrl/cart");
 
     var headers = await _getHeaders();
-
-    var response = await http.post(
-      url,
-      headers: headers,
-      body: cart.toRawJson(),
-    );
-    log("response.statusCode = ${response.statusCode} - ${response.body} $headers");
-    if (response.statusCode == 200) {
-      utils.notify(ResponseMessage.fromRawJson(response.body).message);
+    try {
+      var response = await http.post(
+        url,
+        headers: headers,
+        body: cart.toRawJson(),
+      );
+      log("response.statusCode = ${response.statusCode} - ${response.body} $headers");
+      if (response.statusCode == 200) {
+        utils.notify(ResponseMessage.fromRawJson(response.body).message);
+      }
+      log("Update Response ${response.body}");
+    } catch (e) {
+      log("Profile Update Exception : $e");
     }
+
   }
 
   Future<CartList> getCartItems(int pageNumber) async {

@@ -104,6 +104,7 @@ print( cartList.list.length);
                           onTap: () {
                             Get.to(() => ProductDetailPageView(
                               productId: product.id,
+                                checks:true
                             ));
                           },
                           child: Row(

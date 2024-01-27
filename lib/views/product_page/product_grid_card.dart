@@ -53,7 +53,9 @@ print(discount);
 print(quantity);
         return InkWell(
           onTap: () {
-            Get.to(() => ProductDetailPageView(productId: productId));
+            Get.to(() => ProductDetailPageView(productId: productId,
+                checks:false
+            ));
           },
           child:  Stack(
             children: [

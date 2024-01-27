@@ -114,7 +114,7 @@ class _AddressSelectState extends State<AddressSelect> {
                     AppConstantsUtils.loc=widget.location?.formattedAddress??"";
 
 
-                    Get.offAll(() => const HomeBottomNavigationScreen());
+                    Get.offAll(() =>  HomeBottomNavigationScreen(checkVal:true));
 
                   },
                   style: ButtonStyle(

@@ -37,7 +37,7 @@ class _SplashPageState extends State<SplashPage> {
         Widget nextScreen = const LoginPage();
         bool validUser = await arvApi.validateLogin;
         if (validUser) {
-          nextScreen = const HomeBottomNavigationScreen();
+          nextScreen =  HomeBottomNavigationScreen(checkVal:true);
         }
         secureStorage.get("isFirst").then((value) async => {
               if (value != "1")

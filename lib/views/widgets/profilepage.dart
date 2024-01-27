@@ -38,9 +38,9 @@ class _ProfilePageState extends State<ProfilePage> {
   getProfile() {
     arvApi.getNameApi().then((value) => {
           print("profile"),
-          print(value.usename),
+          print(value.profileName),
           setState(() {
-            profileName = value.usename.toString();
+            profileName = value.profileName.toString();
           })
         });
   }

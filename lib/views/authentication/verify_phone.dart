@@ -175,7 +175,7 @@ class _VerifyPhoneState extends State<VerifyPhone> {
                         }
                         utils.notify("Verification completed !");
                         await Future.delayed(const Duration(seconds: 2));
-                        Get.offAll(() => const HomeBottomNavigationScreen());
+                        Get.offAll(() =>  HomeBottomNavigationScreen(checkVal:true));
                       },
                       child: Container(
                         decoration: BoxDecoration(

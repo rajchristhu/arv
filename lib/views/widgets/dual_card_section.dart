@@ -55,6 +55,7 @@ class DualCardSection extends StatelessWidget {
                             height: 110,
                             width: MediaQuery.of(context).size.width,
                             child: CachedNetworkImage(
+                              fit: BoxFit.fill,
                               imageUrl: arvApi.getMediaUri(imageUri1),
                               placeholder: (context, url) => Container(
                                 height: 110,

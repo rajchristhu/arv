@@ -4,6 +4,7 @@ import 'package:arv/shared/cart_service.dart';
 import 'package:arv/utils/app_colors.dart';
 import 'package:arv/utils/arv_api.dart';
 import 'package:arv/utils/custom_progress_bar.dart';
+import 'package:arv/views/order_page/cart.dart';
 import 'package:arv/views/widgets/favourite_picks.dart';
 import 'package:cached_network_image/src/cached_image_widget.dart';
 import 'package:flutter/material.dart';
@@ -14,11 +15,13 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../shared/navigation_service.dart';
+import '../home_bottom_navigation_screen.dart';
 
 class ProductDetailPageView extends StatefulWidget {
-  const ProductDetailPageView({super.key, this.productId});
+  const ProductDetailPageView({super.key,required this.checks, this.productId});
 
   final String? productId;
+  final bool? checks;
 
   @override
   State createState() => _ProductDetailPageViewState();
@@ -79,7 +82,7 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
             });
             return Column(
               children: [
-                header(productDto),
+                header(productDto,widget.checks!),
                 SizedBox(
                   height: MediaQuery.of(context).size.height - 110,
                   width: MediaQuery.of(context).size.width,
@@ -159,7 +162,7 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
     );
   }
 
-  Widget header(ProductDto? productDto) {
+  Widget header(ProductDto? productDto, bool checks) {
     return PreferredSize(
       preferredSize: const Size.fromHeight(160),
       child: Container(
@@ -179,7 +182,11 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
           children: [
             InkWell(
               onTap: () {
-                Navigator.pop(context);
+                if(checks){
+                  Get.to(() =>HomeBottomNavigationScreen(checkVal: false,));
+                }else {
+                  Navigator.pop(context);
+                }
               },
               child: const Icon(
                 Icons.arrow_back_ios,
