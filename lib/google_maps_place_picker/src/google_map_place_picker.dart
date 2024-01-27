@@ -130,13 +130,11 @@ class GoogleMapPlacePicker extends StatelessWidget {
           lng: provider.cameraPosition!.target.longitude),
       language: language,
     );
-    AppConstantsUtils.lat= provider.cameraPosition!.target.latitude;
-    AppConstantsUtils.long= provider.cameraPosition!.target.longitude;
-    print("Camera Location Search Error: " +provider.cameraPosition!.target.latitude.toString());
+    AppConstantsUtils.lat = provider.cameraPosition!.target.latitude;
+    AppConstantsUtils.long = provider.cameraPosition!.target.longitude;
 
     if (response.errorMessage?.isNotEmpty == true ||
         response.status == "REQUEST_DENIED") {
-      print("Camera Location Search Error: " + response.errorMessage!);
       if (onSearchFailed != null) {
         onSearchFailed!(response.status);
       }
@@ -153,8 +151,6 @@ class GoogleMapPlacePicker extends StatelessWidget {
 
       if (detailResponse.errorMessage?.isNotEmpty == true ||
           detailResponse.status == "REQUEST_DENIED") {
-        print("Fetching details by placeId Error: " +
-            detailResponse.errorMessage!);
         if (onSearchFailed != null) {
           onSearchFailed!(detailResponse.status);
         }

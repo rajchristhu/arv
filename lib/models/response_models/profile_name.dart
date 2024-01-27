@@ -1,21 +1,25 @@
 import 'dart:convert';
 
 class ProfileName {
+  String username;
   String profileName;
 
   ProfileName({
-    required this.profileName,
+    required this.username,
+    this.profileName = "",
   });
 
-  factory ProfileName.fromRawJson(String str) => ProfileName.fromJson(json.decode(str));
+  factory ProfileName.fromRawJson(String str) =>
+      ProfileName.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
   factory ProfileName.fromJson(Map<String, dynamic> json) => ProfileName(
-    profileName: json["profileName"] ?? "",
+        username: json["username"] ?? "",
+        profileName: json["profileName"] ?? "",
       );
 
   Map<String, dynamic> toJson() => {
-        "profileName": profileName,
+        "username": username,
       };
 }

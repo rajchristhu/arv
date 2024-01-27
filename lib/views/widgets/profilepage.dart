@@ -1,10 +1,8 @@
 import 'package:arv/utils/arv_api.dart';
 import 'package:arv/views/authentication/login_new.dart';
 import 'package:babstrap_settings_screen/babstrap_settings_screen.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
 // ignore: depend_on_referenced_packages
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';

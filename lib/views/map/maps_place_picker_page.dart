@@ -12,9 +12,6 @@ import 'package:google_maps_flutter_android/google_maps_flutter_android.dart';
 
 import 'api_keys.dart';
 
-
-
-
 class MapsPlacePicker extends StatefulWidget {
   MapsPlacePicker({Key? key}) : super(key: key);
 
@@ -35,7 +32,6 @@ class _MapsPlacePickerState extends State<MapsPlacePicker> {
   String _mapsRenderer = "auto";
 
   void initRenderer() {
-    print("loading");
     if (_mapsInitialized) return;
     if (widget.mapsImplementation is GoogleMapsFlutterAndroid) {
       switch (_mapsRenderer) {
@@ -70,19 +66,14 @@ class _MapsPlacePickerState extends State<MapsPlacePicker> {
       usePlaceDetailSearch: true,
       zoomGesturesEnabled: true,
       zoomControlsEnabled: true,
-      onMapCreated: (GoogleMapController controller) {
-        print("Map created : ${selectedPlace?.name!}");
-      },
+      onMapCreated: (GoogleMapController controller) {},
       onPlacePicked: (PickResult result) {
-        print("Place picked: ${result.formattedAddress}");
         setState(() {
           selectedPlace = result;
           Navigator.of(context).pop();
         });
       },
-      onMapTypeChanged: (MapType mapType) {
-        print("Map type changed to ${mapType.toString()}");
-      },
+      onMapTypeChanged: (MapType mapType) {},
       // #region additional stuff
       // forceSearchOnZoomChanged: true,
       // automaticallyImplyAppBarLeading: false,

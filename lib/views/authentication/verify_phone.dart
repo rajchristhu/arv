@@ -111,9 +111,7 @@ class _VerifyPhoneState extends State<VerifyPhone> {
                         ),
                         const SizedBox(width: 8),
                         GestureDetector(
-                          onTap: () {
-                            print("Resend the code to the user");
-                          },
+                          onTap: () {},
                           child: const Text(
                             "Request again",
                             style: TextStyle(
@@ -147,7 +145,7 @@ class _VerifyPhoneState extends State<VerifyPhone> {
                         //   "location",
                         //   "651a665ede43800aa3bff961",
                         // );
-                        AppConstantsUtils.location="651a665ede43800aa3bff961";
+                        AppConstantsUtils.location = "651a665ede43800aa3bff961";
                         PhoneAuthCredential credential =
                             PhoneAuthProvider.credential(
                           verificationId: widget.verificationId,
@@ -175,7 +173,8 @@ class _VerifyPhoneState extends State<VerifyPhone> {
                         }
                         utils.notify("Verification completed !");
                         await Future.delayed(const Duration(seconds: 2));
-                        Get.offAll(() =>  HomeBottomNavigationScreen(checkVal:true));
+                        Get.offAll(
+                            () => HomeBottomNavigationScreen(checkVal: true));
                       },
                       child: Container(
                         decoration: BoxDecoration(

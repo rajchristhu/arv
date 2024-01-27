@@ -17,10 +17,8 @@ class ArvProgressDialog {
   showProgressDialog(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       if (!isProgressVisible) {
-        print("Progress Dialog: Showing Progress $isProgressVisible");
         createDialog(context);
       } else {
-        print("Progress Dialog: Dialog is already present");
         // dismissDialog(context);
         isProgressVisible = false;
         Navigator.pop(context);
@@ -42,7 +40,7 @@ class ArvProgressDialog {
     );
   }
 
-   dismissDialog(context) {
+  dismissDialog(context) {
     // print("Progress Dialog : Dismiss called $isProgressVisible");
     if (!isProgressVisible) {
       return;
@@ -67,7 +65,7 @@ class ArvProgressDialog {
   }
 
   Widget _loadImage() {
-    return   Lottie.asset(
+    return Lottie.asset(
       'assets/json/loading.json',
       // controller: _controller,
       width: 250,

@@ -30,9 +30,7 @@ class _ContinueWithPhoneState extends State<ContinueWithPhone> {
     await auth.verifyPhoneNumber(
       phoneNumber: countryCode + phoneNumber,
       timeout: const Duration(seconds: 60),
-      verificationCompleted: (PhoneAuthCredential credential) {
-        print("SMS Code ${credential.smsCode}");
-      },
+      verificationCompleted: (PhoneAuthCredential credential) {},
       verificationFailed: (FirebaseAuthException e) {
         utils.notify(e.code);
       },

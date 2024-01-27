@@ -44,8 +44,10 @@ class PlaceProvider extends ChangeNotifier {
   LocationAccuracy? desiredAccuracy;
   bool isAutoCompleteSearching = false;
 
-  LocationPlatformInterface.Location location = new LocationPlatformInterface.Location();
-  LocationPlatformInterface.PermissionStatus permissionGranted = LocationPlatformInterface.PermissionStatus.denied;
+  LocationPlatformInterface.Location location =
+      new LocationPlatformInterface.Location();
+  LocationPlatformInterface.PermissionStatus permissionGranted =
+      LocationPlatformInterface.PermissionStatus.denied;
   bool isLocationServiceEnabled = false;
 
   Future<void> updateCurrentLocation(bool forceAndroidLocationManager) async {
@@ -59,14 +61,14 @@ class PlaceProvider extends ChangeNotifier {
     permissionGranted = await location.hasPermission();
     try {
       permissionGranted = await location.requestPermission();
-      if (permissionGranted == LocationPlatformInterface.PermissionStatus.granted) {
+      if (permissionGranted ==
+          LocationPlatformInterface.PermissionStatus.granted) {
         currentPosition = await Geolocator.getCurrentPosition(
-        desiredAccuracy: desiredAccuracy ?? LocationAccuracy.best);
+            desiredAccuracy: desiredAccuracy ?? LocationAccuracy.best);
       } else {
         currentPosition = null;
       }
     } catch (e) {
-      print(e);
       currentPosition = null;
     }
     notifyListeners();

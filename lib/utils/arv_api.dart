@@ -142,7 +142,7 @@ class _ArvApi {
   }
 
   Future<ProfileName> getNameApi() async {
-    ProfileName profileName = ProfileName(profileName: "");
+    ProfileName profileName = ProfileName(username: "");
     var url = Uri.parse("$hostUrl/auth/username");
     try {
       http.Response response = await http.get(
@@ -160,9 +160,7 @@ class _ArvApi {
   }
 
   Future<void> updateProfile(String username) async {
-    ProfileName profile = ProfileName(profileName: "");
-    profile.profileName = username;
-    print(profile.toRawJson());
+    ProfileName profile = ProfileName(username: "");
 
     var url = Uri.parse("$hostUrl/auth");
     try {
@@ -270,7 +268,6 @@ class _ArvApi {
       try {
         products = Products.fromRawJson(response.body);
         log("Update Response ${response.body}");
-
       } catch (e) {
         log("Exception : $e");
       }
@@ -363,7 +360,6 @@ class _ArvApi {
       try {
         product = ProductDto.fromRawJson(response.body);
         log("Update Response ${response.body}");
-
       } catch (e) {
         log("Exception : $e");
       }
@@ -390,7 +386,6 @@ class _ArvApi {
       try {
         products = Products.fromRawJson(response.body);
         log("Update Response ${response.body}");
-
       } catch (e) {
         log("Exception : $e");
       }
@@ -416,7 +411,6 @@ class _ArvApi {
     } catch (e) {
       log("Profile Update Exception : $e");
     }
-
   }
 
   Future<CartList> getCartItems(int pageNumber) async {
@@ -435,6 +429,7 @@ class _ArvApi {
 
       if (response.statusCode == 200) {
         cartList = CartList.fromRawJson(response.body);
+        log(response.body);
       }
     } catch (e) {
       log("Cart get error : $e");
@@ -686,8 +681,6 @@ class _ArvApi {
   }
 
   Future<Map<String, String>> _getHeaders() async {
-    print("await secureStorage.get('access-token')");
-    print(await secureStorage.get('access-token'));
     return {
       "content-type": "application/json",
       "Authorization": "Bearer ${await secureStorage.get('access-token')}"

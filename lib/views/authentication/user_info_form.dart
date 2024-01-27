@@ -42,7 +42,6 @@ class _UserInfoFormState extends State<UserInfoForm> {
                     fontSize: 20,
                   ),
                 ),
-
               ],
             ),
           ),
@@ -126,14 +125,10 @@ class _UserInfoFormState extends State<UserInfoForm> {
             padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 0),
             child: ElevatedButton(
               onPressed: () async {
-                print("efg");
-                print(name.text);
-
                 if (name.text.isNotEmpty) {
-                  arvApi.updateProfile(name.text).then((value) => {
-                    print("dfdff"),
-                    Navigator.pop(context)
-                  });
+                  arvApi
+                      .updateProfile(name.text)
+                      .then((value) => {Navigator.pop(context)});
                 } else {}
               },
               style: ElevatedButton.styleFrom(
@@ -223,14 +218,10 @@ class _NameUpdateState extends State<UserInfoForm> {
             padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 10),
             child: ElevatedButton(
               onPressed: () async {
-                print("efg");
-                print(name.text);
-
                 if (name.text.isNotEmpty) {
-                   arvApi.updateProfile(name.text).then((value) => {
-                     print("dfdff"),
-                     Navigator.pop(context)
-                   });
+                  arvApi
+                      .updateProfile(name.text)
+                      .then((value) => {Navigator.pop(context)});
                 } else {}
               },
               style: ElevatedButton.styleFrom(

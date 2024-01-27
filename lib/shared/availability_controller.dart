@@ -35,26 +35,18 @@ class MainScreenController extends GetxController {
 
   @override
   Future<void> onInit() async {
-
     super.onInit();
 
     nae = AppConstantsUtils.loc;
-    print("nae");
-    print(nae);
     if (nae == "") {
       _getCurrentLocation();
     } else {
       setLatitude(AppConstantsUtils.lat);
-     setLongitude(AppConstantsUtils.long);
+      setLongitude(AppConstantsUtils.long);
       await findNearByStore();
       _currentAddress = nae;
-      print("ejknfjken f");
-
-
     }
   }
-
-
 
   late double _currentLatitude;
   late double _currentLongitude;
@@ -70,12 +62,9 @@ class MainScreenController extends GetxController {
   Map<PolylineId, Polyline> polyLines = {};
   List<double> sd = [];
   Future<String> findNearByStore() async {
-    int io=0;
+    int io = 0;
 
-    print("fdf");
-    print(_currentLatitude);
-    print(_currentLongitude);
-    double? minDistance=0;
+    double? minDistance = 0;
     List<Store> stores = await arvApi.getAvailableLocations();
     stores.forEach((store) async {
       List<LatLng> polylineCoordinates = [];
@@ -104,19 +93,18 @@ class MainScreenController extends GetxController {
       //
       //
       // }
-      distanceBetweenUserAndStore= distance(double.parse(store.latitude), double.parse(store.longitude),
-          _currentLatitude, _currentLongitude);
+      distanceBetweenUserAndStore = distance(double.parse(store.latitude),
+          double.parse(store.longitude), _currentLatitude, _currentLongitude);
 
       minDistance = distanceBetweenUserAndStore;
       print("object");
       print(minDistance);
       print(minDistance! < 17);
-      if (
-      minDistance! < 17) {
-        io=0;
+      if (minDistance! < 17) {
+        io = 0;
         minDistance = distanceBetweenUserAndStore;
-        AppConstantsUtils.location=store.id;
-        AppConstantsUtils.storeName=store.name;
+        AppConstantsUtils.location = store.id;
+        AppConstantsUtils.storeName = store.name;
         secureStorage.add("location", store.id);
         secureStorage.add("storeName", store.name);
         print("fdfjdbfjbd f");
@@ -130,21 +118,19 @@ class MainScreenController extends GetxController {
 
         print(_storeName);
         update();
-      }
-      else{
-        io=io+1;
+      } else {
+        io = io + 1;
         print("sd");
         print(stores.length);
         print(io);
-        print(io==stores.length);
-        if(io==stores.length) {
+        print(io == stores.length);
+        if (io == stores.length) {
           secureStorage.add("location", "");
           secureStorage.add("storeName", "");
           AppConstantsUtils.location = "";
           AppConstantsUtils.storeName = "";
         }
       }
-
     });
     // sd.clear();
     // stores.forEach((store) {
@@ -179,6 +165,7 @@ class MainScreenController extends GetxController {
         cos(lat1 * p) * cos(lat2 * p) * (1 - cos((lon2 - lon1) * p)) / 2;
     return 12742 * asin(sqrt(a));
   }
+
   _getCurrentLocation() async {
     _currentPosition = await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.best,
@@ -198,7 +185,7 @@ class MainScreenController extends GetxController {
 
       Placemark place = p[0];
       setLatitude(latitude);
-    setLongitude(longitude);
+      setLongitude(longitude);
       AppConstantsUtils.lat = latitude;
       AppConstantsUtils.long = longitude;
 

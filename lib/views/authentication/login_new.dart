@@ -49,8 +49,6 @@ class _LoginPageState extends State<LoginPage> {
       verificationFailed: (FirebaseAuthException e) {
         utils.notify(e.code);
         utils.notify(e.toString());
-        print(e.toString());
-        print(e.code);
         ArvProgressDialog.instance.dismissDialog(context);
       },
       codeSent: (String verificationId, int? resendToken) async {
