@@ -1,11 +1,11 @@
 import 'dart:convert';
 
 class ProfileName {
-  String username;
+  String phone;
   String profileName;
 
   ProfileName({
-    required this.username,
+    required this.phone,
     this.profileName = "",
   });
 
@@ -15,11 +15,12 @@ class ProfileName {
   String toRawJson() => json.encode(toJson());
 
   factory ProfileName.fromJson(Map<String, dynamic> json) => ProfileName(
-        username: json["username"] ?? "",
+    phone: json["phone"] ?? "",
         profileName: json["profileName"] ?? "",
       );
 
   Map<String, dynamic> toJson() => {
-        "username": username,
+        "phone": phone,
+        "profileName": profileName,
       };
 }

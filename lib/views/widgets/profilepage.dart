@@ -8,9 +8,12 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../utils/secure_storage.dart';
+import '../authentication/user_info_form.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+   String nameVal;
+    String phoneVal;
+   ProfilePage({ required this.nameVal, required this.phoneVal}) ;
 
   @override
   State createState() {
@@ -21,11 +24,14 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   TextEditingController nameController = TextEditingController();
   String profileName = "";
-
+  String phone="";
   @override
   void initState() {
     super.initState();
+    profileName = widget.nameVal.toString();
+    phone =widget.phoneVal.toString();
     getProfile();
+
   }
 
   @override
@@ -37,9 +43,7 @@ class _ProfilePageState extends State<ProfilePage> {
     arvApi.getNameApi().then((value) => {
           print("profile"),
           print(value.profileName),
-          setState(() {
-            profileName = value.profileName.toString();
-          })
+
         });
   }
 
@@ -63,9 +67,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   backgroundColor: Colors.yellow[600],
                 ),
                 title: profileName,
-                subtitle: "It's your shop",
+                subtitle: phone,
                 onTap: () {
-                  print("OK");
+                  _showBottomSheet(context);
                 },
               ),
             ),
@@ -153,5 +157,24 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           );
         });
+  }
+  void _showBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: false,
+      isDismissible: false,
+      enableDrag: false,
+      useSafeArea: true,
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30.0),
+          topRight: Radius.circular(30.0),
+        ),
+      ),
+      builder: (BuildContext context) {
+        return  UserInfoForm(check: true,);
+      },
+    );
   }
 }

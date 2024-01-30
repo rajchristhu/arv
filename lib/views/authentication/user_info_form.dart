@@ -1,17 +1,16 @@
-import 'package:arv/models/response_models/store_locations.dart';
 import 'package:arv/utils/app_colors.dart';
 import 'package:arv/utils/arv_api.dart';
-import 'package:arv/utils/secure_storage.dart';
-import 'package:arv/views/home_bottom_navigation_screen.dart';
 import 'package:arv/views/order_page/input_box.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../shared/app_const.dart';
+import '../home_bottom_navigation_screen.dart';
 
 class UserInfoForm extends StatefulWidget {
-  const UserInfoForm({
-    super.key,
+  bool check;
+
+  UserInfoForm({
+    required this.check,
   });
 
   @override
@@ -126,9 +125,17 @@ class _UserInfoFormState extends State<UserInfoForm> {
             child: ElevatedButton(
               onPressed: () async {
                 if (name.text.isNotEmpty) {
-                  arvApi
-                      .updateProfile(name.text)
-                      .then((value) => {Navigator.pop(context)});
+                  arvApi.updateProfile(name.text).then((value) => {
+                        if (widget.check)
+                          {
+                            Navigator.pop(context),
+                            Get.to(() => HomeBottomNavigationScreen(
+                                  checkVal: false,
+                                ))
+                          }
+                        else
+                          {Navigator.pop(context)}
+                      });
                 } else {}
               },
               style: ElevatedButton.styleFrom(

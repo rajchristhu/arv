@@ -56,9 +56,20 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
     arvApi.productView('$productId');
   }
 
-  @override
+
+    @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return   WillPopScope(
+        onWillPop: () {
+          if(widget.checks!){
+            Get.to(() =>HomeBottomNavigationScreen(checkVal: false,));
+          }else {
+            Navigator.pop(context);
+          }
+          //we need to return a future
+          return Future.value(false);
+        },
+    child:  Scaffold(
       body: SafeArea(
         child: FutureBuilder(
           future: arvApi.getProductById(productId),
@@ -159,7 +170,7 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
           ),
         ),
       ]),
-    );
+    ));
   }
 
   Widget header(ProductDto? productDto, bool checks) {

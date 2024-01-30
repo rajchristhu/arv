@@ -20,6 +20,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'package:cached_network_image/src/cached_image_widget.dart';
 import '../shared/app_const.dart';
 import 'authentication/user_info_form.dart';
 import 'map/maps_place_picker_page.dart';
@@ -36,7 +37,8 @@ class HomeBottomNavigationScreen extends StatefulWidget {
 class _HomeBottomNavigationScreenState
     extends State<HomeBottomNavigationScreen> {
   String nae = "";
-
+ String nameVal="";
+  String phoneVal="";
   @override
   void initState() {
     changeStatusColor(primaryColor);
@@ -74,9 +76,10 @@ class _HomeBottomNavigationScreenState
         return ValueListenableBuilder<int>(
           valueListenable: navigationService.navigationValue,
           builder: (context, value, child) {
-            ArvProgressDialog.instance.dismissDialog(context);
-            int currentTab = widget.checkVal ? value : 4;
-            widget.checkVal = true;
+            ArvProgressDialog.instance
+                .dismissDialog(context);
+            int currentTab = widget.checkVal?value:4;
+            widget.checkVal=true;
             return Scaffold(
               resizeToAvoidBottomInset: true,
               appBar: [0, 1, 6].contains(currentTab)
@@ -365,7 +368,7 @@ class _HomeBottomNavigationScreenState
                   ? Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
+                      children:  [
                         Center(
                           child: SvgPicture.asset(
                             "assets/images/ser.svg",
@@ -407,18 +410,19 @@ class _HomeBottomNavigationScreenState
                                     return InkWell(
                                       onTap: () {
                                         Get.to(() => ProductDetailPageView(
-                                            productId: productDto.id,
-                                            checks: false));
+                                              productId: productDto.id,
+                                            checks:false
+                                            ));
                                       },
                                       child: Row(
                                         children: [
                                           CachedNetworkImage(
-                                            imageUrl: arvApi.getMediaUri(
+                                            imageUrl:      arvApi.getMediaUri(
                                                 productDto.imageUri),
                                             width: 100,
                                             height: 100,
-                                            placeholder: (context, url) =>
-                                                Container(
+
+                                            placeholder: (context, url) => Container(
                                               width: 100,
                                               height: 100,
                                               padding: const EdgeInsets.all(10),
@@ -432,12 +436,9 @@ class _HomeBottomNavigationScreenState
                                                 ),
                                               ),
                                             ),
-                                            errorWidget:
-                                                (context, url, error) =>
-                                                    Container(
+                                            errorWidget: (context, url, error) =>Container(
                                               width: 100,
-                                              height: 100,
-                                              padding: const EdgeInsets.all(10),
+                                              height: 100,                                              padding: const EdgeInsets.all(10),
                                               child: Center(
                                                 child: Text(
                                                   "No image",
@@ -449,6 +450,7 @@ class _HomeBottomNavigationScreenState
                                               ),
                                             ),
                                           ),
+
                                           Column(
                                             children: [
                                               SizedBox(
@@ -481,11 +483,11 @@ class _HomeBottomNavigationScreenState
                           },
                         )
                       : currentTab == 4
-                          ? const CartPage()
+                          ? const  CartPage()
                           : currentTab == 2
                               ? const MyOrders()
                               : currentTab == 3
-                                  ? const ProfilePage()
+                                  ?  ProfilePage(nameVal:nameVal,phoneVal:phoneVal)
                                   : Stack(
                                       children: [
                                         Positioned(
@@ -592,8 +594,14 @@ class _HomeBottomNavigationScreenState
 
   getProfile() {
     arvApi.getNameApi().then((value) => {
-          if (value.profileName == "") {_showBottomSheet(context)}
-        });
+
+          if (value.profileName == "") {_showBottomSheet(context)},
+    setState(() {
+      nameVal=value.profileName;
+      phoneVal=value.phone;
+    })
+
+    });
   }
 
   void _showBottomSheet(BuildContext context) {
@@ -611,8 +619,9 @@ class _HomeBottomNavigationScreenState
         ),
       ),
       builder: (BuildContext context) {
-        return const UserInfoForm();
+        return  UserInfoForm(check:false);
       },
     );
   }
+
 }

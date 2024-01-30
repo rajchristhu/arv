@@ -27,6 +27,7 @@ import 'package:arv/utils/secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 import '../models/response_models/profile_name.dart';
+import '../models/response_models/profile_name_new.dart';
 import '../shared/app_const.dart';
 
 _ArvApi arvApi = _ArvApi.instance;
@@ -142,7 +143,7 @@ class _ArvApi {
   }
 
   Future<ProfileName> getNameApi() async {
-    ProfileName profileName = ProfileName(username: "");
+    ProfileName profileName = ProfileName(profileName: "",phone: "");
     var url = Uri.parse("$hostUrl/auth/username");
     try {
       http.Response response = await http.get(
@@ -152,7 +153,7 @@ class _ArvApi {
       if (response.statusCode == 200) {
         profileName = ProfileName.fromRawJson(response.body);
       }
-      log("Update Response ${response.body}");
+      log("Update Responsessss ${response.body}");
     } catch (e) {
       log("Profile Update Exception : $e");
     }
@@ -160,7 +161,7 @@ class _ArvApi {
   }
 
   Future<void> updateProfile(String username) async {
-    ProfileName profile = ProfileName(username: "");
+    ProfileNameNew profile = ProfileNameNew(username: username);
 
     var url = Uri.parse("$hostUrl/auth");
     try {
