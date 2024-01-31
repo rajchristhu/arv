@@ -40,6 +40,7 @@ class Store {
   String longitude;
   String locationLink;
   double minDeliveryPrice;
+  double extensivePrice;
   String tags;
 
   Store({
@@ -49,6 +50,7 @@ class Store {
     required this.longitude,
     required this.locationLink,
     required this.minDeliveryPrice,
+    required this.extensivePrice,
     required this.tags,
   });
 
@@ -62,7 +64,8 @@ class Store {
         latitude: json["latitude"],
         longitude: json["longitude"],
         locationLink: json["locationLink"],
-        minDeliveryPrice: json["minDeliveryPrice"],
+        minDeliveryPrice: json["minDeliveryPrice"] ?? 0,
+        extensivePrice: json["extensivePrice"] ?? 0,
         tags: json["tags"],
       );
 
@@ -73,6 +76,7 @@ class Store {
         "longitude": longitude,
         "locationLink": locationLink,
         "minDeliveryPrice": minDeliveryPrice,
+        "extensivePrice": extensivePrice,
         "tags": tags,
       };
 }

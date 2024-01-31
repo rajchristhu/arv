@@ -1,21 +1,17 @@
 // ignore_for_file: depend_on_referenced_packages, import_of_legacy_library_into_null_safe
 
-import 'package:arv/utils/distance-calculator.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:get/get.dart';
-import 'package:geocoding/geocoding.dart';
-
-import '../utils/secure_storage.dart';
-import 'app_const.dart';
 import 'dart:math';
 
 import 'package:arv/models/response_models/store_locations.dart';
-import 'package:arv/shared/app_const.dart';
 import 'package:arv/utils/arv_api.dart';
-import 'package:arv/utils/secure_storage.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+
+import '../utils/secure_storage.dart';
+import 'app_const.dart';
 
 // ignore: library_private_types_in_public_api
 
@@ -50,6 +46,8 @@ class MainScreenController extends GetxController {
 
   late double _currentLatitude;
   late double _currentLongitude;
+  double? minDistance = 0;
+  double? extensiveCharge = 0;
 
   setLatitude(double latitude) => _currentLatitude = latitude;
 
@@ -61,10 +59,12 @@ class MainScreenController extends GetxController {
 
   Map<PolylineId, Polyline> polyLines = {};
   List<double> sd = [];
+
   Future<String> findNearByStore() async {
+    minDistance = null;
+    extensiveCharge = null;
     int io = 0;
 
-    double? minDistance = 0;
     List<Store> stores = await arvApi.getAvailableLocations();
     stores.forEach((store) async {
       List<LatLng> polylineCoordinates = [];
@@ -97,9 +97,6 @@ class MainScreenController extends GetxController {
           double.parse(store.longitude), _currentLatitude, _currentLongitude);
 
       minDistance = distanceBetweenUserAndStore;
-      print("object");
-      print(minDistance);
-      print(minDistance! < 17);
       if (minDistance! < 17) {
         io = 0;
         minDistance = distanceBetweenUserAndStore;
@@ -107,28 +104,19 @@ class MainScreenController extends GetxController {
         AppConstantsUtils.storeName = store.name;
         secureStorage.add("location", store.id);
         secureStorage.add("storeName", store.name);
-        print("fdfjdbfjbd f");
-        print(AppConstantsUtils.location);
-        print(AppConstantsUtils.storeName);
-        print(minDistance);
-        print(distanceBetweenUserAndStore);
         _isLocationAvailable = await secureStorage.get("location") != "";
         _storeName = await secureStorage.get("storeName");
-        print("_storeName");
-
-        print(_storeName);
+        extensiveCharge = store.extensivePrice;
         update();
       } else {
         io = io + 1;
-        print("sd");
-        print(stores.length);
-        print(io);
-        print(io == stores.length);
         if (io == stores.length) {
           secureStorage.add("location", "");
           secureStorage.add("storeName", "");
           AppConstantsUtils.location = "";
           AppConstantsUtils.storeName = "";
+          minDistance = null;
+          extensiveCharge = null;
         }
       }
     });
@@ -166,6 +154,10 @@ class MainScreenController extends GetxController {
     return 12742 * asin(sqrt(a));
   }
 
+  getExcessDeliveryCharge() {
+    return ((minDistance ?? 0) * (extensiveCharge ?? 0));
+  }
+
   _getCurrentLocation() async {
     _currentPosition = await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.best,
@@ -195,8 +187,6 @@ class MainScreenController extends GetxController {
       // _isLocationAvailable = await secureStorage.get("location") != "";
       // _storeName = await secureStorage.get("storeName");
       // update();
-      print("_isLocationAvailable");
-      print(_isLocationAvailable);
       _currentAddress =
           "${place.name != null ? "${place.name} ," : ""}${place.subLocality != null ? "${place.subLocality} ," : ""}${place.locality} ${place.postalCode}, ${place.country}";
     } catch (e) {

@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:arv/shared/availability_controller.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:arv/models/request/order.dart';
 import 'package:arv/models/response_models/addresses.dart';
@@ -37,6 +38,7 @@ class _CartValueState extends State<CartValue> {
   final TextEditingController landmark = TextEditingController();
   final TextEditingController paymentMode =
       TextEditingController(text: "Cash On Delivery ( COD )");
+  MainScreenController mainScreenController = Get.find<MainScreenController>();
 
   String defaultPaymentMode = "COD";
   double? deliveryCharge = 0.0;
@@ -53,6 +55,8 @@ class _CartValueState extends State<CartValue> {
 
   getDeliveryCharge() async {
     deliveryCharge = await arvApi.getDeliveryCharge();
+    deliveryCharge =
+        (deliveryCharge ?? 0) + mainScreenController.getExcessDeliveryCharge();
     safeUpdate();
   }
 
