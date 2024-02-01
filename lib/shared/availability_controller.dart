@@ -155,6 +155,7 @@ class MainScreenController extends GetxController {
   }
 
   getExcessDeliveryCharge() {
+    if ((minDistance ?? 0) <= 2) return 0;
     return ((minDistance ?? 0) * (extensiveCharge ?? 0));
   }
 
