@@ -47,6 +47,7 @@ class MainScreenController extends GetxController {
   late double _currentLatitude;
   late double _currentLongitude;
   double? minDistance = 0;
+  double? minDistances = 0;
   double? extensiveCharge = 0;
 
   setLatitude(double latitude) => _currentLatitude = latitude;
@@ -61,7 +62,9 @@ class MainScreenController extends GetxController {
   List<double> sd = [];
 
   Future<String> findNearByStore() async {
+    print("njfjdnjndf");
     minDistance = null;
+    minDistances = null;
     extensiveCharge = null;
     int io = 0;
 
@@ -95,9 +98,13 @@ class MainScreenController extends GetxController {
       // }
       distanceBetweenUserAndStore = distance(double.parse(store.latitude),
           double.parse(store.longitude), _currentLatitude, _currentLongitude);
+      minDistances = distanceBetweenUserAndStore;
 
-      minDistance = distanceBetweenUserAndStore;
-      if (minDistance! < 17) {
+      print("minDistancewdsd");
+      print(minDistances);
+      print(minDistances! < 17);
+      if (minDistances! < 17) {
+        print("jn vn dnvndjvnjd");
         io = 0;
         minDistance = distanceBetweenUserAndStore;
         AppConstantsUtils.location = store.id;
@@ -116,6 +123,7 @@ class MainScreenController extends GetxController {
           AppConstantsUtils.location = "";
           AppConstantsUtils.storeName = "";
           minDistance = null;
+          minDistances = null;
           extensiveCharge = null;
         }
       }
@@ -128,6 +136,11 @@ class MainScreenController extends GetxController {
   }
 
   double distance(double lat1, double lon1, double lat2, double lon2) {
+    print("lat1");
+    print(lat1);
+    print(lon1);
+    print(lat2);
+    print(lon2);
     const r = 6372.8; // Earth radius in kilometers
 
     final dLat = _toRadians(lat2 - lat1);
@@ -156,7 +169,10 @@ class MainScreenController extends GetxController {
 
   getExcessDeliveryCharge() {
     if ((minDistance ?? 0) <= 2) return 0;
-    return ((minDistance ?? 0) * (extensiveCharge ?? 0));
+    print("minDistance");
+    print(minDistance);
+    print(int.parse(minDistance!.toStringAsFixed(0)));
+    return ((int.parse(minDistance!.toStringAsFixed(0)) ?? 0) * (extensiveCharge ?? 0));
   }
 
   _getCurrentLocation() async {

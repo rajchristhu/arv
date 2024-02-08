@@ -55,6 +55,9 @@ class _CartValueState extends State<CartValue> {
 
   getDeliveryCharge() async {
     deliveryCharge = await arvApi.getDeliveryCharge();
+    print("deliveryCharge");
+    print(deliveryCharge);
+    print(mainScreenController.getExcessDeliveryCharge());
     deliveryCharge =
         (deliveryCharge ?? 0) + mainScreenController.getExcessDeliveryCharge();
     safeUpdate();
