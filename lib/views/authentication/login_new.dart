@@ -1,3 +1,4 @@
+import 'package:arv/shared/app_const.dart';
 import 'package:arv/shared/utils.dart';
 import 'package:arv/utils/app_colors.dart';
 import 'package:arv/utils/custom_progress_bar.dart';
@@ -8,8 +9,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:get/get.dart';
 
 import '../../main.dart';
+import '../home_bottom_navigation_screen.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -89,6 +92,24 @@ class _LoginPageState extends State<LoginPage> {
               children: <Widget>[
                 Column(
                   children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(),
+                        Padding(padding: EdgeInsets.only(right: 10,top: 20),child:   ElevatedButton(
+                          onPressed: () {
+                            Get.offAll(
+                                    () =>  HomeBottomNavigationScreen(checkVal:true));
+                            AppConstantsUtils.chk=true;
+                          },
+                          child: Text('Skip'),
+
+                          style: ElevatedButton.styleFrom(shape: StadiumBorder(),backgroundColor:appColor),
+                        ),)
+                      ,
+                      ],
+                    ),
+
                     Container(
                       margin: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 20),

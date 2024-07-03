@@ -60,7 +60,7 @@ class MainScreenController extends GetxController {
 
   Map<PolylineId, Polyline> polyLines = {};
   List<double> sd = [];
-
+int qa=0;
   Future<String> findNearByStore() async {
     print("njfjdnjndf");
     minDistance = null;
@@ -68,66 +68,73 @@ class MainScreenController extends GetxController {
     extensiveCharge = null;
     int io = 0;
 
-    List<Store> stores = await arvApi.getAvailableLocations();
-    stores.forEach((store) async {
-      List<LatLng> polylineCoordinates = [];
+  List<Store> stores = await arvApi.getAvailableLocations();
+  stores.forEach((store) async {
+    List<LatLng> polylineCoordinates = [];
 
-      PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-        googleAPiKey,
-        PointLatLng(
-            double.parse(store.latitude), double.parse(store.longitude)),
-        PointLatLng(_currentLatitude, _currentLongitude),
-        travelMode: TravelMode.driving,
-      );
+    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+      googleAPiKey,
+      PointLatLng(
+          double.parse(store.latitude), double.parse(store.longitude)),
+      PointLatLng(_currentLatitude, _currentLongitude),
+      travelMode: TravelMode.driving,
+    );
 
-      if (result.points.isNotEmpty) {
-        result.points.forEach((PointLatLng point) {
-          polylineCoordinates.add(LatLng(point.latitude, point.longitude));
-        });
+    if (result.points.isNotEmpty) {
+      result.points.forEach((PointLatLng point) {
+        polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+      });
+    }
+
+    double distanceBetweenUserAndStore = 0;
+    // for (var i = 0; i < polylineCoordinates.length - 1; i++) {
+    //   distanceBetweenUserAndStore += calculateDistance(
+    //       polylineCoordinates[i].latitude,
+    //       polylineCoordinates[i].longitude,
+    //       polylineCoordinates[i + 1].latitude,
+    //       polylineCoordinates[i + 1].longitude);
+    //
+    //
+    // }
+    print("objectd");
+    distanceBetweenUserAndStore = distance(double.parse(store.latitude),
+        double.parse(store.longitude), _currentLatitude, _currentLongitude);
+    minDistances = distanceBetweenUserAndStore;
+
+    print("minDistancewdsd");
+    print(minDistances);
+    print(minDistances! < 17);
+    print(minDistances! < 17);
+
+    if (minDistances! < 10) {
+      print("jn vn dnvndjvnjd");
+      io = 0;
+      minDistance = distanceBetweenUserAndStore;
+      print("distanceBetweenUserAndStore");
+      print(distanceBetweenUserAndStore);
+      AppConstantsUtils.location = store.id;
+      AppConstantsUtils.storeName = store.name;
+      secureStorage.add("location", store.id);
+      secureStorage.add("storeName", store.name);
+      _isLocationAvailable = await secureStorage.get("location") != "";
+      _storeName = await secureStorage.get("storeName");
+      extensiveCharge = store.extensivePrice;
+      update();
+    }
+    else {
+      io = io + 1;
+      if (io == stores.length) {
+        secureStorage.add("location", "");
+        secureStorage.add("storeName", "");
+        AppConstantsUtils.location = "";
+        AppConstantsUtils.storeName = "";
+        minDistance = null;
+        minDistances = null;
+        extensiveCharge = null;
       }
+    }
+  });
 
-      double distanceBetweenUserAndStore = 0;
-      // for (var i = 0; i < polylineCoordinates.length - 1; i++) {
-      //   distanceBetweenUserAndStore += calculateDistance(
-      //       polylineCoordinates[i].latitude,
-      //       polylineCoordinates[i].longitude,
-      //       polylineCoordinates[i + 1].latitude,
-      //       polylineCoordinates[i + 1].longitude);
-      //
-      //
-      // }
-      distanceBetweenUserAndStore = distance(double.parse(store.latitude),
-          double.parse(store.longitude), _currentLatitude, _currentLongitude);
-      minDistances = distanceBetweenUserAndStore;
-
-      print("minDistancewdsd");
-      print(minDistances);
-      print(minDistances! < 17);
-      if (minDistances! < 17) {
-        print("jn vn dnvndjvnjd");
-        io = 0;
-        minDistance = distanceBetweenUserAndStore;
-        AppConstantsUtils.location = store.id;
-        AppConstantsUtils.storeName = store.name;
-        secureStorage.add("location", store.id);
-        secureStorage.add("storeName", store.name);
-        _isLocationAvailable = await secureStorage.get("location") != "";
-        _storeName = await secureStorage.get("storeName");
-        extensiveCharge = store.extensivePrice;
-        update();
-      } else {
-        io = io + 1;
-        if (io == stores.length) {
-          secureStorage.add("location", "");
-          secureStorage.add("storeName", "");
-          AppConstantsUtils.location = "";
-          AppConstantsUtils.storeName = "";
-          minDistance = null;
-          minDistances = null;
-          extensiveCharge = null;
-        }
-      }
-    });
     // sd.clear();
     // stores.forEach((store) {
 
@@ -151,7 +158,8 @@ class MainScreenController extends GetxController {
     final a =
         _haversin(dLat) + cos(lat1Radians) * cos(lat2Radians) * _haversin(dLon);
     final c = 2 * asin(sqrt(a));
-
+    print("object");
+    print(r * c);
     return r * c;
   }
 
@@ -164,6 +172,7 @@ class MainScreenController extends GetxController {
     var a = 0.5 -
         cos((lat2 - lat1) * p) / 2 +
         cos(lat1 * p) * cos(lat2 * p) * (1 - cos((lon2 - lon1) * p)) / 2;
+
     return 12742 * asin(sqrt(a));
   }
 

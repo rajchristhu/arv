@@ -38,9 +38,6 @@ class NewsProvider with ChangeNotifier {
       var response = await client.get(Uri.parse(
         "$hostUrl/public/products?majorCategoryId=${majorCategory ?? 'Groceries'}${categoryId != null ? "&categoryId=$categoryId" : ""}${subCategoryId != null ? "&subCategoryId=$subCategoryId" : ""}&priceFrom=0&priceTo=0&page=$pageNo&storeId=$location",
       ));
-      print("fssfsfsfs");
-      print(
-          '$hostUrl/public/products?majorCategoryId=${majorCategory ?? 'Groceries'}${categoryId != null ? "&categoryId=$categoryId" : ""}${subCategoryId != null ? "&subCategoryId=$subCategoryId" : ""}&priceFrom=0&priceTo=0&page=$pageNo&storeId=$location');
 
       if (response.statusCode == 200) {
         newsResponse = Products.fromJson(jsonDecode(response.body));

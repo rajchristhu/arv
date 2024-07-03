@@ -1,6 +1,7 @@
 import 'package:arv/utils/arv_api.dart';
 import 'package:arv/views/authentication/login_new.dart';
 import 'package:babstrap_settings_screen/babstrap_settings_screen.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 // ignore: depend_on_referenced_packages
@@ -145,14 +146,31 @@ class _ProfilePageState extends State<ProfilePage> {
             padding: EdgeInsets.all(30),
             child: new Wrap(
               children: <Widget>[
-                Text(
-                  'ARV Shopping Mall, 39, TVR Road, Thruthuraipoondi, Tamil Nadu 614713',
-                  style: GoogleFonts.poppins(
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black,
+                RichText(
+                  text: new TextSpan(
+                    children: [
+                      new TextSpan(
+                        text:   'ARV Vivek Supermarket, 39, TVR Road, Thruthuraipoondi, Tamil Nadu 614713\n\nemail: arvexclusive@gmail.com\n\n',
+                        style: GoogleFonts.poppins(
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black,
+                        ),
+                      ),
+                      new TextSpan(
+                        text: ' Terms and Condition ',
+                        style: new TextStyle(color: Colors.blue),
+                        recognizer: new TapGestureRecognizer()
+                          ..onTap = () {
+                          },
+                      ),
+                    ],
                   ),
                 ),
+                // Text(
+                //   'ARV Vivek Supermarket, 39, TVR Road, Thruthuraipoondi, Tamil Nadu 614713\n\nemail: arvexclusive@gmail.com\n\n Terms and Condition :https://rajchristhu.wordpress.com/2023/12/12/arv-exclusive/',
+
+                // ),
               ],
             ),
           );

@@ -6,12 +6,12 @@ import 'package:arv/utils/app_colors.dart';
 import 'package:arv/utils/arv_api.dart';
 import 'package:arv/views/product_page/product_grid_card.dart';
 import 'package:arv/views/product_page/product_provider.dart';
+import 'package:cached_network_image/src/cached_image_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
-import 'package:cached_network_image/src/cached_image_widget.dart';
 
 import '../../shared/navigation_service.dart';
 
@@ -92,8 +92,10 @@ class _ProductsPageState extends State<ProductsPage> {
     page = widget.currentPage;
     provider = Provider.of<NewsProvider>(context, listen: false);
   }
-
+int po=0;
   Future<void> fetchApiCall(int pageKey) async {
+    print("object");
+    print(pageKey);
     try {
       final Products articles;
       articles = await provider.fetchNews(pageKey);
@@ -208,13 +210,13 @@ class _ProductsPageState extends State<ProductsPage> {
                                           bottom: 20, top: 10),
                                       margin: const EdgeInsets.only(left: 10),
                                       width: 50,
-                                      child:   CachedNetworkImage(
-                                        imageUrl:     arvApi
+                                      child: CachedNetworkImage(
+                                        imageUrl: arvApi
                                             .getMediaUri(category!.image ?? ""),
                                         width: 50,
                                         height: 50,
-
-                                        placeholder: (context, url) => Container(
+                                        placeholder: (context, url) =>
+                                            Container(
                                           width: 50,
                                           height: 50,
                                           padding: const EdgeInsets.all(10),
@@ -228,7 +230,8 @@ class _ProductsPageState extends State<ProductsPage> {
                                             ),
                                           ),
                                         ),
-                                        errorWidget: (context, url, error) =>Container(
+                                        errorWidget: (context, url, error) =>
+                                            Container(
                                           width: 50,
                                           height: 50,
                                           padding: const EdgeInsets.all(10),
@@ -243,7 +246,6 @@ class _ProductsPageState extends State<ProductsPage> {
                                           ),
                                         ),
                                       ),
-
                                     ),
                                   );
                                 },
@@ -326,13 +328,13 @@ class _ProductsPageState extends State<ProductsPage> {
                                           margin:
                                               const EdgeInsets.only(left: 10),
                                           width: 50,
-                                          child:  CachedNetworkImage(
+                                          child: CachedNetworkImage(
                                             imageUrl: arvApi.getMediaUri(
                                                 subCategory.image ?? ""),
                                             width: 50,
                                             height: 50,
-
-                                            placeholder: (context, url) => Container(
+                                            placeholder: (context, url) =>
+                                                Container(
                                               width: 50,
                                               height: 50,
                                               padding: const EdgeInsets.all(10),
@@ -346,7 +348,9 @@ class _ProductsPageState extends State<ProductsPage> {
                                                 ),
                                               ),
                                             ),
-                                            errorWidget: (context, url, error) =>Container(
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    Container(
                                               width: 50,
                                               height: 50,
                                               padding: const EdgeInsets.all(10),
@@ -361,7 +365,6 @@ class _ProductsPageState extends State<ProductsPage> {
                                               ),
                                             ),
                                           ),
-
                                         ),
                                       );
                                     },

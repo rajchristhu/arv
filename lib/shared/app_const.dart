@@ -7,4 +7,5 @@ class AppConstantsUtils {
   static String location = "";
   static double lat = 0;
   static double long = 0;
+  static bool chk = false;
 }

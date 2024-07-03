@@ -167,9 +167,8 @@ class _OrderProgressState extends State<OrderProgress> {
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               style: GoogleFonts.montserrat(
-                                color: black,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w800
                               ),
                             ),
                           ],
@@ -183,20 +182,21 @@ class _OrderProgressState extends State<OrderProgress> {
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                               color: black,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w800),
                         ),
                         const SizedBox(
                           height: 3,
                         ),
                         Text(
-                          addressLine2,
+                          addressLine2 +"\n"+"payment mode:  "+(order.couponCode=="1"?"Online":"COD"),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                               color: black,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500),
+
+                              fontSize: 14,
+                              fontWeight: FontWeight.w800),
                         ),
                         const SizedBox(height: 12),
                         order.orderStatus == orderStatusList[2]

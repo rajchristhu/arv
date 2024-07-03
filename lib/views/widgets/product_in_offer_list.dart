@@ -4,6 +4,7 @@ import 'package:arv/shared/cart_service.dart';
 import 'package:arv/utils/app_colors.dart';
 import 'package:arv/utils/arv_api.dart';
 import 'package:arv/views/product_detail/product_detail.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 // ignore: depend_on_referenced_packages
@@ -11,7 +12,9 @@ import 'package:get/get.dart';
 
 // ignore: depend_on_referenced_packages
 import 'package:google_fonts/google_fonts.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+
+import '../../shared/app_const.dart';
+import '../authentication/login_new.dart';
 
 class ProductInOfferList extends StatefulWidget {
   const ProductInOfferList({
@@ -65,10 +68,8 @@ class _ProductInOfferListState extends State<ProductInOfferList> {
         count = snapshot.data ?? 0;
         return InkWell(
           onTap: () {
-            Get.to(() => ProductDetailPageView(
-                  productId: productId,
-                checks:false
-                ));
+            Get.to(() =>
+                ProductDetailPageView(productId: productId, checks: false));
           },
           child: Padding(
             padding:
@@ -83,23 +84,24 @@ class _ProductInOfferListState extends State<ProductInOfferList> {
                   children: [
                     Center(
                       child: CachedNetworkImage(
-                        imageUrl:    arvApi.getMediaUri(widget.product.imageUri ?? ""),
+                        imageUrl:
+                            arvApi.getMediaUri(widget.product.imageUri ?? ""),
                         height: 90,
-                        progressIndicatorBuilder: (context, url, downloadProgress) =>
-                            Container(
-                              height: 90,
-                              padding: const EdgeInsets.all(10),
-                              child: Center(
-                                child: Text(
-                                  "Loading",
-                                  style: TextStyle(
-                                    fontSize: 8,
-                                    color: gray,
-                                  ),
-                                ),
+                        progressIndicatorBuilder:
+                            (context, url, downloadProgress) => Container(
+                          height: 90,
+                          padding: const EdgeInsets.all(10),
+                          child: Center(
+                            child: Text(
+                              "Loading",
+                              style: TextStyle(
+                                fontSize: 8,
+                                color: gray,
                               ),
                             ),
-                        errorWidget: (context, url, error) =>Container(
+                          ),
+                        ),
+                        errorWidget: (context, url, error) => Container(
                           height: 90,
                           padding: const EdgeInsets.all(10),
                           child: Center(
@@ -113,8 +115,7 @@ class _ProductInOfferListState extends State<ProductInOfferList> {
                           ),
                         ),
                       ),
-                    )
-                    ,
+                    ),
                     // Image.network(
                     //   arvApi.getMediaUri(widget.product.imageUri ?? ""),
                     //   height: 90,
@@ -166,7 +167,6 @@ class _ProductInOfferListState extends State<ProductInOfferList> {
                               maxLines: 1,
                               style: TextStyle(
                                 decoration: TextDecoration.lineThrough,
-
                               ),
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -182,8 +182,44 @@ class _ProductInOfferListState extends State<ProductInOfferList> {
                                 padding: const EdgeInsets.only(right: 10),
                                 child: count == 0
                                     ? OutlinedButton(
-                                        onPressed: () async =>
-                                            await performCartOperation(true),
+                                        onPressed: () async => {
+                                          if (AppConstantsUtils.chk)
+                                            {
+                                              showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return Expanded(
+                                                    child: AlertDialog(
+                                                      title: Text(
+                                                          'Your not login user? '),
+                                                      content: Text(
+                                                          'Please login and continue this function. '),
+                                                      actions: [
+                                                        ElevatedButton(
+                                                          onPressed: () {
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          child: Text('CANCEL'),
+                                                        ),
+                                                        ElevatedButton(
+                                                          onPressed: () {
+                                                            Get.offAll(() =>
+                                                                LoginPage());
+                                                          },
+                                                          child: Text(
+                                                              'Go To Login'),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  );
+                                                },
+                                              )
+                                            }
+                                          else
+                                            {await performCartOperation(true)}
+                                        },
                                         style: OutlinedButton.styleFrom(
                                           side: BorderSide(
                                               width: 1.0, color: pink),

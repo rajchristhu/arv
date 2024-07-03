@@ -13,6 +13,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
+import '../../shared/app_const.dart';
+import '../authentication/login_new.dart';
+
 class ProductGridCard extends StatefulWidget {
   const ProductGridCard({super.key, required this.product});
 
@@ -47,17 +50,16 @@ class _ProductGridState extends State<ProductGridCard> {
               ? widget.product.vdiscount[index]
               : 0;
         });
-        double discount = vDiscount.length!=0? vDiscount[0]:0;
-print("sjdfbsbfjnf");
-print(discount);
-print(quantity);
+        double discount = vDiscount.length != 0 ? vDiscount[0] : 0;
+        print("sjdfbsbfjnf");
+        print(discount);
+        print(quantity);
         return InkWell(
           onTap: () {
-            Get.to(() => ProductDetailPageView(productId: productId,
-                checks:false
-            ));
+            Get.to(() =>
+                ProductDetailPageView(productId: productId, checks: false));
           },
-          child:  Stack(
+          child: Stack(
             children: [
               Center(
                 child: Container(
@@ -74,139 +76,144 @@ print(quantity);
                       color: Colors.white,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [ quantity == 0
-                            ?  Expanded(
-                            flex: 2,
-                            child:Stack(
-                          children: [
-
-                            CachedNetworkImage(
-                              imageUrl: arvApi.getMediaUri(widget.product.imageUri ?? ""),
-                              height: 50,
-                              width: double.infinity,
-
-                              placeholder: (context, url) => Container(
-                                height: 50,
-                                padding: const EdgeInsets.all(10),
-                                child: Center(
-                                  child: Text(
-                                    "Loading ...",
-                                    style: TextStyle(
-                                      fontSize: 8,
-                                      color: gray,
+                        children: [
+                          quantity == 0
+                              ? Expanded(
+                                  flex: 2,
+                                  child: Stack(
+                                    children: [
+                                      CachedNetworkImage(
+                                        imageUrl: arvApi.getMediaUri(
+                                            widget.product.imageUri ?? ""),
+                                        height: 50,
+                                        width: double.infinity,
+                                        placeholder: (context, url) =>
+                                            Container(
+                                          height: 50,
+                                          padding: const EdgeInsets.all(10),
+                                          child: Center(
+                                            child: Text(
+                                              "Loading ...",
+                                              style: TextStyle(
+                                                fontSize: 8,
+                                                color: gray,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        errorWidget: (context, url, error) =>
+                                            Container(
+                                          height: 50,
+                                          padding: const EdgeInsets.all(10),
+                                          child: Center(
+                                            child: Text(
+                                              "No image",
+                                              style: TextStyle(
+                                                fontSize: 8,
+                                                color: gray,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      // Image.network(
+                                      //       arvApi.getMediaUri(widget.product.imageUri ?? ""),
+                                      //       height: 50,
+                                      //       width: double.infinity,
+                                      //
+                                      //       fit: BoxFit.contain,
+                                      //       errorBuilder: (context, error, stackTrace) {
+                                      //         return Container(
+                                      //           height: 50,
+                                      //           padding: const EdgeInsets.all(10),
+                                      //           child: Center(
+                                      //             child: Text(
+                                      //               "No image",
+                                      //               style: TextStyle(
+                                      //                 fontSize: 8,
+                                      //                 color: gray,
+                                      //               ),
+                                      //             ),
+                                      //           ),
+                                      //         );
+                                      //       },
+                                      //     ),
+                                      Positioned(
+                                        child: Container(
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          height: 100,
+                                          color: grayts,
+                                          child: Center(
+                                            child: Text(
+                                              "Out of stock",
+                                              style: TextStyle(
+                                                  fontSize: 10,
+                                                  fontWeight: FontWeight.w800),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ))
+                              : Expanded(
+                                  flex: 2,
+                                  child: CachedNetworkImage(
+                                    imageUrl: arvApi.getMediaUri(
+                                        widget.product.imageUri ?? ""),
+                                    height: 50,
+                                    width: double.infinity,
+                                    placeholder: (context, url) => Container(
+                                      height: 50,
+                                      padding: const EdgeInsets.all(10),
+                                      child: Center(
+                                        child: Text(
+                                          "Loading ...",
+                                          style: TextStyle(
+                                            fontSize: 8,
+                                            color: gray,
+                                          ),
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                ),
-                              ),
-                              errorWidget: (context, url, error) =>Container(
-                                height: 50,
-                                padding: const EdgeInsets.all(10),
-                                child: Center(
-                                  child: Text(
-                                    "No image",
-                                    style: TextStyle(
-                                      fontSize: 8,
-                                      color: gray,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            // Image.network(
-                            //       arvApi.getMediaUri(widget.product.imageUri ?? ""),
-                            //       height: 50,
-                            //       width: double.infinity,
-                            //
-                            //       fit: BoxFit.contain,
-                            //       errorBuilder: (context, error, stackTrace) {
-                            //         return Container(
-                            //           height: 50,
-                            //           padding: const EdgeInsets.all(10),
-                            //           child: Center(
-                            //             child: Text(
-                            //               "No image",
-                            //               style: TextStyle(
-                            //                 fontSize: 8,
-                            //                 color: gray,
-                            //               ),
-                            //             ),
-                            //           ),
-                            //         );
-                            //       },
-                            //     ),
-                            Positioned(
-                              child: Container(
-                                width: MediaQuery.of(context).size.width,
-                                height: 100,
-                                color: grayts,
-                                child: Center(
-                                  child: Text(
-                                    "Out of stock",
-                                    style: TextStyle(
-                                        fontSize: 10, fontWeight: FontWeight.w800),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        )):
-                          Expanded(
-                              flex: 2,
-                              child:   CachedNetworkImage(
-                                imageUrl: arvApi.getMediaUri(widget.product.imageUri ?? ""),
-                                height: 50,
-                                width: double.infinity,
-
-                                placeholder: (context, url) => Container(
-                                  height: 50,
-                                  padding: const EdgeInsets.all(10),
-                                  child: Center(
-                                    child: Text(
-                                      "Loading ...",
-                                      style: TextStyle(
-                                        fontSize: 8,
-                                        color: gray,
+                                    errorWidget: (context, url, error) =>
+                                        Container(
+                                      height: 50,
+                                      padding: const EdgeInsets.all(10),
+                                      child: Center(
+                                        child: Text(
+                                          "No image",
+                                          style: TextStyle(
+                                            fontSize: 8,
+                                            color: gray,
+                                          ),
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                                errorWidget: (context, url, error) =>Container(
-                                  height: 50,
-                                  padding: const EdgeInsets.all(10),
-                                  child: Center(
-                                    child: Text(
-                                      "No image",
-                                      style: TextStyle(
-                                        fontSize: 8,
-                                        color: gray,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
 
-                              // Image.network(
-                              //   arvApi.getMediaUri(widget.product.imageUri ?? ""),
-                              //   height: 50,
-                              //   width: double.infinity,
-                              //   fit: BoxFit.contain,
-                              //   errorBuilder: (context, error, stackTrace) {
-                              //     return Container(
-                              //       height: 50,
-                              //       padding: const EdgeInsets.all(10),
-                              //       child: Center(
-                              //         child: Text(
-                              //           "No image",
-                              //           style: TextStyle(
-                              //             fontSize: 8,
-                              //             color: gray,
-                              //           ),
-                              //         ),
-                              //       ),
-                              //     );
-                              //   },
-                              // )
-                          ),
+                                  // Image.network(
+                                  //   arvApi.getMediaUri(widget.product.imageUri ?? ""),
+                                  //   height: 50,
+                                  //   width: double.infinity,
+                                  //   fit: BoxFit.contain,
+                                  //   errorBuilder: (context, error, stackTrace) {
+                                  //     return Container(
+                                  //       height: 50,
+                                  //       padding: const EdgeInsets.all(10),
+                                  //       child: Center(
+                                  //         child: Text(
+                                  //           "No image",
+                                  //           style: TextStyle(
+                                  //             fontSize: 8,
+                                  //             color: gray,
+                                  //           ),
+                                  //         ),
+                                  //       ),
+                                  //     );
+                                  //   },
+                                  // )
+                                ),
                           Expanded(
                             flex: 2,
                             child: Column(
@@ -240,14 +247,14 @@ print(quantity);
                                 //   ),
                                 // ),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
                                       "₹ ${widget.product.mrpPrice!.isNotEmpty ? widget.product.mrpPrice![0].toInt() : ""} ",
                                       style: GoogleFonts.montserrat(
                                         fontSize: 14.0,
                                         decoration: TextDecoration.lineThrough,
-
                                         fontWeight: FontWeight.w300,
                                         color: Colors.black,
                                       ),
@@ -264,110 +271,162 @@ print(quantity);
                                 ),
                                 widget.product.isEnabled
                                     ? Container(
-                                  width: 1000000,
-                                  height: 32,
-                                  padding:
-                                  const EdgeInsets.only(right: 0, top: 5),
-                                  child: quantity == 0
-                                      ? Container()
-                                      : count == 0
-                                      ? OutlinedButton(
-                                    onPressed: () async {
-                                      await performCartOperation(
-                                        true,
-                                        quantity,
-                                        count,
-                                        productId,
-                                        productVariant,
-                                        price,
-                                      );
-                                    },
-                                    style: OutlinedButton.styleFrom(
-                                      side: BorderSide(
-                                          width: 1.0, color: pink),
-                                    ),
-                                    child: Text(
-                                      'Add',
-                                      style: GoogleFonts.poppins(
-                                        fontSize: 14.0,
-                                        fontWeight: FontWeight.w300,
-                                        color: pink,
-                                      ),
-                                    ),
-                                  )
-                                      : Container(
-                                    width: 10000,
-                                    height: 32,
-                                    margin: const EdgeInsets.only(
-                                        right: 0, top: 5),
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        width: 1.0,
-                                        color: pink,
-                                      ),
-                                      borderRadius:
-                                      const BorderRadius.all(
-                                        Radius.circular(5),
-                                      ),
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment
-                                          .spaceAround,
-                                      crossAxisAlignment:
-                                      CrossAxisAlignment.center,
-                                      children: [
-                                        InkWell(
-                                            child: Icon(
-                                              Icons.remove,
-                                              size: 16,
-                                              color: gray,
-                                            ),
-                                            onTap: () async {
-                                              await performCartOperation(
-                                                false,
-                                                quantity,
-                                                count,
-                                                productId,
-                                                productVariant,
-                                                price,
-                                              );
-                                            }),
-                                        Container(
-                                          padding: const EdgeInsets
-                                              .symmetric(
-                                              horizontal: 8.0),
-                                          child: Text(
-                                            '$count',
-                                            style: const TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 14.0,
-                                              fontWeight:
-                                              FontWeight.w300,
-                                            ),
-                                          ),
-                                        ),
-                                        InkWell(
-                                          child: Icon(
-                                            Icons.add,
-                                            size: 16,
-                                            color: gray,
-                                          ),
-                                          onTap: () async {
-                                            await performCartOperation(
-                                              true,
-                                              quantity,
-                                              count,
-                                              productId,
-                                              productVariant,
-                                              price,
-                                            );
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                )
+                                        width: 1000000,
+                                        height: 32,
+                                        padding: const EdgeInsets.only(
+                                            right: 0, top: 5),
+                                        child: quantity == 0
+                                            ? Container()
+                                            : count == 0
+                                                ? OutlinedButton(
+                                                    onPressed: () async {
+                                                      if (AppConstantsUtils
+                                                          .chk) {
+                                                        showDialog(
+                                                          context: context,
+                                                          builder: (BuildContext
+                                                              context) {
+                                                            return Expanded(
+                                                              child:
+                                                                  AlertDialog(
+                                                                title: Text(
+                                                                    'Your not login user? '),
+                                                                content: Text(
+                                                                    'Please login and continue this function. '),
+                                                                actions: [
+                                                                  ElevatedButton(
+                                                                    onPressed:
+                                                                        () {
+                                                                      Navigator.pop(
+                                                                          context);
+                                                                    },
+                                                                    child: Text(
+                                                                        'CANCEL'),
+                                                                  ),
+                                                                  ElevatedButton(
+                                                                    onPressed:
+                                                                        () {
+                                                                      Get.offAll(
+                                                                          () =>
+                                                                              LoginPage());
+                                                                    },
+                                                                    child: Text(
+                                                                        'Go To Login'),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            );
+                                                          },
+                                                        );
+                                                      } else {
+                                                        await performCartOperation(
+                                                          true,
+                                                          quantity,
+                                                          count,
+                                                          productId,
+                                                          productVariant,
+                                                          price,
+                                                        );
+                                                      }
+                                                    },
+                                                    style: OutlinedButton
+                                                        .styleFrom(
+                                                      side: BorderSide(
+                                                          width: 1.0,
+                                                          color: pink),
+                                                    ),
+                                                    child: Text(
+                                                      'Add',
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                        fontSize: 14.0,
+                                                        fontWeight:
+                                                            FontWeight.w300,
+                                                        color: pink,
+                                                      ),
+                                                    ),
+                                                  )
+                                                : Container(
+                                                    width: 10000,
+                                                    height: 32,
+                                                    margin:
+                                                        const EdgeInsets.only(
+                                                            right: 0, top: 5),
+                                                    decoration: BoxDecoration(
+                                                      border: Border.all(
+                                                        width: 1.0,
+                                                        color: pink,
+                                                      ),
+                                                      borderRadius:
+                                                          const BorderRadius
+                                                              .all(
+                                                        Radius.circular(5),
+                                                      ),
+                                                    ),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceAround,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        InkWell(
+                                                            child: Icon(
+                                                              Icons.remove,
+                                                              size: 16,
+                                                              color: gray,
+                                                            ),
+                                                            onTap: () async {
+                                                              await performCartOperation(
+                                                                false,
+                                                                quantity,
+                                                                count,
+                                                                productId,
+                                                                productVariant,
+                                                                price,
+                                                              );
+                                                            }),
+                                                        Container(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .symmetric(
+                                                                  horizontal:
+                                                                      8.0),
+                                                          child: Text(
+                                                            '$count',
+                                                            style:
+                                                                const TextStyle(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontSize: 14.0,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w300,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        InkWell(
+                                                          child: Icon(
+                                                            Icons.add,
+                                                            size: 16,
+                                                            color: gray,
+                                                          ),
+                                                          onTap: () async {
+                                                            await performCartOperation(
+                                                              true,
+                                                              quantity,
+                                                              count,
+                                                              productId,
+                                                              productVariant,
+                                                              price,
+                                                            );
+                                                          },
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                      )
                                     : Container(),
                               ],
                             ),
@@ -378,55 +437,59 @@ print(quantity);
                   ),
                 ),
               ),
-              vDiscount.length!=0 &&discount!=0?     Positioned(
-                child: Container(
-                  height: 50,
-                  child: Stack(
-                    children: <Widget>[
-                      ClipOval(
-                        child: Container(
-                          color: Colors.grey,
-                          height: 35.0, // height of the button
-                          width: 35.0, // width of the button
+              vDiscount.length != 0 && discount != 0
+                  ? Positioned(
+                      child: Container(
+                        height: 50,
+                        child: Stack(
+                          children: <Widget>[
+                            ClipOval(
+                              child: Container(
+                                color: Colors.grey,
+                                height: 35.0, // height of the button
+                                width: 35.0, // width of the button
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {},
+                              child: ClipOval(
+                                child: Container(
+                                  //color: Colors.green,
+                                  height: 30.0, // height of the button
+                                  width: 30.0, // width of the button
+                                  decoration: BoxDecoration(
+                                      color: primaryColor,
+                                      border: Border.all(
+                                          color: Colors.white,
+                                          width: 2.0,
+                                          style: BorderStyle.solid),
+                                      boxShadow: const [
+                                        BoxShadow(
+                                            color: Colors.grey,
+                                            offset: Offset(8.0, 8.0),
+                                            blurRadius: 20.0,
+                                            spreadRadius: 40.0)
+                                      ],
+                                      shape: BoxShape.circle),
+                                  child: Center(
+                                      child: Text(
+                                          vDiscount.length != 0
+                                              ? vDiscount[0].toString() + "%"
+                                              : "dff",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 8,
+                                              fontWeight: FontWeight.w800))),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      GestureDetector(
-                        onTap: () {},
-                        child: ClipOval(
-                          child: Container(
-                            //color: Colors.green,
-                            height: 30.0, // height of the button
-                            width: 30.0, // width of the button
-                            decoration: BoxDecoration(
-                                color: primaryColor,
-                                border: Border.all(
-                                    color: Colors.white,
-                                    width: 2.0,
-                                    style: BorderStyle.solid),
-                                boxShadow: const [
-                                  BoxShadow(
-                                      color: Colors.grey,
-                                      offset: Offset(8.0, 8.0),
-                                      blurRadius: 20.0,
-                                      spreadRadius: 40.0)
-                                ],
-                                shape: BoxShape.circle),
-                            child: Center(
-                                child: Text(vDiscount.length!=0?vDiscount[0].toString()+"%":"dff",
-                                    style:   TextStyle(
-                                        color: Colors.white,fontSize: 8,fontWeight: FontWeight.w800))),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ):Container(),
+                    )
+                  : Container(),
             ],
-          )
-
-
-          ,
+          ),
         );
       },
     );

@@ -14,11 +14,14 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../shared/app_const.dart';
 import '../../shared/navigation_service.dart';
+import '../authentication/login_new.dart';
 import '../home_bottom_navigation_screen.dart';
 
 class ProductDetailPageView extends StatefulWidget {
-  const ProductDetailPageView({super.key,required this.checks, this.productId});
+  const ProductDetailPageView(
+      {super.key, required this.checks, this.productId});
 
   final String? productId;
   final bool? checks;
@@ -56,121 +59,122 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
     arvApi.productView('$productId');
   }
 
-
-    @override
+  @override
   Widget build(BuildContext context) {
-    return   WillPopScope(
+    return WillPopScope(
         onWillPop: () {
-          if(widget.checks!){
-            Get.to(() =>HomeBottomNavigationScreen(checkVal: false,));
-          }else {
+          if (widget.checks!) {
+            Get.to(() => HomeBottomNavigationScreen(
+                  checkVal: false,
+                ));
+          } else {
             Navigator.pop(context);
           }
           //we need to return a future
           return Future.value(false);
         },
-    child:  Scaffold(
-      body: SafeArea(
-        child: FutureBuilder(
-          future: arvApi.getProductById(productId),
-          builder: (context, snapshot) {
-            ProductDto? productDto = snapshot.data;
-            quantity = ((productDto!.stock != null &&
-                    (productDto.stock?.length ?? 0) > 0)
-                ? productDto.stock![0]
-                : 0);
+        child: Scaffold(
+          body: SafeArea(
+            child: FutureBuilder(
+              future: arvApi.getProductById(productId),
+              builder: (context, snapshot) {
+                ProductDto? productDto = snapshot.data;
+                quantity = ((productDto!.stock != null &&
+                        (productDto.stock?.length ?? 0) > 0)
+                    ? productDto.stock![0]
+                    : 0);
 
-            mrpPrices = productDto.mrpPrice ?? [];
-            sellingPrices = productDto.sellingPrice ?? [];
-            variantList = productDto.productVariants;
-            if (check) {
-              quantityCheck = variantList[0].qty;
-              check = false;
-            }
-            vDiscount = productDto.vdiscount;
-            vDiscount = List.generate(vDiscount.length, (index) {
-              return index <= vDiscount.length - 1 ? vDiscount[index] : 0;
-            });
-            return Column(
-              children: [
-                header(productDto,widget.checks!),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height - 110,
-                  width: MediaQuery.of(context).size.width,
-                  child: ListView(
-                    scrollDirection: Axis.vertical,
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    children: [
-                      hero(productDto),
-                      section(productDto),
-                      const SizedBox(height: 20),
-                    ],
-                  ),
-                ),
-              ],
-            );
-          },
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: Stack(children: [
-        FloatingActionButton(
-          heroTag: null,
-          backgroundColor: pink,
-          onPressed: () => {
-            Navigator.pop(context),
-            navigationService.setNavigation = 4,
-          },
-          child: SvgPicture.asset(
-            "assets/images/bag.svg",
-            semanticsLabel: 'Acme Logo',
-            color: Colors.white,
-            width: 28,
-            height: 28,
+                mrpPrices = productDto.mrpPrice ?? [];
+                sellingPrices = productDto.sellingPrice ?? [];
+                variantList = productDto.productVariants;
+                if (check) {
+                  quantityCheck = variantList[0].qty;
+                  check = false;
+                }
+                vDiscount = productDto.vdiscount;
+                vDiscount = List.generate(vDiscount.length, (index) {
+                  return index <= vDiscount.length - 1 ? vDiscount[index] : 0;
+                });
+                return Column(
+                  children: [
+                    header(productDto, widget.checks!),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height - 110,
+                      width: MediaQuery.of(context).size.width,
+                      child: ListView(
+                        scrollDirection: Axis.vertical,
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        children: [
+                          hero(productDto),
+                          section(productDto),
+                          const SizedBox(height: 20),
+                        ],
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
           ),
-        ),
-        Positioned(
-          top: 0,
-          left: 30,
-          child: GetBuilder<CartService>(
-            init: Get.find<CartService>(),
-            builder: (controller) {
-              if (controller.items.length == 0) {
-                return Container();
-              }
-              return Container(
+          floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+          floatingActionButton: Stack(children: [
+            FloatingActionButton(
+              heroTag: null,
+              backgroundColor: pink,
+              onPressed: () => {
+                Navigator.pop(context),
+                navigationService.setNavigation = 4,
+              },
+              child: SvgPicture.asset(
+                "assets/images/bag.svg",
+                semanticsLabel: 'Acme Logo',
+                color: Colors.white,
                 width: 28,
                 height: 28,
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.25), // border color
-                  shape: BoxShape.circle,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(2), // border width
-                  child: Container(
-                    // or ClipRRect if you need to clip the content
+              ),
+            ),
+            Positioned(
+              top: 0,
+              left: 30,
+              child: GetBuilder<CartService>(
+                init: Get.find<CartService>(),
+                builder: (controller) {
+                  if (controller.items.length == 0) {
+                    return Container();
+                  }
+                  return Container(
+                    width: 28,
+                    height: 28,
                     decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.25), // border color
                       shape: BoxShape.circle,
-                      color: primaryColor, // inner circle color
                     ),
-                    child: Center(
-                      child: Text(
-                        "${controller.items.length}",
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: white,
-                          fontWeight: FontWeight.bold,
+                    child: Padding(
+                      padding: const EdgeInsets.all(2), // border width
+                      child: Container(
+                        // or ClipRRect if you need to clip the content
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: primaryColor, // inner circle color
                         ),
+                        child: Center(
+                          child: Text(
+                            "${controller.items.length}",
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ), // inner content
                       ),
-                    ), // inner content
-                  ),
-                ),
-              );
-            },
-          ),
-        ),
-      ]),
-    ));
+                    ),
+                  );
+                },
+              ),
+            ),
+          ]),
+        ));
   }
 
   Widget header(ProductDto? productDto, bool checks) {
@@ -193,9 +197,11 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
           children: [
             InkWell(
               onTap: () {
-                if(checks){
-                  Get.to(() =>HomeBottomNavigationScreen(checkVal: false,));
-                }else {
+                if (checks) {
+                  Get.to(() => HomeBottomNavigationScreen(
+                        checkVal: false,
+                      ));
+                } else {
                   Navigator.pop(context);
                 }
               },
@@ -480,8 +486,44 @@ class _ProductDetailPageViewState extends State<ProductDetailPageView> {
                                     width: 100,
                                     height: 35,
                                     child: ElevatedButton(
-                                      onPressed: () async =>
-                                          await performCartOperation(true),
+                                      onPressed: () async => {
+                                        print("djgbdhbgdgg"),
+                                        if (AppConstantsUtils.chk)
+                                          {
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return Expanded(
+                                                  child: AlertDialog(
+                                                    title: Text(
+                                                        'Your not login user? '),
+                                                    content: Text(
+                                                        'Please login and continue this function. '),
+                                                    actions: [
+                                                      ElevatedButton(
+                                                        onPressed: () {
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                        child: Text('CANCEL'),
+                                                      ),
+                                                      ElevatedButton(
+                                                        onPressed: () {
+                                                          Get.offAll(() =>
+                                                              LoginPage());
+                                                        },
+                                                        child:
+                                                            Text('Go To Login'),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                );
+                                              },
+                                            )
+                                          }
+                                        else
+                                          {await performCartOperation(true)}
+                                      },
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: Colors.pink,
                                       ),
